@@ -1,0 +1,35 @@
+import { describe, it, expect, beforeEach } from "vitest";
+import { rateLimit, resetRateLimit } from "./ratelimit";
+
+beforeEach(() => resetRateLimit());
+
+describe("rateLimit", () => {
+  it("allows up to max within the window", () => {
+    const opts = { windowMs: 1000, max: 3 };
+    expect(rateLimit("k", opts, 0).allowed).toBe(true);
+    expect(rateLimit("k", opts, 100).allowed).toBe(true);
+    expect(rateLimit("k", opts, 200).allowed).toBe(true);
+  });
+
+  it("blocks the request over the limit and reports retryAfter", () => {
+    const opts = { windowMs: 1000, max: 2 };
+    rateLimit("k", opts, 0);
+    rateLimit("k", opts, 10);
+    const r = rateLimit("k", opts, 20);
+    expect(r.allowed).toBe(false);
+    expect(r.retryAfterMs).toBeGreaterThan(0);
+  });
+
+  it("allows again once the window has passed", () => {
+    const opts = { windowMs: 1000, max: 1 };
+    expect(rateLimit("k", opts, 0).allowed).toBe(true);
+    expect(rateLimit("k", opts, 500).allowed).toBe(false);
+    expect(rateLimit("k", opts, 1500).allowed).toBe(true);
+  });
+
+  it("tracks keys independently", () => {
+    const opts = { windowMs: 1000, max: 1 };
+    expect(rateLimit("a", opts, 0).allowed).toBe(true);
+    expect(rateLimit("b", opts, 0).allowed).toBe(true);
+  });
+});
