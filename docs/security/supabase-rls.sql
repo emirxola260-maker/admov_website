@@ -1,6 +1,15 @@
 -- Run in the Supabase SQL editor for the ADMOV project.
 -- Table: public.admin_content (single row, id = 'admov_main')
+-- Safe to re-run: every statement is idempotent.
 
+-- 1. Create the table the app reads/writes (columns: id / content / updated_at).
+create table if not exists public.admin_content (
+  id text primary key,
+  content jsonb,
+  updated_at timestamptz default now()
+);
+
+-- 2. Enable Row Level Security on the table.
 alter table public.admin_content enable row level security;
 
 -- Public/anon may READ content (the site is public anyway).

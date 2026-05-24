@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { validateContactPayload, buildTelegramMessage } from "./_lib/telegram";
-import { rateLimit } from "./_lib/ratelimit";
+import { validateContactPayload, buildTelegramMessage } from "./_lib/telegram.js";
+import { rateLimit } from "./_lib/ratelimit.js";
 
 function getClientIp(req: VercelRequest): string {
   const fwd = req.headers["x-forwarded-for"];
