@@ -62,7 +62,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ ok: true });
   } catch (err) {
-    console.error("Error sending to Telegram:", err);
+    // Log only the message, never the error object — its `cause`/URL could contain the bot token.
+    console.error("Error sending to Telegram:", err instanceof Error ? err.message : "unknown error");
     return res.status(502).json({ error: "Failed to deliver message" });
   }
 }
