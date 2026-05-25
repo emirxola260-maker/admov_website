@@ -39,106 +39,90 @@ export function PrivacyPolicy() {
         <div className="mb-12">
           <span className="font-syne font-bold text-[11px] text-violet tracking-[0.10em] uppercase mb-3 block">Legal</span>
           <h1 className="text-5xl md:text-6xl font-syne font-extrabold tracking-tight text-zinc-50 mb-4">Privacy Policy</h1>
-          <p className="text-zinc-400">Last updated: April 2026</p>
+          <p className="text-zinc-400">Last updated: May 26, 2026</p>
         </div>
 
         <div className="prose prose-invert max-w-none space-y-10 text-zinc-300 leading-relaxed">
 
+          <p>
+            This Privacy Policy explains how <strong className="text-zinc-300">[LEGAL COMPANY NAME]</strong> ("Admov", "we", "us") collects, uses, and shares information when you use the Admov app and services (the "Service"). By using Admov, you agree to this Policy.
+          </p>
+
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">1. Introduction</h2>
-            <p>Welcome to ADMOV ("we", "our", or "us"). We are an AI agency for businesses, specializing in AI-generated videos, photos, automation systems, and digital marketing. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.</p>
-            <p className="mt-3">By using our services, you agree to the collection and use of information in accordance with this policy.</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">1. Information We Collect</h2>
+            <p><strong className="text-zinc-300">Account information:</strong> name, email address, and authentication identifiers when you sign in with Apple, Google, or email.</p>
+            <p className="mt-3"><strong className="text-zinc-300">Content you provide:</strong> photos and images you upload, text prompts, brand details (business name, logo, colors, phone, website, social handles), and the images you generate. Uploaded photos may contain people or faces if you choose to include them.</p>
+            <p className="mt-3"><strong className="text-zinc-300">Purchase information:</strong> records of credit purchases and subscriptions. Payments are processed by Apple; we do not receive your full payment-card details.</p>
+            <p className="mt-3"><strong className="text-zinc-300">Usage and device data:</strong> app interactions, feature usage, generation history, approximate diagnostics, device type, OS version, language, and similar technical data.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">2. Information We Collect</h2>
-            <h3 className="text-lg font-syne font-bold text-violet mb-2">Personal Information</h3>
-            <p>When you contact us or use our services, we may collect:</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">2. How We Use Information</h2>
             <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-              <li>Name and email address (via contact form)</li>
-              <li>Phone number (if provided)</li>
-              <li>Business name and project details</li>
-              <li>Communication history with our team</li>
+              <li>To provide, operate, and improve the Service and generate your requested Output.</li>
+              <li>To manage your account, credits, and subscriptions.</li>
+              <li>To provide customer support and respond to reports.</li>
+              <li>To enforce our Terms, prevent abuse, and moderate content for safety.</li>
+              <li>To send transactional messages (e.g. verification codes, password resets) and, where permitted, service notifications.</li>
+              <li>To comply with legal obligations.</li>
             </ul>
+            <p className="mt-4">We do <strong className="text-zinc-300">not</strong> sell your personal information. We do not use Your Content to train our own AI models.</p>
+          </section>
 
-            <h3 className="text-lg font-syne font-bold text-violet mb-2 mt-6">Usage Data</h3>
-            <p>We automatically collect certain information when you visit our website, including:</p>
+          <section>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">3. How We Share Information</h2>
+            <p>We share information with service providers strictly to operate the Service:</p>
             <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-              <li>IP address and browser type</li>
-              <li>Pages visited and time spent</li>
-              <li>Referring URLs</li>
-              <li>Device and operating system information</li>
+              <li><strong className="text-zinc-300">Cloud/backend &amp; storage</strong> (database, authentication, file storage, and serverless functions) to run the app.</li>
+              <li><strong className="text-zinc-300">AI model and processing providers</strong> — your uploaded images and prompts are sent to third-party AI providers to generate or edit your Output.</li>
+              <li><strong className="text-zinc-300">Apple / Google</strong> — for sign-in and in-app purchases.</li>
+              <li><strong className="text-zinc-300">Email delivery providers</strong> — to send verification and account emails.</li>
             </ul>
+            <p className="mt-3">These providers process data under their own privacy and security commitments. We may also disclose information to comply with law or protect our rights and users.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">3. How We Use Your Information</h2>
-            <p>We use the collected information for the following purposes:</p>
-            <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-              <li>To respond to your inquiries and provide our services</li>
-              <li>To send project updates and relevant communications</li>
-              <li>To improve our website and service offerings</li>
-              <li>To comply with legal obligations</li>
-              <li>To analyze usage patterns and optimize user experience</li>
-            </ul>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">4. Camera, Photos &amp; Notifications</h2>
+            <p>With your permission, the app accesses your camera and photo library so you can upload images, and may send push notifications (e.g. when a generation is ready). You can change these permissions anytime in your device Settings.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">4. Data Sharing & Disclosure</h2>
-            <p>We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
-            <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-              <li><strong className="text-zinc-300">Service Providers:</strong> Trusted third parties that assist in operating our website or conducting our business (e.g., hosting providers, email services)</li>
-              <li><strong className="text-zinc-300">Legal Requirements:</strong> When required by law, court order, or governmental authority</li>
-              <li><strong className="text-zinc-300">Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
-            </ul>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">5. Data Retention</h2>
+            <p>We retain your account data and content while your account is active and as needed to provide the Service. When you delete your account in the app, we delete or anonymize your personal data within a reasonable period, except where we must retain it for legal, security, or accounting purposes.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">5. Cookies & Tracking</h2>
-            <p>We use cookies and similar tracking technologies to enhance your experience. Cookies are small files stored on your device. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.</p>
-            <p className="mt-3">We use:</p>
-            <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-              <li><strong className="text-zinc-300">Essential Cookies:</strong> Required for the website to function (e.g., language preference)</li>
-              <li><strong className="text-zinc-300">Analytics Cookies:</strong> Help us understand how visitors interact with our website</li>
-            </ul>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">6. Your Rights</h2>
+            <p>Depending on where you live (e.g. under GDPR/KVKK), you may have rights to access, correct, delete, or port your data, and to object to or restrict certain processing. You can delete your account directly in the app (Settings → Delete account) or contact us at <a href="mailto:info@admov.io" className="text-violet hover:text-violet-light transition-colors">info@admov.io</a>. We will respond as required by applicable law.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">6. Data Security</h2>
-            <p>We implement appropriate technical and organizational security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security.</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">7. International Transfers</h2>
+            <p>Your information may be processed in countries other than your own, including where our service providers operate. We take steps to protect it consistent with this Policy and applicable law.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">7. Your Rights</h2>
-            <p>Depending on your location, you may have the following rights regarding your personal data:</p>
-            <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-              <li>The right to access your personal information</li>
-              <li>The right to rectify inaccurate data</li>
-              <li>The right to erasure ("right to be forgotten")</li>
-              <li>The right to restrict processing</li>
-              <li>The right to data portability</li>
-              <li>The right to object to processing</li>
-            </ul>
-            <p className="mt-4">To exercise any of these rights, please contact us at <a href="mailto:info@admov.io" className="text-violet hover:text-violet-light transition-colors">info@admov.io</a>.</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">8. Security</h2>
+            <p>We use reasonable technical and organizational measures to protect your information. No method of transmission or storage is completely secure, so we cannot guarantee absolute security.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">8. Third-Party Links</h2>
-            <p>Our website may contain links to third-party websites (Instagram, TikTok, WhatsApp). We are not responsible for the privacy practices of these sites and encourage you to review their privacy policies.</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">9. Children's Privacy</h2>
+            <p>The Service is not directed to children under 13 (or the minimum age in your country), and we do not knowingly collect their data. If you believe a child has provided us information, contact us and we will delete it.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">9. Changes to This Policy</h2>
-            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last updated" date at the top of this policy. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">10. Changes to This Policy</h2>
+            <p>We may update this Policy from time to time. Material changes will be posted here with a new "Last updated" date and, where appropriate, notified in the app.</p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">10. Contact Us</h2>
-            <p>If you have questions about this Privacy Policy, please contact us:</p>
+            <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">11. Contact</h2>
+            <p>If you have questions about this Policy, you can reach us at:</p>
             <div className="mt-4 p-6 bg-zinc-900 border border-zinc-800 rounded-2xl space-y-2">
+              <p><strong className="text-zinc-300">Admov</strong></p>
               <p><strong className="text-zinc-300">Email:</strong> <a href="mailto:info@admov.io" className="text-violet hover:text-violet-light transition-colors">info@admov.io</a></p>
-              <p><strong className="text-zinc-300">WhatsApp:</strong> <a href="https://wa.me/905375755445" className="text-violet hover:text-violet-light transition-colors">+90 537 575 54 45</a></p>
-              <p><strong className="text-zinc-300">Instagram:</strong> <a href="https://www.instagram.com/admov.io" target="_blank" rel="noopener noreferrer" className="text-violet hover:text-violet-light transition-colors">@admov.io</a></p>
+              <p><strong className="text-zinc-300">Website:</strong> <a href="https://admov.io" target="_blank" rel="noopener noreferrer" className="text-violet hover:text-violet-light transition-colors">https://admov.io</a></p>
             </div>
           </section>
         </div>

@@ -15,6 +15,7 @@ const PrivacyPolicy = React.lazy(() => import("@/pages/PrivacyPolicy").then(m =>
 const TermsOfService = React.lazy(() => import("@/pages/TermsOfService").then(m => ({ default: m.TermsOfService })));
 const AdminPage = React.lazy(() => import("@/admin/AdminPage").then(m => ({ default: m.AdminPage })));
 const WorkPage = React.lazy(() => import("@/pages/WorkPage").then(m => ({ default: m.WorkPage })));
+const SupportPage = React.lazy(() => import("@/pages/SupportPage").then(m => ({ default: m.SupportPage })));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -66,6 +67,7 @@ export default function App() {
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/work" element={<WorkPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/support" element={<SupportPage />} />
           </Routes>
         </React.Suspense>
       </FontWrapper>
