@@ -45,7 +45,7 @@ export function TermsOfService() {
         <div className="prose prose-invert max-w-none space-y-10 text-zinc-300 leading-relaxed">
 
           <p>
-            These Terms of Use ("Terms") govern your access to and use of the Admov mobile application and related services (collectively, the "Service"), operated by <strong className="text-zinc-300">[LEGAL COMPANY NAME]</strong> ("Admov", "we", "us", or "our"). By downloading, accessing, or using the Service, you agree to these Terms. If you do not agree, do not use the Service.
+            These Terms of Use ("Terms") govern your access to and use of the Admov mobile application and related services (collectively, the "Service"), operated by <strong className="text-zinc-300">Admov</strong> ("we", "us", or "our"). By downloading, accessing, or using the Service, you agree to these Terms. If you do not agree, do not use the Service.
           </p>
 
           <section>
@@ -143,7 +143,7 @@ export function TermsOfService() {
 
           <section>
             <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">16. Governing Law</h2>
-            <p>These Terms are governed by the laws of <strong className="text-zinc-300">[e.g. Republic of Türkiye]</strong>, without regard to conflict-of-law rules. Disputes will be resolved in the courts of <strong className="text-zinc-300">[ISTANBUL]</strong>, unless otherwise required by mandatory local law.</p>
+            <p>These Terms are governed by the laws of <strong className="text-zinc-300">the Republic of Türkiye</strong>, without regard to conflict-of-law rules. Disputes will be resolved in the courts of <strong className="text-zinc-300">Istanbul</strong>, unless otherwise required by mandatory local law.</p>
           </section>
 
           <section>

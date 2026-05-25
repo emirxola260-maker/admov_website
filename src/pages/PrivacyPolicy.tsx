@@ -45,7 +45,7 @@ export function PrivacyPolicy() {
         <div className="prose prose-invert max-w-none space-y-10 text-zinc-300 leading-relaxed">
 
           <p>
-            This Privacy Policy explains how <strong className="text-zinc-300">[LEGAL COMPANY NAME]</strong> ("Admov", "we", "us") collects, uses, and shares information when you use the Admov app and services (the "Service"). By using Admov, you agree to this Policy.
+            This Privacy Policy explains how <strong className="text-zinc-300">Admov</strong> ("we", "us") collects, uses, and shares information when you use the Admov app and services (the "Service"). By using Admov, you agree to this Policy.
           </p>
 
           <section>
