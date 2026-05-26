@@ -190,6 +190,7 @@ const en = {
   footer: {
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    support: "Support",
     rights: "All rights reserved.",
   },
 };
@@ -370,6 +371,7 @@ const ar: typeof en = {
   footer: {
     privacy: "سياسة الخصوصية",
     terms: "شروط الخدمة",
+    support: "الدعم",
     rights: "جميع الحقوق محفوظة.",
   },
 };
@@ -550,6 +552,7 @@ const tr: typeof en = {
   footer: {
     privacy: "Gizlilik Politikası",
     terms: "Kullanım Koşulları",
+    support: "Destek",
     rights: "Tüm hakları saklıdır.",
   },
 };

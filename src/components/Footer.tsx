@@ -22,6 +22,7 @@ export function Footer() {
           </div>
 
           <div className="flex gap-8">
+            <Link to="/support" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.support}</Link>
             <Link to="/privacy" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.privacy}</Link>
             <Link to="/terms" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.terms}</Link>
           </div>
