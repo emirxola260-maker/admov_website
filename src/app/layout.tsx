@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next";
 import { syne, dmSans, changa } from "@/lib/fonts";
 import { DEFAULT_LANG, dirFor, isLanguage, type Language } from "@/i18n/config";
 import { getAdminContent } from "@/lib/data/admin-content";
@@ -39,11 +40,37 @@ export const viewport: Viewport = {
   themeColor: "#09090b",
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "ADMOV",
+      url: SITE_URL,
+      logo: `${SITE_URL}/favicon.svg`,
+      email: "info@admov.io",
+      description: DEFAULT_DESCRIPTION,
+      address: { "@type": "PostalAddress", addressLocality: "Istanbul", addressCountry: "TR" },
+      sameAs: ["https://www.instagram.com/admov.io", "https://www.tiktok.com/@admov.io"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "ADMOV",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      inLanguage: ["en", "ar", "tr"],
+    },
+  ],
+};
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Set by src/proxy.ts: URL prefix > cookie > Accept-Language.
   const requestHeaders = await headers();
   const headerLang = requestHeaders.get("x-lang");
   const lang: Language = isLanguage(headerLang) ? headerLang : DEFAULT_LANG;
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const adminContent = await getAdminContent();
 
   return (
@@ -53,10 +80,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${syne.variable} ${dmSans.variable} ${changa.variable} ${lang}`}
       suppressHydrationWarning
     >
+      <head>
+        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+      </head>
       <body className={`bg-zinc-950 text-zinc-50 antialiased lang-${lang}`} suppressHydrationWarning>
         <Providers initialLang={lang} adminContent={adminContent}>
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

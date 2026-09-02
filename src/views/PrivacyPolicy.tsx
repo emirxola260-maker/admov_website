@@ -82,14 +82,27 @@ const content: Record<Lang, LegalDoc> = {
         ],
       },
       {
-        heading: "10. Changes to This Policy",
+        heading: "10. Website, Blog & Newsletter",
+        blocks: [
+          { p: "This section applies to our website at https://admov.io, including the blog and the newsletter." },
+          { list: [
+            "**Language preference.** We store a cookie named admov-lang so the site opens in the language you chose. It contains only the language code and expires after one year.",
+            "**Analytics.** We use Vercel Web Analytics, which counts page views without cookies and without collecting personal data.",
+            "**Contact form.** Details you submit (name, email, phone, message) are sent to our team so we can reply. We do not use them for marketing unless you ask us to.",
+            "**Newsletter.** If you subscribe, we store your email address and language to send you our emails. You can unsubscribe at any time by emailing info@admov.io.",
+            "**Blog content.** Some articles are drafted with the help of AI tools and reviewed by our team before publication.",
+          ] },
+        ],
+      },
+      {
+        heading: "11. Changes to This Policy",
         blocks: [
           { p: `We may update this Policy from time to time. Material changes will be posted here with a new "Last updated" date and, where appropriate, notified in the app.` },
         ],
       },
     ],
     contact: {
-      heading: "11. Contact",
+      heading: "12. Contact",
       intro: `If you have questions about this Policy, you can reach us at:`,
       emailLabel: "Email",
       websiteLabel: "Website",
@@ -175,14 +188,27 @@ const content: Record<Lang, LegalDoc> = {
         ],
       },
       {
-        heading: "10. التغييرات على هذه السياسة",
+        heading: "10. الموقع الإلكتروني والمدونة والنشرة البريدية",
+        blocks: [
+          { p: "ينطبق هذا القسم على موقعنا الإلكتروني https://admov.io، بما في ذلك المدونة والنشرة البريدية." },
+          { list: [
+            "**تفضيل اللغة.** نخزن ملف تعريف ارتباط باسم admov-lang ليفتح الموقع باللغة التي اخترتها. يحتوي فقط على رمز اللغة وتنتهي صلاحيته بعد عام واحد.",
+            "**التحليلات.** نستخدم Vercel Web Analytics الذي يحصي مشاهدات الصفحات دون ملفات تعريف ارتباط ودون جمع بيانات شخصية.",
+            "**نموذج التواصل.** تُرسل البيانات التي تقدمها (الاسم والبريد الإلكتروني والهاتف والرسالة) إلى فريقنا لنتمكن من الرد عليك. لا نستخدمها للتسويق إلا إذا طلبت ذلك.",
+            "**النشرة البريدية.** إذا اشتركت، نخزن بريدك الإلكتروني ولغتك لإرسال رسائلنا إليك. يمكنك إلغاء الاشتراك في أي وقت بمراسلة info@admov.io.",
+            "**محتوى المدونة.** تُصاغ بعض المقالات بمساعدة أدوات الذكاء الاصطناعي ويراجعها فريقنا قبل النشر.",
+          ] },
+        ],
+      },
+      {
+        heading: "11. التغييرات على هذه السياسة",
         blocks: [
           { p: `قد نحدّث هذه السياسة من وقت لآخر. ستُنشر التغييرات الجوهرية هنا مع تاريخ "آخر تحديث" جديد، وسنُعلمك بها داخل التطبيق عند الاقتضاء.` },
         ],
       },
     ],
     contact: {
-      heading: "11. التواصل",
+      heading: "12. التواصل",
       intro: `إذا كانت لديك أسئلة حول هذه السياسة، يمكنك التواصل معنا عبر:`,
       emailLabel: "البريد الإلكتروني",
       websiteLabel: "الموقع الإلكتروني",
@@ -268,14 +294,27 @@ const content: Record<Lang, LegalDoc> = {
         ],
       },
       {
-        heading: "10. Bu Politikadaki Değişiklikler",
+        heading: "10. Web Sitesi, Blog ve Bülten",
+        blocks: [
+          { p: "Bu bölüm, blog ve bülten dahil olmak üzere https://admov.io adresindeki web sitemiz için geçerlidir." },
+          { list: [
+            "**Dil tercihi.** Sitenin seçtiğiniz dilde açılması için admov-lang adlı bir çerez saklarız. Yalnızca dil kodunu içerir ve bir yıl sonra sona erer.",
+            "**Analitik.** Çerez kullanmadan ve kişisel veri toplamadan sayfa görüntülemelerini sayan Vercel Web Analytics'i kullanırız.",
+            "**İletişim formu.** Gönderdiğiniz bilgiler (ad, e-posta, telefon, mesaj) size yanıt verebilmemiz için ekibimize iletilir. Siz istemedikçe pazarlama amacıyla kullanılmaz.",
+            "**Bülten.** Abone olursanız e-postalarımızı göndermek için e-posta adresinizi ve dilinizi saklarız. info@admov.io adresine yazarak istediğiniz zaman abonelikten çıkabilirsiniz.",
+            "**Blog içeriği.** Bazı yazılar yapay zeka araçlarının yardımıyla hazırlanır ve yayınlanmadan önce ekibimiz tarafından gözden geçirilir.",
+          ] },
+        ],
+      },
+      {
+        heading: "11. Bu Politikadaki Değişiklikler",
         blocks: [
           { p: `Bu Politikayı zaman zaman güncelleyebiliriz. Önemli değişiklikler burada yeni bir "Son güncelleme" tarihiyle yayınlanacak ve uygun olduğunda uygulama içinde bildirilecektir.` },
         ],
       },
     ],
     contact: {
-      heading: "11. İletişim",
+      heading: "12. İletişim",
       intro: `Bu Politika hakkında sorularınız varsa bize şu adresten ulaşabilirsiniz:`,
       emailLabel: "E-posta",
       websiteLabel: "Web Sitesi",

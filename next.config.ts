@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // A stray package-lock.json in the home directory otherwise confuses Turbopack's root detection.
   turbopack: { root: process.cwd() },
+  // The blog OG images read this font at runtime (see src/lib/blog/og.tsx).
+  outputFileTracingIncludes: {
+    "/blog/[slug]/opengraph-image": ["./public/fonts/changa-800.ttf"],
+    "/[lang]/blog/[slug]/opengraph-image": ["./public/fonts/changa-800.ttf"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

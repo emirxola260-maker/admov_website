@@ -6,11 +6,14 @@ import {
   LayoutDashboard, Layers, Briefcase, MessageSquareQuote,
   AtSign, Search, LogOut, ChevronDown, Check, Save, Eye,
   BarChart3, Lightbulb, Image, Settings, Plus, Trash2, Star,
-  ArrowRight, Globe, Loader2
+  ArrowRight, Globe, Loader2, Package, Newspaper
 } from "lucide-react";
+import { ProductsEditor } from "./ProductsEditor";
+import { BlogEditor } from "./BlogEditor";
+import { revalidateTags } from "@/lib/admin/api";
 import { saveAdminContentToSupabase } from "@/lib/supabase/client";
 
-type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "contact" | "seo";
+type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "contact" | "seo" | "products" | "blog";
 type LangTab = "en" | "ar" | "tr";
 
 interface ContentData {
@@ -117,6 +120,8 @@ const sidebarItems: { id: SectionId; label: string; icon: React.ReactNode }[] = 
   { id: "testimonials", label: "Testimonials", icon: <MessageSquareQuote size={18} /> },
   { id: "contact", label: "Contact Info", icon: <AtSign size={18} /> },
   { id: "seo", label: "SEO & Meta", icon: <Search size={18} /> },
+  { id: "products", label: "Products", icon: <Package size={18} /> },
+  { id: "blog", label: "Blog & AI Writer", icon: <Newspaper size={18} /> },
 ];
 
 interface AdminDashboardProps {
@@ -131,6 +136,13 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+  const [saveError, setSaveError] = React.useState<string | null>(null);
+
+  // Deep links from Telegram / the site: /admin#blog, /admin#products
+  React.useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash === "blog" || hash === "products") setActiveSection(hash);
+  }, []);
 
   // Load content from Supabase on mount
   React.useEffect(() => {
@@ -209,26 +221,19 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
 
   const handleSave = async () => {
     setSaving(true);
+    setSaveError(null);
     try {
-      // Save to localStorage first (for immediate use)
-      localStorage.setItem("admov_admin_content", JSON.stringify(content));
-
-      // Then try to save to Supabase
       const success = await saveAdminContentToSupabase(content);
-      if (success) {
-        console.log("Content saved to Supabase successfully");
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
-      } else {
-        console.warn("Failed to save to Supabase, saved to localStorage only");
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
+      if (!success) {
+        setSaveError("Save failed — your changes were NOT published. Make sure you are signed in as an allow-listed admin (public.admins) and try again.");
+        return;
       }
-    } catch (error) {
-      console.error("Error saving to Supabase:", error);
-      // Already saved to localStorage above
+      localStorage.setItem("admov_admin_content", JSON.stringify(content));
+      await revalidateTags(["admin-content"]);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : "Save failed");
     } finally {
       setSaving(false);
     }
@@ -242,6 +247,8 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     testimonials: "Testimonials Editor",
     contact: "Contact Information",
     seo: "SEO & Meta Tags",
+    products: "Products",
+    blog: "Blog & AI Writer",
   };
 
   const sectionDescs: Record<SectionId, string> = {
@@ -252,6 +259,8 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     testimonials: "Manage client testimonials and social proof.",
     contact: "Update your contact details and social links.",
     seo: "Optimize search engine visibility and meta information.",
+    products: "Your own apps, SaaS and websites shown in the Products section and on /products. Changes go live immediately.",
+    blog: "Review AI-generated drafts, edit them per language, publish, and queue topics for the daily writer.",
   };
 
   if (loading) {
@@ -338,6 +347,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               <Eye size={16} />
               <span className="hidden sm:inline">Preview</span>
             </a>
+            {!["products", "blog"].includes(activeSection) && (
             <button
               onClick={handleSave}
               disabled={saving}
@@ -346,8 +356,14 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               {saving ? <Loader2 size={16} className="animate-spin" /> : saved ? <Check size={16} /> : <Save size={16} />}
               <span className="hidden sm:inline">{saving ? "Saving..." : saved ? "Saved!" : "Save Changes"}</span>
             </button>
+            )}
           </div>
         </header>
+        {saveError && (
+          <div className="px-6 lg:px-10 pt-6">
+            <div className="rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm px-4 py-3">{saveError}</div>
+          </div>
+        )}
 
         <div className="p-6 lg:p-10 max-w-6xl">
           {/* Section Header */}
@@ -362,7 +378,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
 
             {/* Language Tabs - only for content sections */}
-            {["hero", "services", "work", "work-page", "testimonials"].includes(activeSection) && (
+            {["hero", "services", "work", "work-page", "testimonials", "products", "blog"].includes(activeSection) && (
               <div className="bg-[#F6F3F2] p-1.5 rounded-2xl flex items-center shadow-sm shrink-0">
                 {(["en", "ar", "tr"] as LangTab[]).map((lang) => (
                   <button
@@ -411,6 +427,8 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               {activeSection === "seo" && (
                 <SeoEditor content={content} setContent={setContent} />
               )}
+              {activeSection === "products" && <ProductsEditor lang={activeLang} />}
+              {activeSection === "blog" && <BlogEditor lang={activeLang} />}
             </motion.div>
           </AnimatePresence>
         </div>

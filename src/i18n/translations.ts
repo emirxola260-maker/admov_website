@@ -1,4 +1,5 @@
 import type { Language } from "./config";
+import { extra } from "./extra";
 
 export type { Language };
 
@@ -559,4 +560,16 @@ const tr: typeof en = {
   },
 };
 
-export const translations: Record<Language, typeof en> = { en, ar, tr };
+// Newer sections (products, blog, FAQ, ...) live in ./extra.ts; merge them in so
+// components keep a single `t` object. nav/footer are merged one level deep.
+function merge<B extends { nav: object; footer: object }, E extends { nav: object; footer: object }>(base: B, ext: E) {
+  return { ...base, ...ext, nav: { ...base.nav, ...ext.nav }, footer: { ...base.footer, ...ext.footer } };
+}
+
+const enAll = merge(en, extra.en);
+
+export const translations: Record<Language, typeof enAll> = {
+  en: enAll,
+  ar: merge(ar, extra.ar),
+  tr: merge(tr, extra.tr),
+};
