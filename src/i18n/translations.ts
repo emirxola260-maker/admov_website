@@ -105,6 +105,7 @@ const en = {
     heading: "Case studies of ",
     headingHighlight: "AI in action",
     viewAll: "View All Projects",
+    comingSoon: "Coming soon",
     projects: [
       {
         client: "MHD Invest",
@@ -147,6 +148,24 @@ const en = {
         category: "Full Store Management",
         description:
           "End-to-end Shopify management including product launch and ad campaigns.",
+      },
+      {
+        client: "Hicama",
+        category: "Website Development",
+        description:
+          "Arabic-first website for a cupping and alternative-medicine centre in Kuwait — services, packages, three branches and WhatsApp booking.",
+      },
+      {
+        client: "Sakhne",
+        category: "Website Development",
+        description:
+          "Trilingual launch site for a food-delivery app serving Türkiye and Syria — restaurants, couriers and customers, with live tracking and wallet payments.",
+      },
+      {
+        client: "Vivaldi Furnishing",
+        category: "Web App Development",
+        description:
+          "Arabic back-office for a furnishing company — fabric orders, appointments and staff accounts managed from one dashboard.",
       },
     ],
   },
@@ -292,6 +311,7 @@ const ar: typeof en = {
     heading: "دراسات حالة لـ",
     headingHighlight: "الذكاء الاصطناعي في العمل",
     viewAll: "عرض جميع المشاريع",
+    comingSoon: "قريباً",
     projects: [
       {
         client: "MHD Invest",
@@ -334,6 +354,24 @@ const ar: typeof en = {
         category: "إدارة متجر كاملة",
         description:
           "إدارة شوبيفاي شاملة تشمل إطلاق المنتجات والحملات الإعلانية.",
+      },
+      {
+        client: "مركز الحجامة",
+        category: "تطوير المواقع",
+        description:
+          "موقع عربي لمركز حجامة وطب بديل في الكويت — الخدمات والباقات وثلاثة فروع والحجز عبر واتساب.",
+      },
+      {
+        client: "سخنة",
+        category: "تطوير المواقع",
+        description:
+          "موقع إطلاق بثلاث لغات لتطبيق توصيل طعام يخدم تركيا وسوريا — المطاعم والمناديب والعملاء، مع تتبع مباشر ودفع عبر المحفظة.",
+      },
+      {
+        client: "فيفالدي للمفروشات",
+        category: "تطوير تطبيقات الويب",
+        description:
+          "نظام إدارة عربي لشركة مفروشات — طلبات الأقمشة والمواعيد وحسابات الموظفين من لوحة تحكم واحدة.",
       },
     ],
   },
@@ -479,6 +517,7 @@ const tr: typeof en = {
     heading: "Yapay zekanın ",
     headingHighlight: "iş başında olduğu vaka çalışmaları",
     viewAll: "Tüm Projeleri Gör",
+    comingSoon: "Yakında",
     projects: [
       {
         client: "MHD Invest",
@@ -521,6 +560,24 @@ const tr: typeof en = {
         category: "Tam Mağaza Yönetimi",
         description:
           "Ürün lansmanı ve reklam kampanyaları dahil uçtan uca Shopify yönetimi.",
+      },
+      {
+        client: "Hicama",
+        category: "Web Sitesi Geliştirme",
+        description:
+          "Kuveyt'te bir hacamat ve alternatif tıp merkezi için Arapça öncelikli web sitesi — hizmetler, paketler, üç şube ve WhatsApp ile randevu.",
+      },
+      {
+        client: "Sakhne",
+        category: "Web Sitesi Geliştirme",
+        description:
+          "Türkiye ve Suriye'ye hizmet veren bir yemek teslimat uygulaması için üç dilli lansman sitesi — restoranlar, kuryeler ve müşteriler, canlı takip ve cüzdan ödemeleri.",
+      },
+      {
+        client: "Vivaldi Furnishing",
+        category: "Web Uygulaması Geliştirme",
+        description:
+          "Bir mobilya döşeme firması için Arapça yönetim paneli — kumaş siparişleri, randevular ve personel hesapları tek bir panelden.",
       },
     ],
   },

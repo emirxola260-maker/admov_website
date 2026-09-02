@@ -10,6 +10,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import type { Product, ProductCategory } from "@/lib/products/types";
 import { pickLang } from "@/lib/blog/utils";
 import { sanitizeHttpUrl } from "@/lib/security";
+import { isComingSoonBadge } from "@/lib/products/badges";
 import { VioletButton } from "@/components/ui/VioletButton";
 import { GlassCard } from "@/components/ui/GlassCard";
 
@@ -86,9 +87,13 @@ export function ProductsPage({ products }: { products: Product[] }) {
                     <div className="p-8 md:p-12 flex flex-col justify-center gap-5">
                       <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wider font-bold">
                         <span className="px-3 py-1 rounded-full bg-violet/20 text-violet-light">{t.products.categories[product.category]}</span>
-                        {product.badges.map((b) => (
-                          <span key={b} className="px-3 py-1 rounded-full border border-white/10 text-zinc-400">{b}</span>
-                        ))}
+                        {product.badges.map((b) =>
+                          isComingSoonBadge(b) ? (
+                            <span key={b} className="px-3 py-1 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300">{t.products.comingSoon}</span>
+                          ) : (
+                            <span key={b} className="px-3 py-1 rounded-full border border-white/10 text-zinc-400">{b}</span>
+                          ),
+                        )}
                       </div>
                       <h2 className="text-3xl md:text-4xl">{product.name}</h2>
                       {pickLang(product.tagline, lang) && <p className="text-xl text-zinc-200 font-medium leading-snug">{pickLang(product.tagline, lang)}</p>}

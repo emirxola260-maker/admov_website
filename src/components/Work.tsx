@@ -20,6 +20,8 @@ export function Work() {
   // Get media URLs from admin content or fallback to content.json
   // Some projects are live sites visitors can open; "#" means there is no link.
   const getProjectUrl = (index: number) => sanitizeHttpUrl(content.work[index]?.projectUrl || "");
+  // Builds that are finished but not on their final domain yet.
+  const isComingSoon = (index: number) => !!(content.work[index] as { comingSoon?: boolean })?.comingSoon;
 
   const getMediaUrl = (index: number, field: "imageUrl" | "videoUrl") => {
     const adminProject = adminContent?.work?.projects?.[index];
@@ -136,7 +138,7 @@ export function Work() {
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent" />
 
                   {/* Category tag */}
-                  <div className="absolute top-5 left-5 rtl:left-auto rtl:right-5">
+                  <div className="absolute top-5 left-5 rtl:left-auto rtl:right-5 flex items-center gap-2">
                     <span className="bg-white/10 backdrop-blur-xl px-4 py-1.5 rounded-full text-[11px] font-syne font-bold text-white uppercase tracking-wider border border-white/10">
                       {hasVideo && (
                         <span className="inline-flex items-center gap-1.5">
@@ -145,6 +147,11 @@ export function Work() {
                       )}
                       {project.category}
                     </span>
+                    {isComingSoon(index) && (
+                      <span className="bg-amber-400/15 backdrop-blur-xl px-3 py-1.5 rounded-full text-[11px] font-syne font-bold text-amber-300 uppercase tracking-wider border border-amber-400/30">
+                        {t.work.comingSoon}
+                      </span>
+                    )}
                   </div>
 
                   {/* Bottom info */}
@@ -265,10 +272,15 @@ export function Work() {
                   )}
 
                   {/* Category pill */}
-                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3">
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 flex items-center gap-1.5">
                     <span className="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white/80 uppercase tracking-wider">
                       {project.category}
                     </span>
+                    {isComingSoon(index) && (
+                      <span className="bg-amber-400/15 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-amber-300 uppercase tracking-wider border border-amber-400/30">
+                        {t.work.comingSoon}
+                      </span>
+                    )}
                   </div>
 
                   {/* Bottom text */}

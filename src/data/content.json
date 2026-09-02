@@ -3,7 +3,7 @@
     "label": "AI Agency for Businesses",
     "headline1": "We make AI work",
     "headline2": "for your business.",
-    "subtext": "From AI-generated videos and photos to full automation systems \u2014 ADMOV builds intelligent solutions that save time and drive results.",
+    "subtext": "From AI-generated videos and photos to full automation systems — ADMOV builds intelligent solutions that save time and drive results.",
     "cta1": {
       "text": "Book a Free Call",
       "url": "#contact"
@@ -21,51 +21,51 @@
   "services": [
     {
       "id": "1",
-      "icon": "\ud83c\udfac",
+      "icon": "🎬",
       "title": "AI Generated Videos",
-      "desc": "Cinematic, scroll-stopping video content produced entirely with AI \u2014 for ads, social media, and brand storytelling."
+      "desc": "Cinematic, scroll-stopping video content produced entirely with AI — for ads, social media, and brand storytelling."
     },
     {
       "id": "2",
-      "icon": "\ud83d\uddbc\ufe0f",
+      "icon": "🖼️",
       "title": "AI Generated Photos",
-      "desc": "Product photography, lifestyle images, and ad creatives \u2014 generated at scale without a photoshoot."
+      "desc": "Product photography, lifestyle images, and ad creatives — generated at scale without a photoshoot."
     },
     {
       "id": "3",
-      "icon": "\u26a1",
+      "icon": "⚡",
       "title": "AI Automation Systems",
       "desc": "Custom AI agents and automated workflows that eliminate repetitive tasks and scale your operations."
     },
     {
       "id": "4",
-      "icon": "\ud83e\udde0",
+      "icon": "🧠",
       "title": "LLM Setup & Integration",
       "desc": "Deploy and configure large language models (GPT-4, Claude, Gemini) tailored to your business needs."
     },
     {
       "id": "5",
-      "icon": "\ud83c\udf10",
+      "icon": "🌐",
       "title": "Website Development",
-      "desc": "Fast, beautiful, conversion-optimized websites \u2014 from landing pages to full platforms."
+      "desc": "Fast, beautiful, conversion-optimized websites — from landing pages to full platforms."
     },
     {
       "id": "6",
-      "icon": "\ud83d\udcf1",
+      "icon": "📱",
       "title": "App Development",
       "desc": "Cross-platform mobile apps (Flutter) that turn your product idea into a polished, deployable application."
     },
     {
       "id": "7",
-      "icon": "\ud83d\udce3",
+      "icon": "📣",
       "title": "Meta, Google & TikTok Ads",
       "desc": "Data-driven paid advertising campaigns managed end-to-end across all major platforms."
     },
     {
       "id": "8",
-      "icon": "\ud83d\udecd\ufe0f",
+      "icon": "🛍️",
       "title": "Shopify & E-Commerce",
-      "desc": "Full Shopify store setup, product management, and dropshipping operations \u2014 from launch to scale."
+      "desc": "Full Shopify store setup, product management, and dropshipping operations — from launch to scale."
     }
   ],
   "work": [
@@ -124,12 +124,39 @@
       "description": "End-to-end Shopify management including product launch and ad campaigns.",
       "imageUrl": "/work-shopify.png",
       "projectUrl": "#"
+    },
+    {
+      "id": "hicama",
+      "client": "Hicama",
+      "category": "Website Development",
+      "description": "Arabic-first website for a cupping and alternative-medicine centre in Kuwait — services, packages, three branches and WhatsApp booking.",
+      "imageUrl": "https://cdn.admov.io/admin-uploads/work/hicama-1788391424.jpg",
+      "projectUrl": "https://hicama-website.vercel.app",
+      "comingSoon": true
+    },
+    {
+      "id": "sakhne",
+      "client": "Sakhne",
+      "category": "Website Development",
+      "description": "Trilingual launch site for a food-delivery app serving Türkiye and Syria — restaurants, couriers and customers, with live tracking and wallet payments.",
+      "imageUrl": "https://cdn.admov.io/admin-uploads/work/sakhne-1788391424.jpg",
+      "projectUrl": "https://sakhne-website.vercel.app",
+      "comingSoon": true
+    },
+    {
+      "id": "vivaldi-orders",
+      "client": "Vivaldi Furnishing",
+      "category": "Web App Development",
+      "description": "Arabic back-office for a furnishing company — fabric orders, appointments and staff accounts managed from one dashboard.",
+      "imageUrl": "https://cdn.admov.io/admin-uploads/work/vivaldi-orders-1788391424.jpg",
+      "projectUrl": "https://vivaldi-orders.vercel.app/login",
+      "comingSoon": true
     }
   ],
   "testimonials": [
     {
       "id": "1",
-      "quote": "ADMOV transformed our product visuals \u2014 we cut photography costs by 80% with AI-generated images.",
+      "quote": "ADMOV transformed our product visuals — we cut photography costs by 80% with AI-generated images.",
       "author": "Sarah M.",
       "title": "E-commerce Brand Owner",
       "stars": 5
@@ -164,7 +191,7 @@
     "bookingUrl": ""
   },
   "seo": {
-    "title": "ADMOV \u2014 Let Ai do the Work",
+    "title": "ADMOV — Let Ai do the Work",
     "description": "B2B AI agency specializing in AI-generated videos, photos, and automation systems.",
     "ogImage": ""
   }

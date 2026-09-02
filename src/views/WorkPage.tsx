@@ -9,6 +9,8 @@ import { useAdminContent } from "@/admin/useAdminContent";
 import content from "@/data/content.json";
 import ShinyText from "@/components/ShinyText";
 import { sanitizeHttpUrl } from "@/lib/security";
+import { translations } from "@/i18n/translations";
+import type { Language } from "@/i18n/config";
 
 interface WorkProject {
   client: string;
@@ -17,6 +19,7 @@ interface WorkProject {
   imageUrl: string;
   videoUrl?: string;
   projectUrl?: string;
+  comingSoon?: boolean;
 }
 
 interface WorkSection {
@@ -58,6 +61,12 @@ const defaultSections: WorkSection[] = [
     projects: [],
   },
   {
+    id: "web",
+    title: { en: "Websites & Apps", ar: "مواقع وتطبيقات", tr: "Web Siteleri & Uygulamalar" },
+    subtitle: { en: "Client sites, web apps and back-office systems", ar: "مواقع العملاء وتطبيقات الويب وأنظمة الإدارة", tr: "Müşteri siteleri, web uygulamaları ve yönetim sistemleri" },
+    projects: [],
+  },
+  {
     id: "ecommerce",
     title: { en: "E-Commerce & Shopify", ar: "التجارة الإلكترونية وشوبيفاي", tr: "E-Ticaret & Shopify" },
     subtitle: { en: "Full store builds and management", ar: "بناء وإدارة المتاجر الكاملة", tr: "Tam mağaza kurulumu ve yönetimi" },
@@ -85,21 +94,25 @@ export function WorkPage() {
     const contentProjects = content.work;
     contentProjects.forEach((p, i) => {
       const adminP = mainProjects[i];
+      const localised = (l: Language) => translations[l].work.projects[i];
       const project = {
         client: adminP?.client || p.client,
-        category: adminP?.category || { en: p.category, ar: p.category, tr: p.category },
-        description: adminP?.description || { en: p.description, ar: p.description, tr: p.description },
+        category: adminP?.category || { en: p.category, ar: localised("ar")?.category || p.category, tr: localised("tr")?.category || p.category },
+        description: adminP?.description || { en: p.description, ar: localised("ar")?.description || p.description, tr: localised("tr")?.description || p.description },
         imageUrl: adminP?.imageUrl || p.imageUrl || "",
         videoUrl: adminP?.videoUrl || "",
         projectUrl: p.projectUrl || "",
+        comingSoon: !!(p as { comingSoon?: boolean }).comingSoon,
       };
 
-      // Put first 2 in featured, rest distributed
-      if (i < 2) built[0].projects.push(project);
-      else if (p.category.includes("Video")) built[1].projects.push(project);
-      else if (p.category.includes("Photo") || p.category.includes("Content")) built[2].projects.push(project);
-      else if (p.category.includes("Automation")) built[3].projects.push(project);
-      else built[4].projects.push(project);
+      // Put first 2 in featured, rest distributed by category
+      const into = (id: string) => built.find((s) => s.id === id)!.projects.push(project);
+      if (i < 2) into("featured");
+      else if (p.category.includes("Video")) into("ai-videos");
+      else if (p.category.includes("Photo") || p.category.includes("Content")) into("ai-photos");
+      else if (p.category.includes("Automation")) into("automation");
+      else if (p.category.includes("Website") || p.category.includes("Web App")) into("web");
+      else into("ecommerce");
     });
 
     return built.filter((s) => s.projects.length > 0);
@@ -437,6 +450,8 @@ function ProjectCard({
   const hasVideo = !!project.videoUrl;
   // Live client sites are clickable; "#" projects stay inert.
   const projectUrl = sanitizeHttpUrl((project as { projectUrl?: string }).projectUrl || "");
+  const comingSoon = !!(project as { comingSoon?: boolean }).comingSoon;
+  const comingSoonLabel = translations[lang as Language]?.work.comingSoon ?? translations.en.work.comingSoon;
   const isHovered = hoveredCard === cardKey;
   const category = typeof project.category === "object" ? (project.category as any)[lang] || project.category.en : project.category;
   const description = typeof project.description === "object" ? (project.description as any)[lang] || project.description.en : project.description;
@@ -484,10 +499,17 @@ function ProjectCard({
 
       {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 p-4 md:p-5 flex items-start justify-between">
-        <span className="bg-white/10 backdrop-blur-xl px-3 py-1.5 rounded-full text-[10px] font-bold text-white/90 uppercase tracking-wider border border-white/10">
-          {hasVideo && <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse mr-1.5 align-middle" />}
-          {category}
-        </span>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="bg-white/10 backdrop-blur-xl px-3 py-1.5 rounded-full text-[10px] font-bold text-white/90 uppercase tracking-wider border border-white/10">
+            {hasVideo && <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse mr-1.5 align-middle" />}
+            {category}
+          </span>
+          {comingSoon && (
+            <span className="bg-amber-400/15 backdrop-blur-xl px-2.5 py-1.5 rounded-full text-[10px] font-bold text-amber-300 uppercase tracking-wider border border-amber-400/30">
+              {comingSoonLabel}
+            </span>
+          )}
+        </div>
         <div className={`transition-all duration-300 ${projectUrl ? "opacity-100" : "opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0"}`}>
           <div className={`w-9 h-9 rounded-full backdrop-blur-xl border flex items-center justify-center ${projectUrl ? "bg-violet/30 border-violet/60" : "bg-white/10 border-white/20"}`}>
             <ExternalLink size={14} className="text-white" />

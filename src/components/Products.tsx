@@ -8,6 +8,7 @@ import type { Language } from "@/i18n/config";
 import type { Product } from "@/lib/products/types";
 import { pickLang } from "@/lib/blog/utils";
 import { sanitizeHttpUrl } from "@/lib/security";
+import { isComingSoonBadge } from "@/lib/products/badges";
 import { translations } from "@/i18n/translations";
 import ShinyText from "./ShinyText";
 import { GlassCard } from "./ui/GlassCard";
@@ -65,9 +66,13 @@ export function ProductCard({ product, lang, index = 0 }: { product: Product; la
               <h3 className="font-syne font-extrabold text-xl text-zinc-50 truncate">{product.name}</h3>
               <div className="flex flex-wrap gap-x-2 mt-0.5 text-[10px] uppercase tracking-wider font-bold">
                 <span className="text-violet">{t.categories[product.category]}</span>
-                {product.badges.map((b) => (
-                  <span key={b} className="text-zinc-500">{b}</span>
-                ))}
+                {product.badges.map((b) =>
+                  isComingSoonBadge(b) ? (
+                    <span key={b} className="text-amber-400">{t.comingSoon}</span>
+                  ) : (
+                    <span key={b} className="text-zinc-500">{b}</span>
+                  ),
+                )}
               </div>
             </div>
           </div>
