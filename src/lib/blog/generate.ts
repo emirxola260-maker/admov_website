@@ -21,8 +21,10 @@ export { BlogGenerationError, readParsed, type GenerationErrorKind } from "./par
  * OpenAI model for the blog writer. Override with OPENAI_MODEL in Vercel.
  * Use a gpt-5.x reasoning model — the "-chat" variants and gpt-4.x reject the
  * `reasoning` parameter, which is why it is only sent when the id supports it.
+ * gpt-5.6-luna is the cost-optimised tier of the 5.6 family (sol > terra > luna);
+ * move up a tier here if article quality matters more than cost.
  */
-export const BLOG_MODEL = process.env.OPENAI_MODEL || "gpt-5.6";
+export const BLOG_MODEL = process.env.OPENAI_MODEL || "gpt-5.6-luna";
 
 const SUPPORTS_REASONING = /^(gpt-5(?!.*chat)|o[1-9])/.test(BLOG_MODEL);
 
