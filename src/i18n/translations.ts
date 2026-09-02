@@ -107,6 +107,12 @@ const en = {
     viewAll: "View All Projects",
     projects: [
       {
+        client: "MHD Invest",
+        category: "Website Development",
+        description:
+          "Bilingual marketing site for a luxury Istanbul real-estate and Turkish-citizenship advisory, with an investment advisor tool and project showcase.",
+      },
+      {
         client: "Kyom",
         category: "AI Videos",
         description:
@@ -288,6 +294,12 @@ const ar: typeof en = {
     viewAll: "عرض جميع المشاريع",
     projects: [
       {
+        client: "MHD Invest",
+        category: "تطوير المواقع",
+        description:
+          "موقع تسويقي ثنائي اللغة لشركة استشارات عقارية فاخرة في إسطنبول والجنسية التركية، مع أداة إرشاد استثماري وعرض للمشاريع.",
+      },
+      {
         client: "Kyom",
         category: "فيديوهات AI",
         description:
@@ -468,6 +480,12 @@ const tr: typeof en = {
     headingHighlight: "iş başında olduğu vaka çalışmaları",
     viewAll: "Tüm Projeleri Gör",
     projects: [
+      {
+        client: "MHD Invest",
+        category: "Web Sitesi Geliştirme",
+        description:
+          "İstanbul'da lüks gayrimenkul ve Türk vatandaşlığı danışmanlığı için iki dilli tanıtım sitesi; yatırım danışmanı aracı ve proje vitrini ile.",
+      },
       {
         client: "Kyom",
         category: "AI Videoları",

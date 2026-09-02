@@ -3,34 +3,158 @@
     "label": "AI Agency for Businesses",
     "headline1": "We make AI work",
     "headline2": "for your business.",
-    "subtext": "From AI-generated videos and photos to full automation systems — ADMOV builds intelligent solutions that save time and drive results.",
-    "cta1": { "text": "Book a Free Call", "url": "#contact" },
-    "cta2": { "text": "See Our Work", "url": "/work" },
-    "stats": ["8+ Years Experience", "20+ Clients Served", "Let Ai do the Work"]
+    "subtext": "From AI-generated videos and photos to full automation systems \u2014 ADMOV builds intelligent solutions that save time and drive results.",
+    "cta1": {
+      "text": "Book a Free Call",
+      "url": "#contact"
+    },
+    "cta2": {
+      "text": "See Our Work",
+      "url": "/work"
+    },
+    "stats": [
+      "8+ Years Experience",
+      "20+ Clients Served",
+      "Let Ai do the Work"
+    ]
   },
   "services": [
-    { "id": "1", "icon": "🎬", "title": "AI Generated Videos", "desc": "Cinematic, scroll-stopping video content produced entirely with AI — for ads, social media, and brand storytelling." },
-    { "id": "2", "icon": "🖼️", "title": "AI Generated Photos", "desc": "Product photography, lifestyle images, and ad creatives — generated at scale without a photoshoot." },
-    { "id": "3", "icon": "⚡", "title": "AI Automation Systems", "desc": "Custom AI agents and automated workflows that eliminate repetitive tasks and scale your operations." },
-    { "id": "4", "icon": "🧠", "title": "LLM Setup & Integration", "desc": "Deploy and configure large language models (GPT-4, Claude, Gemini) tailored to your business needs." },
-    { "id": "5", "icon": "🌐", "title": "Website Development", "desc": "Fast, beautiful, conversion-optimized websites — from landing pages to full platforms." },
-    { "id": "6", "icon": "📱", "title": "App Development", "desc": "Cross-platform mobile apps (Flutter) that turn your product idea into a polished, deployable application." },
-    { "id": "7", "icon": "📣", "title": "Meta, Google & TikTok Ads", "desc": "Data-driven paid advertising campaigns managed end-to-end across all major platforms." },
-    { "id": "8", "icon": "🛍️", "title": "Shopify & E-Commerce", "desc": "Full Shopify store setup, product management, and dropshipping operations — from launch to scale." }
+    {
+      "id": "1",
+      "icon": "\ud83c\udfac",
+      "title": "AI Generated Videos",
+      "desc": "Cinematic, scroll-stopping video content produced entirely with AI \u2014 for ads, social media, and brand storytelling."
+    },
+    {
+      "id": "2",
+      "icon": "\ud83d\uddbc\ufe0f",
+      "title": "AI Generated Photos",
+      "desc": "Product photography, lifestyle images, and ad creatives \u2014 generated at scale without a photoshoot."
+    },
+    {
+      "id": "3",
+      "icon": "\u26a1",
+      "title": "AI Automation Systems",
+      "desc": "Custom AI agents and automated workflows that eliminate repetitive tasks and scale your operations."
+    },
+    {
+      "id": "4",
+      "icon": "\ud83e\udde0",
+      "title": "LLM Setup & Integration",
+      "desc": "Deploy and configure large language models (GPT-4, Claude, Gemini) tailored to your business needs."
+    },
+    {
+      "id": "5",
+      "icon": "\ud83c\udf10",
+      "title": "Website Development",
+      "desc": "Fast, beautiful, conversion-optimized websites \u2014 from landing pages to full platforms."
+    },
+    {
+      "id": "6",
+      "icon": "\ud83d\udcf1",
+      "title": "App Development",
+      "desc": "Cross-platform mobile apps (Flutter) that turn your product idea into a polished, deployable application."
+    },
+    {
+      "id": "7",
+      "icon": "\ud83d\udce3",
+      "title": "Meta, Google & TikTok Ads",
+      "desc": "Data-driven paid advertising campaigns managed end-to-end across all major platforms."
+    },
+    {
+      "id": "8",
+      "icon": "\ud83d\udecd\ufe0f",
+      "title": "Shopify & E-Commerce",
+      "desc": "Full Shopify store setup, product management, and dropshipping operations \u2014 from launch to scale."
+    }
   ],
   "work": [
-    { "id": "1", "client": "Kyom", "category": "AI Videos", "description": "AI-generated video ad campaign that increased social engagement significantly.", "imageUrl": "/work-kyom.png", "projectUrl": "#" },
-    { "id": "2", "client": "Belind Perfumes", "category": "AI Photos & Branding", "description": "Complete brand visual identity with AI-generated lifestyle photography.", "imageUrl": "/work-belind.jpg", "projectUrl": "#" },
-    { "id": "3", "client": "Jaeje Factory", "category": "AI Content", "description": "AI-powered content pipeline producing unique assets weekly for social media.", "imageUrl": "/work-jaeje.png", "projectUrl": "#" },
-    { "id": "4", "client": "n8n", "category": "AI Automation", "description": "Custom AI automation workflows eliminating repetitive tasks at scale.", "imageUrl": "/work-automation.png", "projectUrl": "#" },
-    { "id": "5", "client": "Hareem al-sultan", "category": "E-Commerce", "description": "Full Shopify store build with automated inventory management.", "imageUrl": "/work-hareem.png", "projectUrl": "#" },
-    { "id": "6", "client": "Shopify Clients", "category": "Full Store Management", "description": "End-to-end Shopify management including product launch and ad campaigns.", "imageUrl": "/work-shopify.png", "projectUrl": "#" }
+    {
+      "id": "mhd-invest",
+      "client": "MHD Invest",
+      "category": "Website Development",
+      "description": "Bilingual marketing site for a luxury Istanbul real-estate and Turkish-citizenship advisory, with an investment advisor tool and project showcase.",
+      "imageUrl": "https://cdn.admov.io/admin-uploads/work/mhdinvest.jpg",
+      "projectUrl": "https://mhdinvest.com"
+    },
+    {
+      "id": "1",
+      "client": "Kyom",
+      "category": "AI Videos",
+      "description": "AI-generated video ad campaign that increased social engagement significantly.",
+      "imageUrl": "/work-kyom.png",
+      "projectUrl": "#"
+    },
+    {
+      "id": "2",
+      "client": "Belind Perfumes",
+      "category": "AI Photos & Branding",
+      "description": "Complete brand visual identity with AI-generated lifestyle photography.",
+      "imageUrl": "/work-belind.jpg",
+      "projectUrl": "#"
+    },
+    {
+      "id": "3",
+      "client": "Jaeje Factory",
+      "category": "AI Content",
+      "description": "AI-powered content pipeline producing unique assets weekly for social media.",
+      "imageUrl": "/work-jaeje.png",
+      "projectUrl": "#"
+    },
+    {
+      "id": "4",
+      "client": "n8n",
+      "category": "AI Automation",
+      "description": "Custom AI automation workflows eliminating repetitive tasks at scale.",
+      "imageUrl": "/work-automation.png",
+      "projectUrl": "#"
+    },
+    {
+      "id": "5",
+      "client": "Hareem al-sultan",
+      "category": "E-Commerce",
+      "description": "Full Shopify store build with automated inventory management.",
+      "imageUrl": "/work-hareem.png",
+      "projectUrl": "#"
+    },
+    {
+      "id": "6",
+      "client": "Shopify Clients",
+      "category": "Full Store Management",
+      "description": "End-to-end Shopify management including product launch and ad campaigns.",
+      "imageUrl": "/work-shopify.png",
+      "projectUrl": "#"
+    }
   ],
   "testimonials": [
-    { "id": "1", "quote": "ADMOV transformed our product visuals — we cut photography costs by 80% with AI-generated images.", "author": "Sarah M.", "title": "E-commerce Brand Owner", "stars": 5 },
-    { "id": "2", "quote": "The automation system they built saves us 20+ hours per week. Incredible ROI.", "author": "James K.", "title": "SaaS Startup Founder", "stars": 5 },
-    { "id": "3", "quote": "Best AI video content we've ever had. Clients can't tell it's AI-generated.", "author": "Nadia R.", "title": "Marketing Agency Director", "stars": 5 },
-    { "id": "4", "quote": "Professional, fast, and results-driven. ADMOV delivered beyond expectations.", "author": "Ahmed B.", "title": "Retail Business Owner", "stars": 5 }
+    {
+      "id": "1",
+      "quote": "ADMOV transformed our product visuals \u2014 we cut photography costs by 80% with AI-generated images.",
+      "author": "Sarah M.",
+      "title": "E-commerce Brand Owner",
+      "stars": 5
+    },
+    {
+      "id": "2",
+      "quote": "The automation system they built saves us 20+ hours per week. Incredible ROI.",
+      "author": "James K.",
+      "title": "SaaS Startup Founder",
+      "stars": 5
+    },
+    {
+      "id": "3",
+      "quote": "Best AI video content we've ever had. Clients can't tell it's AI-generated.",
+      "author": "Nadia R.",
+      "title": "Marketing Agency Director",
+      "stars": 5
+    },
+    {
+      "id": "4",
+      "quote": "Professional, fast, and results-driven. ADMOV delivered beyond expectations.",
+      "author": "Ahmed B.",
+      "title": "Retail Business Owner",
+      "stars": 5
+    }
   ],
   "contact": {
     "email": "info@admov.io",
@@ -40,7 +164,7 @@
     "bookingUrl": ""
   },
   "seo": {
-    "title": "ADMOV — Let Ai do the Work",
+    "title": "ADMOV \u2014 Let Ai do the Work",
     "description": "B2B AI agency specializing in AI-generated videos, photos, and automation systems.",
     "ogImage": ""
   }

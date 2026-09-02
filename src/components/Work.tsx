@@ -18,6 +18,9 @@ export function Work() {
   const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
 
   // Get media URLs from admin content or fallback to content.json
+  // Some projects are live sites visitors can open; "#" means there is no link.
+  const getProjectUrl = (index: number) => sanitizeHttpUrl(content.work[index]?.projectUrl || "");
+
   const getMediaUrl = (index: number, field: "imageUrl" | "videoUrl") => {
     const adminProject = adminContent?.work?.projects?.[index];
     if (field === "videoUrl") {
@@ -86,6 +89,7 @@ export function Work() {
             const videoUrl = getMediaUrl(index, "videoUrl");
             const imageUrl = getMediaUrl(index, "imageUrl");
             const hasVideo = !!videoUrl;
+            const projectUrl = getProjectUrl(index);
             const isPlaying = activeVideo === index;
 
             return (
@@ -153,12 +157,27 @@ export function Work() {
                     </p>
                   </div>
 
-                  {/* Hover arrow */}
-                  <div className="absolute top-5 right-5 rtl:right-auto rtl:left-5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                    <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
-                      <ExternalLink size={16} className="text-white" />
+                  {/* Hover arrow — a real link when the project is live */}
+                  {projectUrl ? (
+                    <a
+                      href={projectUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`Visit ${project.client}`}
+                      className="absolute top-5 right-5 rtl:right-auto rtl:left-5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-violet/40 hover:border-violet/60 transition-colors">
+                        <ExternalLink size={16} className="text-white" />
+                      </div>
+                    </a>
+                  ) : (
+                    <div className="absolute top-5 right-5 rtl:right-auto rtl:left-5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
+                        <ExternalLink size={16} className="text-white" />
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </motion.div>
             );
@@ -172,6 +191,7 @@ export function Work() {
             const videoUrl = getMediaUrl(index, "videoUrl");
             const imageUrl = getMediaUrl(index, "imageUrl");
             const hasVideo = !!videoUrl;
+            const projectUrl = getProjectUrl(index);
             const isPlaying = activeVideo === index;
 
             return (
@@ -229,6 +249,22 @@ export function Work() {
                         <Play size={12} fill="white" className="text-white ml-0.5" />
                       </div>
                     </div>
+                  )}
+
+                  {/* Live-site link (the video indicator owns this corner when there is one) */}
+                  {projectUrl && !hasVideo && (
+                    <a
+                      href={projectUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`Visit ${project.client}`}
+                      className="absolute top-3 right-3 rtl:right-auto rtl:left-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-violet/40 hover:border-violet/60 transition-colors">
+                        <ExternalLink size={12} className="text-white" />
+                      </div>
+                    </a>
                   )}
 
                   {/* Category pill */}
