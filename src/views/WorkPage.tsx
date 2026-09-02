@@ -16,6 +16,7 @@ interface WorkProject {
   description: string;
   imageUrl: string;
   videoUrl?: string;
+  projectUrl?: string;
 }
 
 interface WorkSection {
@@ -90,6 +91,7 @@ export function WorkPage() {
         description: adminP?.description || { en: p.description, ar: p.description, tr: p.description },
         imageUrl: adminP?.imageUrl || p.imageUrl || "",
         videoUrl: adminP?.videoUrl || "",
+        projectUrl: p.projectUrl || "",
       };
 
       // Put first 2 in featured, rest distributed
@@ -433,13 +435,21 @@ function ProjectCard({
   size: "large" | "medium" | "standard";
 }) {
   const hasVideo = !!project.videoUrl;
+  // Live client sites are clickable; "#" projects stay inert.
+  const projectUrl = sanitizeHttpUrl((project as { projectUrl?: string }).projectUrl || "");
   const isHovered = hoveredCard === cardKey;
   const category = typeof project.category === "object" ? (project.category as any)[lang] || project.category.en : project.category;
   const description = typeof project.description === "object" ? (project.description as any)[lang] || project.description.en : project.description;
 
+  const Card = projectUrl ? motion.a : motion.div;
+  const linkProps = projectUrl
+    ? { href: projectUrl, target: "_blank", rel: "noopener noreferrer", "aria-label": `Visit ${project.client}` }
+    : {};
+
   return (
-    <motion.div
-      className={`${aspect} rounded-2xl overflow-hidden bg-zinc-900 relative group cursor-pointer`}
+    <Card
+      {...linkProps}
+      className={`${aspect} block rounded-2xl overflow-hidden bg-zinc-900 relative group cursor-pointer`}
       onMouseEnter={() => onHover(cardKey, true)}
       onMouseLeave={() => onHover(cardKey, false)}
       whileHover={{ scale: 1.01 }}
@@ -478,8 +488,8 @@ function ProjectCard({
           {hasVideo && <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse mr-1.5 align-middle" />}
           {category}
         </span>
-        <div className="opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300">
-          <div className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
+        <div className={`transition-all duration-300 ${projectUrl ? "opacity-100" : "opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0"}`}>
+          <div className={`w-9 h-9 rounded-full backdrop-blur-xl border flex items-center justify-center ${projectUrl ? "bg-violet/30 border-violet/60" : "bg-white/10 border-white/20"}`}>
             <ExternalLink size={14} className="text-white" />
           </div>
         </div>
@@ -507,6 +517,6 @@ function ProjectCard({
           {description}
         </p>
       </div>
-    </motion.div>
+    </Card>
   );
 }

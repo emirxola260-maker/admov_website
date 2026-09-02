@@ -157,27 +157,22 @@ export function Work() {
                     </p>
                   </div>
 
-                  {/* Hover arrow — a real link when the project is live */}
-                  {projectUrl ? (
+                  {/* Live projects: the whole card is the link, so it works on
+                      touch where there is no hover to reveal an icon. */}
+                  {projectUrl && !hasVideo && (
                     <a
                       href={projectUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
                       aria-label={`Visit ${project.client}`}
-                      className="absolute top-5 right-5 rtl:right-auto rtl:left-5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center hover:bg-violet/40 hover:border-violet/60 transition-colors">
-                        <ExternalLink size={16} className="text-white" />
-                      </div>
-                    </a>
-                  ) : (
-                    <div className="absolute top-5 right-5 rtl:right-auto rtl:left-5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
-                        <ExternalLink size={16} className="text-white" />
-                      </div>
-                    </div>
+                      className="absolute inset-0 z-10"
+                    />
                   )}
+                  <div className={`absolute top-5 right-5 rtl:right-auto rtl:left-5 transition-all duration-300 ${projectUrl ? "opacity-100" : "opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"}`}>
+                    <div className={`w-10 h-10 rounded-full backdrop-blur-xl border flex items-center justify-center ${projectUrl ? "bg-violet/30 border-violet/60" : "bg-white/10 border-white/20"}`}>
+                      <ExternalLink size={16} className="text-white" />
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             );
@@ -251,20 +246,22 @@ export function Work() {
                     </div>
                   )}
 
-                  {/* Live-site link (the video indicator owns this corner when there is one) */}
+                  {/* Live projects: whole card is the link (works on touch) */}
                   {projectUrl && !hasVideo && (
-                    <a
-                      href={projectUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      aria-label={`Visit ${project.client}`}
-                      className="absolute top-3 right-3 rtl:right-auto rtl:left-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-violet/40 hover:border-violet/60 transition-colors">
-                        <ExternalLink size={12} className="text-white" />
+                    <>
+                      <a
+                        href={projectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Visit ${project.client}`}
+                        className="absolute inset-0 z-10"
+                      />
+                      <div className="absolute top-3 right-3 rtl:right-auto rtl:left-3">
+                        <div className="w-8 h-8 rounded-full bg-violet/30 backdrop-blur-md border border-violet/60 flex items-center justify-center">
+                          <ExternalLink size={12} className="text-white" />
+                        </div>
                       </div>
-                    </a>
+                    </>
                   )}
 
                   {/* Category pill */}

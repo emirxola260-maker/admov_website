@@ -4,7 +4,10 @@ import { getAllPublishedSlugs } from "@/lib/data/posts";
 import { blogHref } from "@/lib/blog/utils";
 import { SITE_URL } from "@/lib/blog/metadata";
 
-export const revalidate = 3600;
+// Rendered per request: the post list is cached in the data layer under the
+// "posts" tag, which is purged the moment a post is published. A route-level
+// cache here would outlive that purge and hide new posts from crawlers.
+export const dynamic = "force-dynamic";
 
 function languagesFor(slug?: string) {
   return Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE_URL}${blogHref(l, slug)}`]));
