@@ -4,7 +4,7 @@ import { regeneratePost, runDailyGeneration } from "@/lib/blog/pipeline";
 export const maxDuration = 300;
 export const dynamic = "force-dynamic";
 
-/** Admin-only actions that need the Anthropic key (everything else is written directly via RLS). */
+/** Admin-only actions that need the OpenAI key (everything else is written directly via RLS). */
 export async function POST(request: Request) {
   const admin = await requireAdmin(request);
   if (!admin.ok) return admin.response;

@@ -1,16 +1,21 @@
 import "server-only";
-import { revalidateTag } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/admin";
+import { purgeTags } from "@/lib/cache";
 import { generateApprovalToken, hashToken, verifyToken } from "./approval";
+import { Deadline, GENERATION_BUDGET_MS } from "./deadline";
 import { BlogGenerationError, generateDailyPost, regenerateLocalization, toPostColumns } from "./generate";
 import { notifyDraft, notifyFailure, notifyPublished, notifyRejected } from "./notify";
-import { PILLARS, findPillar, type ProductBrief } from "./prompts";
+import { PILLARS, dayOfYear, findPillar, pickPillar, type ProductBrief } from "./prompts";
 import { slugify, uniqueSlug } from "./slug";
 import type { EnPost } from "./schema";
 import type { Post } from "./types";
 import { blogHref } from "./utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://admov.io";
+/** A run that has been "generating" longer than this was killed mid-flight. */
+const STALE_GENERATING_MS = 10 * 60 * 1000;
+
+type ServiceClient = ReturnType<typeof createServiceClient>;
 
 export interface RunOptions {
   /** Skip the once-per-day guard (admin "Generate now"). */
@@ -21,10 +26,10 @@ export interface RunOptions {
 
 export type RunResult =
   | { ok: true; skipped: true; postId: string; slug: string }
-  | { ok: true; skipped?: false; postId: string; slug: string }
+  | { ok: true; skipped?: false; postId: string; slug: string; notified: boolean }
   | { ok: false; error: string; postId?: string };
 
-async function loadContext(sb: ReturnType<typeof createServiceClient>) {
+async function loadContext(sb: ServiceClient) {
   const [{ data: recent }, { data: products }] = await Promise.all([
     sb.from("posts").select("title,pillar").in("status", ["draft", "published"]).order("generated_at", { ascending: false }).limit(30),
     sb.from("products").select("name,url,tagline").eq("status", "published").order("sort_order"),
@@ -41,9 +46,90 @@ async function loadContext(sb: ReturnType<typeof createServiceClient>) {
   };
 }
 
-/** Generate today's draft: topic queue → Claude (EN, then AR+TR) → posts row → Telegram. */
+/**
+ * Fail rows abandoned by a killed invocation. Without this a timed-out run
+ * leaves `status = 'generating'` forever, which the once-per-day guard would
+ * read as "today is done" and silently skip every later cron.
+ */
+async function expireStuckRuns(sb: ServiceClient): Promise<void> {
+  const cutoff = new Date(Date.now() - STALE_GENERATING_MS).toISOString();
+  const { error } = await sb
+    .from("posts")
+    .update({ status: "failed", usage: { error: "Generation timed out or the function was stopped" } } as never)
+    .eq("status", "generating")
+    .lt("generated_at", cutoff);
+  if (error) console.error("Could not expire stuck generations:", error.message);
+}
+
+/** Take the oldest queued topic, claiming it atomically so two runs cannot share it. */
+async function claimTopic(sb: ServiceClient): Promise<{ id: string; topic: string } | null> {
+  const { data: queued } = await sb
+    .from("post_topics")
+    .select("id,topic,notes")
+    .eq("status", "queued")
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (!queued) return null;
+
+  const row = queued as { id: string; topic: string; notes: string | null };
+  const { data: claimed, error } = await sb
+    .from("post_topics")
+    .update({ status: "used", used_at: new Date().toISOString() } as never)
+    .eq("id", row.id)
+    .eq("status", "queued")
+    .select("id")
+    .maybeSingle();
+  if (error) {
+    console.error("Could not claim topic:", error.message);
+    return null;
+  }
+  if (!claimed) return null; // another run took it first
+  return { id: row.id, topic: row.notes ? `${row.topic} — ${row.notes}` : row.topic };
+}
+
+async function releaseTopic(sb: ServiceClient, id: string | null): Promise<void> {
+  if (!id) return;
+  const { error } = await sb.from("post_topics").update({ status: "queued", used_at: null } as never).eq("id", id);
+  if (error) console.error("Could not release topic back to the queue:", error.message);
+}
+
+/** Write the finished post, retrying on a slug collision with a concurrent run. */
+async function writeGeneratedPost(
+  sb: ServiceClient,
+  postId: string,
+  generated: Awaited<ReturnType<typeof generateDailyPost>>,
+  tokenHash: string,
+): Promise<string> {
+  const base = slugify(generated.en.title);
+  const { data: taken } = await sb.from("posts").select("slug").like("slug", `${base}%`);
+  const used = new Set(((taken ?? []) as { slug: string }[]).map((t) => t.slug));
+
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const slug = uniqueSlug(base, used);
+    const { error } = await sb
+      .from("posts")
+      .update({
+        ...toPostColumns(generated, slug),
+        status: "draft",
+        approval_token_hash: tokenHash,
+        generated_at: new Date().toISOString(),
+      } as never)
+      .eq("id", postId);
+    if (!error) return slug;
+    // 23505 = unique_violation: another run claimed this slug between the read and the write.
+    if (error.code !== "23505") throw new Error(error.message);
+    used.add(slug);
+  }
+  throw new Error("Could not find a free slug for this post");
+}
+
+/** Generate today's draft: topic queue → GPT (EN, then AR+TR) → posts row → Telegram. */
 export async function runDailyGeneration(opts: RunOptions = {}): Promise<RunResult> {
   const sb = createServiceClient();
+  const deadline = new Deadline(GENERATION_BUDGET_MS);
+
+  await expireStuckRuns(sb);
 
   if (!opts.force) {
     const start = new Date();
@@ -51,6 +137,7 @@ export async function runDailyGeneration(opts: RunOptions = {}): Promise<RunResu
     const { data: existing } = await sb
       .from("posts")
       .select("id,slug")
+      .eq("source", "ai") // hand-written drafts must not satisfy the daily quota
       .gte("generated_at", start.toISOString())
       .in("status", ["generating", "draft", "published"])
       .limit(1);
@@ -59,69 +146,56 @@ export async function runDailyGeneration(opts: RunOptions = {}): Promise<RunResu
     }
   }
 
-  // Topic: explicit > queued > let the model choose within the pillar.
-  let topic = opts.topic?.trim() || null;
+  const ctx = await loadContext(sb);
+
+  // Topic: explicit > queued > let the model choose an angle inside the pillar.
   let topicRowId: string | null = null;
+  let topic = opts.topic?.trim() || null;
   if (!topic) {
-    const { data: queued } = await sb
-      .from("post_topics")
-      .select("id,topic,notes")
-      .eq("status", "queued")
-      .order("created_at", { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    if (queued) {
-      topic = queued.notes ? `${queued.topic} — ${queued.notes}` : (queued.topic as string);
-      topicRowId = queued.id as string;
+    const claimed = await claimTopic(sb);
+    if (claimed) {
+      topic = claimed.topic;
+      topicRowId = claimed.id;
     }
   }
 
-  const ctx = await loadContext(sb);
+  // Resolved here (not inside the generator) so a refusal retry knows what was refused.
+  let pillar = findPillar(opts.pillar) ?? pickPillar(dayOfYear(new Date()), ctx.recentPillars);
 
   const { data: row, error: insertError } = await sb
     .from("posts")
-    .insert({ slug: `generating-${Date.now().toString(36)}`, status: "generating", topic, pillar: opts.pillar ?? null } as never)
+    .insert({ slug: `generating-${Date.now().toString(36)}`, status: "generating", source: "ai", topic, pillar: pillar.id } as never)
     .select("id")
     .single();
-  if (insertError || !row) return { ok: false, error: insertError?.message ?? "Could not create post row" };
+  if (insertError || !row) {
+    await releaseTopic(sb, topicRowId);
+    return { ok: false, error: insertError?.message ?? "Could not create post row" };
+  }
   const postId = row.id as string;
 
   try {
     let generated;
+    let topicDropped = false;
     try {
-      generated = await generateDailyPost({ ...ctx, topic, pillar: opts.pillar });
+      generated = await generateDailyPost({ ...ctx, topic, pillar: pillar.id, deadline });
     } catch (err) {
-      // A refusal on the chosen angle: try once more on the next pillar without the topic.
-      if (err instanceof BlogGenerationError && err.kind === "refusal") {
-        const current = findPillar(opts.pillar) ?? PILLARS[0];
-        const next = PILLARS[(PILLARS.findIndex((p) => p.id === current.id) + 1) % PILLARS.length];
-        generated = await generateDailyPost({ ...ctx, topic: null, pillar: next.id });
-      } else {
-        throw err;
-      }
+      // A refusal will repeat on the same angle: move to the next pillar and drop
+      // the topic — but only if a full second pass still fits in the budget.
+      const isRefusal = err instanceof BlogGenerationError && err.kind === "refusal";
+      if (!isRefusal || !deadline.allows(170_000)) throw err;
+      const idx = PILLARS.findIndex((p) => p.id === pillar.id);
+      pillar = PILLARS[(idx + 1) % PILLARS.length];
+      topicDropped = topic !== null;
+      generated = await generateDailyPost({ ...ctx, topic: null, pillar: pillar.id, deadline });
     }
 
-    const base = slugify(generated.en.title);
-    const { data: taken } = await sb.from("posts").select("slug").like("slug", `${base}%`);
-    const slug = uniqueSlug(base, new Set(((taken ?? []) as { slug: string }[]).map((t) => t.slug)));
     const token = generateApprovalToken();
+    const slug = await writeGeneratedPost(sb, postId, generated, hashToken(token));
 
-    const { error: updateError } = await sb
-      .from("posts")
-      .update({
-        ...toPostColumns(generated, slug),
-        status: "draft",
-        approval_token_hash: hashToken(token),
-        generated_at: new Date().toISOString(),
-      } as never)
-      .eq("id", postId);
-    if (updateError) throw new Error(updateError.message);
+    // The refused topic was never written about, so put it back in the queue.
+    if (topicDropped) await releaseTopic(sb, topicRowId);
 
-    if (topicRowId) {
-      await sb.from("post_topics").update({ status: "used", used_at: new Date().toISOString() } as never).eq("id", topicRowId);
-    }
-
-    await notifyDraft({
+    const notified = await notifyDraft({
       id: postId,
       token,
       title: generated.en.title,
@@ -130,12 +204,22 @@ export async function runDailyGeneration(opts: RunOptions = {}): Promise<RunResu
       topic: generated.topic,
       bodies: { en: generated.en.body_md, ar: generated.ar.body_md, tr: generated.tr.body_md },
     });
+    if (!notified.ok) {
+      // The plaintext token only ever existed in that message. Record the failure
+      // so it is visible; the draft can still be published from /admin → Blog.
+      console.error("Draft created but the Telegram notification failed");
+      await sb
+        .from("posts")
+        .update({ usage: { ...generated.usage, notify_error: `telegram HTTP ${notified.status}` } } as never)
+        .eq("id", postId);
+    }
 
-    return { ok: true, postId, slug };
+    return { ok: true, postId, slug, notified: notified.ok };
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     console.error("Blog generation failed:", message);
     await sb.from("posts").update({ status: "failed", usage: { error: message } } as never).eq("id", postId);
+    await releaseTopic(sb, topicRowId);
     await notifyFailure(message);
     return { ok: false, error: message, postId };
   }
@@ -144,6 +228,7 @@ export async function runDailyGeneration(opts: RunOptions = {}): Promise<RunResu
 /** Admin "Regenerate": one localization, or the whole post on the same topic (slug kept). */
 export async function regeneratePost(id: string, lang?: "ar" | "tr"): Promise<{ ok: true } | { ok: false; error: string }> {
   const sb = createServiceClient();
+  const deadline = new Deadline(GENERATION_BUDGET_MS);
   const { data } = await sb.from("posts").select("*").eq("id", id).maybeSingle();
   const post = data as unknown as Post | null;
   if (!post) return { ok: false, error: "Post not found" };
@@ -162,7 +247,7 @@ export async function regeneratePost(id: string, lang?: "ar" | "tr"): Promise<{ 
         tags: post.tags,
       };
       if (!en.body_md) return { ok: false, error: "The English version is empty; write it first." };
-      const result = await regenerateLocalization({ lang, en, products: ctx.products });
+      const result = await regenerateLocalization({ lang, en, products: ctx.products, deadline });
       const { error } = await sb
         .from("posts")
         .update({
@@ -175,13 +260,13 @@ export async function regeneratePost(id: string, lang?: "ar" | "tr"): Promise<{ 
         .eq("id", id);
       if (error) return { ok: false, error: error.message };
     } else {
-      const generated = await generateDailyPost({ ...ctx, topic: post.topic, pillar: post.pillar });
+      const pillar = findPillar(post.pillar) ?? pickPillar(dayOfYear(new Date()), ctx.recentPillars);
+      const generated = await generateDailyPost({ ...ctx, topic: post.topic, pillar: pillar.id, deadline });
       const { slug: _slug, ...columns } = toPostColumns(generated, post.slug);
       const { error } = await sb.from("posts").update(columns as never).eq("id", id);
       if (error) return { ok: false, error: error.message };
     }
-    revalidateTag("posts", "max");
-    revalidateTag(`post:${post.slug}`, "max");
+    purgeTags("posts", `post:${post.slug}`);
     return { ok: true };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Regeneration failed" };
@@ -202,20 +287,35 @@ export async function applyApproval(input: { id: string; token: string; action: 
   if (post.status !== "draft") return { ok: false, status: 409, error: `This post is already ${post.status}.` };
 
   const title = post.title?.en ?? post.slug;
+
   if (input.action === "reject") {
-    await sb.from("posts").update({ status: "rejected", approval_token_hash: null } as never).eq("id", post.id);
+    // Conditional on the row still being a draft, so a double submit cannot
+    // reject twice or race with an approval.
+    const { data: rejected, error } = await sb
+      .from("posts")
+      .update({ status: "rejected", approval_token_hash: null } as never)
+      .eq("id", post.id)
+      .eq("status", "draft")
+      .select("id")
+      .maybeSingle();
+    if (error) return { ok: false, status: 500, error: error.message };
+    if (!rejected) return { ok: false, status: 409, error: "This post was already handled." };
     await notifyRejected(title);
     return { ok: true, redirectTo: "/admin#blog" };
   }
 
-  const { error } = await sb
+  const { data: published, error } = await sb
     .from("posts")
     .update({ status: "published", published_at: new Date().toISOString(), approval_token_hash: null } as never)
-    .eq("id", post.id);
+    .eq("id", post.id)
+    .eq("status", "draft")
+    .select("id")
+    .maybeSingle();
   if (error) return { ok: false, status: 500, error: error.message };
+  if (!published) return { ok: false, status: 409, error: "This post was already handled." };
 
-  revalidateTag("posts", "max");
-  revalidateTag(`post:${post.slug}`, "max");
+  // Expire immediately: the browser follows the redirect to this post's URL next.
+  purgeTags("posts", `post:${post.slug}`);
   const path = blogHref("en", post.slug);
   await notifyPublished(title, `${SITE_URL}${path}`);
   return { ok: true, redirectTo: path };

@@ -77,7 +77,7 @@ export function BlogEditor({ lang }: { lang: Language }) {
   const generateNow = async () => {
     setBusy("generate");
     setError(null);
-    setNotice("Generating a new draft with Claude — this takes 2–4 minutes. You'll also get a Telegram message when it's ready.");
+    setNotice("Generating a new draft with GPT — this takes 1–3 minutes. You'll also get a Telegram message when it's ready.");
     try {
       const r = await adminFetch<{ ok: boolean; slug?: string; error?: string; skipped?: boolean }>("/api/admin/posts", {
         action: "generate-now",
@@ -180,6 +180,15 @@ export function BlogEditor({ lang }: { lang: Language }) {
     }
   };
 
+  const removeTopic = async (id: string) => {
+    try {
+      await deleteTopic(id);
+      setTopics(await listTopics());
+    } catch (e) {
+      fail(e, "Could not remove topic");
+    }
+  };
+
   const submitTopic = async () => {
     if (!newTopic.trim()) return;
     try {
@@ -226,7 +235,7 @@ export function BlogEditor({ lang }: { lang: Language }) {
           <h3 className="text-lg font-bold" style={{ fontFamily: "var(--next-font-syne), sans-serif" }}>AI writer</h3>
         </div>
         <p className="text-sm text-stone-500">
-          A new trilingual draft is generated automatically every day (Vercel Cron) and sent to Telegram for approval. Use this to generate one right now — with a specific topic or let Claude pick the next pillar.
+          A new trilingual draft is generated automatically every day (Vercel Cron) and sent to Telegram for approval. Use this to generate one right now — with a specific topic or let the model pick the next pillar.
         </p>
         <div className="flex flex-col md:flex-row gap-3">
           <Input value={genTopic} onChange={(e) => setGenTopic(e.target.value)} placeholder="Optional topic, e.g. “AI product photos for perfume brands”" />
@@ -246,7 +255,7 @@ export function BlogEditor({ lang }: { lang: Language }) {
               {queued.map((t) => (
                 <li key={t.id} className="flex items-center justify-between gap-3 text-sm bg-[#F6F3F2] rounded-lg px-3 py-2">
                   <span className="text-[#1B1C1C]">{t.topic}</span>
-                  <button onClick={() => deleteTopic(t.id).then(() => listTopics().then(setTopics))} className="text-stone-400 hover:text-red-600" aria-label="Remove topic"><X size={14} /></button>
+                  <button onClick={() => removeTopic(t.id)} className="text-stone-400 hover:text-red-600" aria-label="Remove topic"><X size={14} /></button>
                 </li>
               ))}
             </ul>

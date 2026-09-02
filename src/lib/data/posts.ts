@@ -38,7 +38,7 @@ async function fetchPostBySlug(slug: string): Promise<Post | null> {
   if (!supabase) return null;
   const { data, error } = await supabase
     .from("posts")
-    .select("id,slug,status,pillar,topic,tags,title,excerpt,body_md,meta,cover_image_url,model,prompt_version,generated_at,published_at,created_at,updated_at")
+    .select("id,slug,status,pillar,topic,tags,title,excerpt,body_md,meta,cover_image_url,generated_at,published_at,created_at,updated_at")
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
@@ -72,17 +72,30 @@ export async function getPostForPreview(slug: string, token: string): Promise<Po
   return post;
 }
 
-async function fetchPublishedSlugs(): Promise<{ slug: string; updated_at: string; published_at: string | null }[]> {
+type SlugRow = { slug: string; updated_at: string; published_at: string | null };
+
+async function fetchPublishedSlugs(): Promise<SlugRow[]> {
   const supabase = createAnonServerClient();
   if (!supabase) return [];
-  const { data, error } = await supabase
-    .from("posts")
-    .select("slug,updated_at,published_at")
-    .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(5000);
-  if (error) return [];
-  return (data ?? []) as { slug: string; updated_at: string; published_at: string | null }[];
+  // PostgREST caps a single response at 1000 rows, so page through them.
+  const PAGE = 1000;
+  const all: SlugRow[] = [];
+  for (let page = 0; page < 20; page++) {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("slug,updated_at,published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .range(page * PAGE, page * PAGE + PAGE - 1);
+    if (error) {
+      console.error("sitemap slugs fetch failed:", error.message);
+      break;
+    }
+    const rows = (data ?? []) as SlugRow[];
+    all.push(...rows);
+    if (rows.length < PAGE) break;
+  }
+  return all;
 }
 
 export const getAllPublishedSlugs = unstable_cache(fetchPublishedSlugs, ["posts-slugs"], {

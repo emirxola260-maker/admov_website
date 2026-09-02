@@ -7,7 +7,7 @@ Marketing site for ADMOV (AI agency) — Next.js 16 App Router, React 19, Tailwi
 - **Framework**: Next.js App Router under `src/app/` (server-rendered, per-request CSP nonce in `src/proxy.ts`).
 - **Content**: bundled translations (`src/i18n/translations.ts`, EN/AR/TR) with admin overrides stored in Supabase (`admin_content`), edited at `/admin`.
 - **Products**: Supabase `products` table, managed from `/admin → Products`.
-- **Blog**: Supabase `posts` table. A daily Vercel Cron (`/api/cron/generate-post`) asks Claude for a trilingual draft, sends a Telegram preview, and the post goes live after approval (`/admin/approve` or the admin Blog tab).
+- **Blog**: Supabase `posts` table. A daily Vercel Cron (`/api/cron/generate-post`) asks OpenAI (GPT, Responses API with structured outputs) for a trilingual draft, sends a Telegram preview, and the post goes live after approval (`/admin/approve` or the admin Blog tab).
 - **Contact form**: `/api/contact` → Telegram bot.
 
 ## Local development

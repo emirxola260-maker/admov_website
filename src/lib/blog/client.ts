@@ -38,6 +38,7 @@ export async function createManualPost(): Promise<Post> {
     .insert({
       slug: `new-post-${stamp}`,
       status: "draft",
+      source: "manual",
       title: { en: "New post" },
       excerpt: { en: "" },
       body_md: { en: "" },

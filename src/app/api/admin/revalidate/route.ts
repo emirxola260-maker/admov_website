@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { purgeTags } from "@/lib/cache";
 import { requireAdmin } from "@/lib/server/auth";
 
 const ALLOWED = new Set(["admin-content", "products", "posts"]);
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const applied: string[] = [];
   for (const tag of tags) {
     if (ALLOWED.has(tag) || /^post:[a-z0-9-]{1,120}$/.test(tag)) {
-      revalidateTag(tag, "max");
+      purgeTags(tag);
       applied.push(tag);
     }
   }

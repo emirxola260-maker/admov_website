@@ -71,6 +71,7 @@ create table if not exists public.posts (
   slug text unique not null,
   status text not null default 'draft'
     check (status in ('generating','draft','published','rejected','failed','archived')),
+  source text not null default 'ai' check (source in ('ai','manual')),
   pillar text,
   topic text,
   tags text[] not null default '{}',
@@ -90,6 +91,13 @@ create table if not exists public.posts (
 );
 create index if not exists posts_status_published_idx on public.posts (status, published_at desc);
 create index if not exists posts_generated_at_idx on public.posts (generated_at desc);
+
+-- Added after the first release; keeps re-runs working on an existing table.
+alter table public.posts add column if not exists source text not null default 'ai';
+do $$ begin
+  alter table public.posts add constraint posts_source_check check (source in ('ai','manual'));
+exception when duplicate_object then null; end $$;
+create index if not exists posts_source_generated_idx on public.posts (source, generated_at desc);
 drop trigger if exists posts_set_updated_at on public.posts;
 create trigger posts_set_updated_at before update on public.posts
   for each row execute function public.set_updated_at();
@@ -115,6 +123,15 @@ drop policy if exists "Admins can delete posts" on public.posts;
 create policy "Admins can delete posts"
   on public.posts for delete to authenticated
   using (auth.uid() in (select user_id from public.admins));
+
+-- Row-level policies decide WHICH rows anon sees; these grants decide which
+-- COLUMNS. Without them the anon key could read approval_token_hash, OpenAI
+-- token usage, and the model/prompt version of every published post.
+revoke select on public.posts from anon;
+grant select (
+  id, slug, status, source, pillar, topic, tags, title, excerpt, body_md, meta,
+  cover_image_url, generated_at, published_at, created_at, updated_at
+) on public.posts to anon;
 
 -- ─────────────────────────────────────────────────────────────
 -- 3. Topic queue — pre-fill from /admin; the daily cron uses queued topics first
@@ -180,7 +197,11 @@ create policy "Admins can delete media"
 
 -- ─────────────────────────────────────────────────────────────
 -- 6. Seed — your products as DRAFTS. Edit and publish them from /admin → Products.
+--    Runs only while the table is empty, so deleting a seeded product is permanent.
 -- ─────────────────────────────────────────────────────────────
+do $$
+begin
+if not exists (select 1 from public.products) then
 insert into public.products (slug, name, status, featured, sort_order, category, badges, url, tagline, description)
 values
   ('i8chat', 'i8chat', 'draft', true, 10, 'saas', '{"Live","Web"}', 'https://i8chat.com',
@@ -199,3 +220,5 @@ values
    '{"en": "Learn to create professional content with AI in 6 days"}',
    '{"en": "An 8-module, one-hour-a-day program on AI images, video, ads and short films — no prior experience needed."}')
 on conflict (slug) do nothing;
+end if;
+end $$;
