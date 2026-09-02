@@ -1,6 +1,7 @@
+"use client";
+
 import React, { useRef, useEffect, useState } from 'react';
 import { Renderer, Program, Triangle, Mesh } from 'ogl';
-import './LightRays.css';
 
 const DEFAULT_COLOR = '#ffffff';
 

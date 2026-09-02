@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { motion } from "motion/react";
 import { Mail, ArrowRight, Instagram, ChevronDown, Calendar, Clock, Phone } from "lucide-react";

@@ -6,6 +6,13 @@ describe("sanitizeHttpUrl", () => {
     expect(sanitizeHttpUrl("https://cdn.example.com/a.jpg")).toBe("https://cdn.example.com/a.jpg");
     expect(sanitizeHttpUrl("http://example.com/v.mp4")).toBe("http://example.com/v.mp4");
   });
+  it("allows root-relative same-origin paths", () => {
+    expect(sanitizeHttpUrl("/work-kyom.png")).toBe("/work-kyom.png");
+    expect(sanitizeHttpUrl("  /flags/en.svg ")).toBe("/flags/en.svg");
+  });
+  it("blocks protocol-relative URLs", () => {
+    expect(sanitizeHttpUrl("//evil.com/x.png")).toBe("");
+  });
   it("blocks javascript: URLs", () => {
     expect(sanitizeHttpUrl("javascript:alert(1)")).toBe("");
   });

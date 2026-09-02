@@ -1,4 +1,6 @@
-export type Language = "en" | "ar" | "tr";
+import type { Language } from "./config";
+
+export type { Language };
 
 export interface LanguageMeta {
   code: Language;

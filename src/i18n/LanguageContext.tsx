@@ -1,5 +1,9 @@
+"use client";
+
 import * as React from "react";
-import { type Language, languages, translations } from "./translations";
+import { useRouter } from "next/navigation";
+import { languages, translations } from "./translations";
+import { DEFAULT_LANG, LANG_COOKIE, isLanguage, type Language } from "./config";
 
 interface LanguageContextValue {
   lang: Language;
@@ -11,44 +15,59 @@ interface LanguageContextValue {
 
 const LanguageContext = React.createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = React.useState<Language>(() => {
-    if (typeof window !== "undefined") {
-      // 1. Use previously saved preference
-      const saved = localStorage.getItem("admov-lang") as Language | null;
-      if (saved && translations[saved]) return saved;
+export function LanguageProvider({
+  children,
+  initialLang = DEFAULT_LANG,
+}: {
+  children: React.ReactNode;
+  initialLang?: Language;
+}) {
+  const router = useRouter();
+  const [lang, setLangState] = React.useState<Language>(isLanguage(initialLang) ? initialLang : DEFAULT_LANG);
 
-      // 2. Auto-detect from browser/OS language setting
-      const browserLangs = navigator.languages ?? [navigator.language];
-      for (const bl of browserLangs) {
-        const code = bl.split("-")[0].toLowerCase(); // "ar-SA" → "ar"
-        if (translations[code as Language]) return code as Language;
-      }
-    }
-    return "en";
-  });
+  // The server decides the language (cookie or URL prefix); follow it when it changes.
+  React.useEffect(() => {
+    if (isLanguage(initialLang)) setLangState(initialLang);
+  }, [initialLang]);
 
   const meta = languages.find((l) => l.code === lang)!;
   const t = translations[lang];
 
+  const setLang = React.useCallback(
+    (next: Language) => {
+      if (!isLanguage(next)) return;
+      setLangState(next);
+      document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
+      try {
+        localStorage.setItem(LANG_COOKIE, next);
+      } catch {
+        /* private mode */
+      }
+      // Re-render server components (html lang/dir, server-rendered content) with the new cookie.
+      router.refresh();
+    },
+    [router],
+  );
+
   React.useEffect(() => {
-    localStorage.setItem("admov-lang", lang);
-    document.documentElement.dir = meta.dir;
-    document.documentElement.lang = lang;
-    document.documentElement.className = lang;
-    document.body.className = `bg-zinc-950 text-zinc-50 antialiased lang-${lang}`;
+    const root = document.documentElement;
+    root.dir = meta.dir;
+    root.lang = lang;
+    // Toggle classes instead of overwriting className — next/font classes live on <html>.
+    for (const l of languages) {
+      root.classList.remove(l.code);
+      document.body.classList.remove(`lang-${l.code}`);
+    }
+    root.classList.add(lang);
+    document.body.classList.add(`lang-${lang}`);
   }, [lang, meta.dir]);
 
   const value = React.useMemo(
     () => ({ lang, setLang, t, dir: meta.dir, isRTL: meta.dir === "rtl" }),
-    [lang, t, meta.dir]
+    [lang, setLang, t, meta.dir],
   );
 
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {

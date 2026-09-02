@@ -1,0 +1,148 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Fonts are loaded with next/font (src/lib/fonts.ts) and exposed as CSS variables on <html>. */
+@theme inline {
+  --font-syne: var(--next-font-syne), sans-serif;
+  --font-dm: var(--next-font-dm), sans-serif;
+  --font-changa: var(--next-font-changa), sans-serif;
+}
+
+@theme {
+  --color-violet: #8B7DF0;
+  --color-violet-light: #B4AAFF;
+  --color-violet-tint: rgba(139, 125, 240, 0.15);
+  --color-violet-dark: #6B5DE0;
+}
+
+@layer base {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-50 font-dm antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-syne font-extrabold tracking-tight;
+  }
+}
+
+@layer components {
+  .section-label {
+    @apply font-syne font-bold text-[11px] text-violet tracking-[0.10em] uppercase mb-3 block;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Arabic: the FontWrapper in src/app/providers.tsx adds .font-changa around the page */
+.font-changa,
+.font-changa *:not(.logo-text) {
+  font-family: var(--next-font-changa), sans-serif !important;
+}
+
+.font-changa h1,
+.font-changa h2,
+.font-changa h3 {
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+}
+
+.font-changa .shiny-text {
+  padding-bottom: 0.15em;
+  overflow: visible;
+  line-height: 1.4 !important;
+}
+
+/* Keep ADMOV logo as Syne always */
+.logo-text {
+  font-family: var(--next-font-syne), sans-serif !important;
+}
+
+.editorial-shadow {
+  text-shadow: 0 10px 20px rgba(139, 125, 240, 0.1);
+}
+
+/* ShinyText */
+.shiny-text {
+  display: inline-block;
+}
+
+/* LightRays (WebGL canvas container) */
+.light-rays-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* DataGridHero */
+.data-grid-hero {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.grid-container {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  --mouse-glow-opacity: 0;
+}
+
+.grid-cell {
+  border-radius: 1px;
+  opacity: var(--opacity-min, 0.02);
+  transition: opacity 0.3s ease;
+  aspect-ratio: 1 / 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes cell-pulse {
+  from { opacity: var(--opacity-min, 0.02); }
+  to { opacity: var(--opacity-max, 0.15); }
+}
+
+/* Mouse glow effect */
+.grid-container::after {
+  content: '';
+  position: absolute;
+  left: var(--mouse-x, 50%);
+  top: var(--mouse-y, 50%);
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(139, 125, 240, 0.15) 0%, transparent 70%);
+  opacity: var(--mouse-glow-opacity, 0);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}

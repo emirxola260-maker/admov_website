@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
 
 /**
  * A generative hero component with animated grid background.
@@ -135,18 +136,3 @@ export default function DataGridHero({
   );
 }
 
-DataGridHero.propTypes = {
-  rows: PropTypes.number.isRequired,
-  cols: PropTypes.number.isRequired,
-  spacing: PropTypes.number.isRequired,
-  duration: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
-  animationType: PropTypes.oneOf(["pulse", "wave", "random"])
-    .isRequired,
-  pulseEffect: PropTypes.bool.isRequired,
-  mouseGlow: PropTypes.bool.isRequired,
-  opacityMin: PropTypes.number.isRequired,
-  opacityMax: PropTypes.number.isRequired,
-  background: PropTypes.string.isRequired,
-  children: PropTypes.node,
-};

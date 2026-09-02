@@ -1,5 +1,6 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 export function Footer() {
@@ -16,15 +17,13 @@ export function Footer() {
                 <polygon points="50,50 75,100 25,100" fill="#7367F0" />
               </svg>
             </div>
-            <span className="logo-text font-extrabold text-2xl tracking-tighter text-zinc-50">
-              ADMOV
-            </span>
+            <span className="logo-text font-extrabold text-2xl tracking-tighter text-zinc-50">ADMOV</span>
           </div>
 
           <div className="flex gap-8">
-            <Link to="/support" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.support}</Link>
-            <Link to="/privacy" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.privacy}</Link>
-            <Link to="/terms" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.terms}</Link>
+            <Link href="/support" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.support}</Link>
+            <Link href="/privacy" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.privacy}</Link>
+            <Link href="/terms" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.terms}</Link>
           </div>
 
           <p className="text-sm text-zinc-500">

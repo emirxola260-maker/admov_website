@@ -1,11 +1,17 @@
+"use client";
+
 import * as React from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Play } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ShinyText from "./ShinyText";
-import LightRays from "./LightRays";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useAdminContent, getAdminHero } from "@/admin/useAdminContent";
 import RotatingText from "./RotatingText";
+
+// WebGL (ogl) touches `window` at import time — load it on the client only.
+const LightRays = dynamic(() => import("./LightRays"), { ssr: false });
 
 export function Hero() {
   const { t, isRTL, lang } = useLanguage();
@@ -92,10 +98,8 @@ export function Hero() {
                 {hero.cta1}
                 <ArrowRight size={20} className="rtl:rotate-180" />
               </a>
-              <a
-                href="https://drive.google.com/drive/u/1/folders/1Ok00Vz8LlnuQ-XVUfGDLRv8Q1NrvY6mf"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/work"
                 className="text-zinc-50 px-8 py-4 rounded-full font-syne font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95 backdrop-blur-xl border border-white/20 w-full sm:w-auto"
                 style={{
                   backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
@@ -104,7 +108,7 @@ export function Hero() {
               >
                 <Play size={18} fill="currentColor" />
                 {hero.cta2}
-              </a>
+              </Link>
             </div>
 
             <div className="mt-10 md:mt-12 flex flex-wrap items-center gap-6 md:gap-8 border-t border-zinc-800 pt-6 md:pt-8">

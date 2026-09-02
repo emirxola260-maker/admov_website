@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useLanguage } from "@/i18n/LanguageContext";

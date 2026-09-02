@@ -1,7 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Play, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import content from "@/data/content.json";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ShinyText from "./ShinyText";
@@ -67,7 +69,7 @@ export function Work() {
             </h2>
           </div>
           <Link
-            to="/work"
+            href="/work"
             className="font-syne font-bold text-zinc-50 hover:text-violet transition-colors flex items-center gap-2 group shrink-0"
           >
             {work.viewAll}

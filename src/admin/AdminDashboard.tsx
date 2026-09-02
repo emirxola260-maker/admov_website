@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -6,7 +8,7 @@ import {
   BarChart3, Lightbulb, Image, Settings, Plus, Trash2, Star,
   ArrowRight, Globe, Loader2
 } from "lucide-react";
-import { saveAdminContentToSupabase, subscribeToAdminContent } from "@/lib/supabase";
+import { saveAdminContentToSupabase } from "@/lib/supabase/client";
 
 type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "contact" | "seo";
 type LangTab = "en" | "ar" | "tr";
@@ -137,7 +139,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     const loadContent = async () => {
       // Try to load from Supabase first
       try {
-        const { getAdminContentFromSupabase } = await import("@/lib/supabase");
+        const { getAdminContentFromSupabase } = await import("@/lib/supabase/client");
         const data = await getAdminContentFromSupabase();
         if (isMounted && data) {
           setContent((prev) => ({
@@ -273,7 +275,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
       {/* Sidebar */}
       <aside className={`w-72 bg-[#1B1C1C] text-stone-300 flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-8">
-          <div className="text-2xl font-black uppercase tracking-tighter text-white" style={{ fontFamily: 'Syne, sans-serif' }}>
+          <div className="text-2xl font-black uppercase tracking-tighter text-white" style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}>
             ADMOV
           </div>
           <div className="mt-2 text-[10px] uppercase tracking-widest text-stone-500 font-bold">Content Management</div>
@@ -320,7 +322,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             >
               <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
             </button>
-            <h1 className="text-xl font-extrabold tracking-tight text-[#1B1C1C]" style={{ fontFamily: '"Syne", sans-serif' }}>
+            <h1 className="text-xl font-extrabold tracking-tight text-[#1B1C1C]" style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}>
               Admin Dashboard
             </h1>
             <span className="px-2 py-0.5 bg-[#F6F3F2] text-[10px] font-bold uppercase tracking-wider rounded text-stone-500 hidden sm:inline">
@@ -351,7 +353,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           {/* Section Header */}
           <div className="mb-12 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tighter mb-4" style={{ fontFamily: '"Syne", sans-serif' }}>
+              <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tighter mb-4" style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}>
                 {sectionTitles[activeSection]}
               </h2>
               <p className="text-[#474553] font-light max-w-2xl leading-relaxed text-sm">
@@ -447,7 +449,7 @@ function TextField({ label, value, onChange, primary = false, large = false, pla
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={`w-full bg-[#eae7e7] border-none rounded-xl px-5 py-4 text-[#1B1C1C] placeholder:opacity-50 focus:ring-2 focus:ring-[#5749C2]/20 transition-all outline-none ${large ? "text-2xl font-extrabold" : "text-sm"}`}
-        style={large ? { fontFamily: '"Syne", sans-serif' } : {}}
+        style={large ? { fontFamily: 'var(--next-font-syne), sans-serif' } : {}}
       />
     </div>
   );
@@ -528,7 +530,7 @@ function HeroEditor({ content, setContent, lang }: { content: ContentData; setCo
 
         {/* Stats */}
         <div className="bg-[#F6F3F2] p-8 lg:p-10 rounded-[20px]">
-          <h3 className="text-xl font-bold tracking-tight mb-8 flex items-center" style={{ fontFamily: '"Syne", sans-serif' }}>
+          <h3 className="text-xl font-bold tracking-tight mb-8 flex items-center" style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}>
             <BarChart3 size={20} className="mr-3 text-[#5749C2]" />
             Performance Stats
           </h3>
@@ -541,7 +543,7 @@ function HeroEditor({ content, setContent, lang }: { content: ContentData; setCo
                   value={stat}
                   onChange={(e) => updateStat(i, e.target.value)}
                   className="text-xl font-extrabold w-full border-none p-0 focus:ring-0 bg-transparent outline-none"
-                  style={{ fontFamily: '"Syne", sans-serif' }}
+                  style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}
                 />
               </div>
             ))}
@@ -926,7 +928,7 @@ function WorkPageEditor({ content, setContent, lang }: { content: ContentData; s
                   value={section.title[lang]}
                   onChange={(e) => updateSection(sIdx, "title", e.target.value)}
                   className="w-full bg-[#F6F3F2] border-none rounded-lg px-4 py-3 text-lg font-extrabold focus:ring-2 focus:ring-[#5749C2]/20 outline-none"
-                  style={{ fontFamily: '"Syne", sans-serif' }}
+                  style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}
                 />
               </div>
               <div>

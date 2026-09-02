@@ -1,20 +1,38 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# admov.io
 
-# Run and deploy your AI Studio app
+Marketing site for ADMOV (AI agency) — Next.js 16 App Router, React 19, Tailwind CSS v4, Supabase, deployed on Vercel.
 
-This contains everything you need to run your app locally.
+## Stack
 
-View your app in AI Studio: https://ai.studio/apps/27058434-4c38-4cc1-bf7e-c2fe6c0e67d9
+- **Framework**: Next.js App Router under `src/app/` (server-rendered, per-request CSP nonce in `src/proxy.ts`).
+- **Content**: bundled translations (`src/i18n/translations.ts`, EN/AR/TR) with admin overrides stored in Supabase (`admin_content`), edited at `/admin`.
+- **Products**: Supabase `products` table, managed from `/admin → Products`.
+- **Blog**: Supabase `posts` table. A daily Vercel Cron (`/api/cron/generate-post`) asks Claude for a trilingual draft, sends a Telegram preview, and the post goes live after approval (`/admin/approve` or the admin Blog tab).
+- **Contact form**: `/api/contact` → Telegram bot.
 
-## Run Locally
+## Local development
 
-**Prerequisites:**  Node.js
+```bash
+npm install
+cp .env.example .env.local   # fill in the values
+npm run dev                  # http://localhost:3000
+```
 
+Scripts: `npm run dev`, `npm run build`, `npm start`, `npm run lint` (tsc), `npm test` (vitest).
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Environment variables
+
+See `.env.example`. Client-side values must be prefixed with `NEXT_PUBLIC_`; everything else stays server-only.
+
+## Database
+
+Run the SQL files in the Supabase SQL editor, in order:
+
+1. `docs/security/supabase-rls.sql` — `admin_content` + `admins` allowlist.
+2. `docs/security/supabase-blog-products.sql` — `products`, `posts`, `post_topics`, `subscribers`, media bucket, seed products.
+
+Then add your admin user to `public.admins` (instructions at the bottom of the first file).
+
+## Deployment
+
+The project is linked to Vercel (`admov-website`). Deploy with `vercel` (preview) or `vercel --prod`. Cron jobs are defined in `vercel.json` and run on production deployments only.

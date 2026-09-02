@@ -1,6 +1,7 @@
+"use client";
+
 import { useState, useCallback, useRef } from 'react';
 import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
-import './ShinyText.css';
 
 const ShinyText = ({
   text,

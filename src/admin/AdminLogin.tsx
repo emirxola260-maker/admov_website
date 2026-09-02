@@ -1,7 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Lock } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -47,12 +49,12 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
       {/* Decorative Labels */}
       <div className="fixed top-12 left-12 opacity-20 hidden lg:block">
         <div className="w-24 h-[1px] bg-[#1B1C1C] mb-2" />
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#1B1C1C]" style={{ fontFamily: '"Syne", sans-serif' }}>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[#1B1C1C]" style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}>
           Institutional Access
         </span>
       </div>
       <div className="fixed bottom-12 right-12 opacity-20 hidden lg:block text-right">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#1B1C1C] mb-2 block" style={{ fontFamily: '"Syne", sans-serif' }}>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[#1B1C1C] mb-2 block" style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}>
           System Integrity
         </span>
         <div className="w-24 h-[1px] bg-[#1B1C1C] ml-auto" />
@@ -69,7 +71,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
         <div className="flex justify-center mb-12">
           <span
             className="text-3xl font-black uppercase tracking-tighter text-[#1B1C1C]"
-            style={{ fontFamily: '"Syne", sans-serif' }}
+            style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}
           >
             ADMOV
           </span>
@@ -81,7 +83,7 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
             <div className="mb-8">
               <h1
                 className="text-[28px] font-extrabold tracking-tight text-[#1B1C1C] leading-tight mb-2"
-                style={{ fontFamily: '"Syne", sans-serif' }}
+                style={{ fontFamily: 'var(--next-font-syne), sans-serif' }}
               >
                 Admin Panel
               </h1>
