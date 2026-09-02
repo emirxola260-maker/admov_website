@@ -2,6 +2,7 @@
 -- Adds: public.products (Products section CMS), public.posts (AI blog),
 --       public.post_topics (topic queue), public.subscribers (newsletter),
 --       a shared updated_at trigger, RLS policies, and draft seed products.
+-- Storage lives in Cloudflare R2 (see the admov-cdn Worker), not Supabase Storage.
 -- Safe to re-run: every statement is idempotent.
 
 -- ─────────────────────────────────────────────────────────────
@@ -169,31 +170,25 @@ create policy "Admins can read subscribers"
   using (auth.uid() in (select user_id from public.admins));
 
 -- ─────────────────────────────────────────────────────────────
--- 5. Media bucket for logos / screenshots uploaded from /admin (public read)
+-- 5. Legacy Supabase Storage `media` bucket — cleanup
+--    Image uploads from /admin now go to Cloudflare R2 via the admov-cdn Worker
+--    (bucket `admin-uploads`, served from https://cdn.admov.io), the same
+--    storage the mobile app uses. Nothing new is written to Supabase Storage.
+--    An earlier version of this file created a public `media` bucket; these
+--    drops make a project provisioned back then converge. They are safe to run
+--    on a project that never had it.
 -- ─────────────────────────────────────────────────────────────
-insert into storage.buckets (id, name, public)
-values ('media', 'media', true)
-on conflict (id) do nothing;
-
-drop policy if exists "Public can read media" on storage.objects;
-create policy "Public can read media"
-  on storage.objects for select to anon, authenticated
-  using (bucket_id = 'media');
-
+drop policy if exists "Public can read media"   on storage.objects;
 drop policy if exists "Admins can upload media" on storage.objects;
-create policy "Admins can upload media"
-  on storage.objects for insert to authenticated
-  with check (bucket_id = 'media' and auth.uid() in (select user_id from public.admins));
-
 drop policy if exists "Admins can update media" on storage.objects;
-create policy "Admins can update media"
-  on storage.objects for update to authenticated
-  using (bucket_id = 'media' and auth.uid() in (select user_id from public.admins));
-
 drop policy if exists "Admins can delete media" on storage.objects;
-create policy "Admins can delete media"
-  on storage.objects for delete to authenticated
-  using (bucket_id = 'media' and auth.uid() in (select user_id from public.admins));
+
+--    The bucket itself is NOT dropped here: Supabase blocks direct deletes from
+--    storage tables, and any pre-R2 image URL would break. Once this returns no
+--    rows, delete the `media` bucket from the Supabase dashboard:
+--      select id, slug, logo_url, image_url from public.products
+--       where coalesce(logo_url,'')  like '%/object/public/media/%'
+--          or coalesce(image_url,'') like '%/object/public/media/%';
 
 -- ─────────────────────────────────────────────────────────────
 -- 6. Seed — your products as DRAFTS. Edit and publish them from /admin → Products.

@@ -29,7 +29,9 @@ See `.env.example`. Client-side values must be prefixed with `NEXT_PUBLIC_`; eve
 Run the SQL files in the Supabase SQL editor, in order:
 
 1. `docs/security/supabase-rls.sql` — `admin_content` + `admins` allowlist.
-2. `docs/security/supabase-blog-products.sql` — `products`, `posts`, `post_topics`, `subscribers`, media bucket, seed products.
+2. `docs/security/supabase-blog-products.sql` — `products`, `posts`, `post_topics`, `subscribers`, seed products.
+
+Images uploaded from `/admin` go to Cloudflare R2 through the `admov-cdn` Worker (bucket `admin-uploads`, served from https://cdn.admov.io), not Supabase Storage. Upgrading a project provisioned before that switch? Re-run the SQL above: it drops the old `media` bucket policies. Delete the bucket itself from the Supabase dashboard once nothing references it.
 
 Then add your admin user to `public.admins` (instructions at the bottom of the first file).
 

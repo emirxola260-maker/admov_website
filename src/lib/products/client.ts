@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
+import { adminFetchForm } from "@/lib/admin/api";
 import type { Product, ProductInput } from "./types";
 
 function client() {
@@ -41,11 +42,15 @@ export async function setProductOrder(items: { id: string; sort_order: number }[
   }
 }
 
-/** Upload to the public `media` bucket and return the public URL. */
+/**
+ * Upload an image and return its public URL. The file goes to Cloudflare R2 —
+ * the same storage the app uses — through our admin-only API route, which holds
+ * the CDN service token server-side.
+ */
 export async function uploadMedia(file: File, folder = "products"): Promise<string> {
-  const safe = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, "-").slice(-80);
-  const path = `${folder}/${Date.now()}-${safe}`;
-  const { error } = await client().storage.from("media").upload(path, file, { upsert: false, cacheControl: "31536000" });
-  if (error) throw new Error(error.message);
-  return client().storage.from("media").getPublicUrl(path).data.publicUrl;
+  const form = new FormData();
+  form.append("file", file);
+  form.append("folder", folder);
+  const { url } = await adminFetchForm<{ url: string }>("/api/admin/upload", form);
+  return url;
 }

@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUp, ExternalLink, Loader2, Plus, Trash2, Upload, X } fr
 import type { Language } from "@/i18n/config";
 import { EMPTY_PRODUCT, PRODUCT_CATEGORIES, type Product, type ProductInput } from "@/lib/products/types";
 import { deleteProduct, listProductsAdmin, saveProduct, setProductOrder, uploadMedia } from "@/lib/products/client";
+import { MAX_UPLOAD_BYTES } from "@/lib/server/cdn-policy";
 import { revalidateTags } from "@/lib/admin/api";
 import { slugify } from "@/lib/blog/slug";
 import { Button, Card, Field, Input, Notice, Pill, Select, Textarea, Toggle } from "./ui";
@@ -121,10 +122,18 @@ export function ProductsEditor({ lang }: { lang: Language }) {
 
   const upload = async (field: "logo_url" | "image_url", file: File | undefined) => {
     if (!file || !draft) return;
+    if (file.size > MAX_UPLOAD_BYTES) {
+      setError(`That image is ${(file.size / 1024 / 1024).toFixed(1)} MB. Please use one under ${MAX_UPLOAD_BYTES / 1024 / 1024} MB.`);
+      return;
+    }
+    // Remember which product was open: the upload spans a network round trip and
+    // the admin may edit other fields, switch products, or close the drawer.
+    const startedFor = draft.id;
     setUploading(field);
+    setError(null);
     try {
       const url = await uploadMedia(file, "products");
-      setDraft({ ...draft, [field]: url });
+      setDraft((current) => (current && current.id === startedFor ? { ...current, [field]: url } : current));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Upload failed");
     } finally {
@@ -191,7 +200,11 @@ export function ProductsEditor({ lang }: { lang: Language }) {
                   <label className="shrink-0 inline-flex items-center gap-2 px-3 rounded-xl border-2 border-[#5749C2]/20 text-[#5749C2] text-xs font-semibold cursor-pointer hover:bg-[#5749C2]/5">
                     {uploading === field ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                     Upload
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => upload(field, e.target.files?.[0])} />
+                    <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" className="hidden" onChange={(e) => {
+                      const file = e.currentTarget.files?.[0];
+                      e.currentTarget.value = ""; // let the same file be picked again after a failure
+                      upload(field, file);
+                    }} />
                   </label>
                 </div>
                 {draft[field] && <img src={draft[field] as string} alt="" className="mt-2 h-16 rounded-lg object-contain bg-stone-100" />}
