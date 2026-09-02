@@ -6,19 +6,27 @@ const content: Record<Lang, LegalDoc> = {
   en: {
     eyebrow: "Legal",
     title: "Terms of Use",
-    updated: "Last updated: May 26, 2026",
-    intro: `These Terms of Use ("Terms") govern your access to and use of the Admov mobile application and related services (collectively, the "Service"), operated by **Admov** ("we", "us", or "our"). By downloading, accessing, or using the Service, you agree to these Terms. If you do not agree, do not use the Service.`,
+    updated: "Last updated: September 2, 2026",
+    intro: `These Terms of Use ("Terms") govern your access to and use of the Admov mobile application and our website at https://admov.io (collectively, the "Service"), operated by **Admov** ("we", "us", or "our"). By downloading, accessing, or using the Service, you agree to these Terms. If you do not agree, do not use the Service.`,
     sections: [
-      { heading: "1. The Service", blocks: [
-        { p: `Admov is an AI-powered creative tool that lets you generate, edit, and enhance advertising and marketing images from photos and text prompts you provide. Output is produced using artificial intelligence and may vary in quality and accuracy.` },
+      { heading: "1. What These Terms Cover", blocks: [
+        { p: `Admov offers two different things, and these Terms cover both:` },
+        { list: [
+          `**The Admov app** — a self-serve AI tool you download from the App Store and use with credits or a subscription. Sections 2 to 9 apply mainly to it.`,
+          `**The admov.io website** — our public site, including the blog, newsletter, and product pages. The website section below applies to it.`,
+        ] },
+        { p: `We also provide **agency and professional services** (AI content production, automation, websites, apps, and advertising) to business clients. Those engagements are not sold through this site: they are governed by a separate written agreement or quote signed with the client, which prevails over these Terms for that work. Nothing on the website is an offer, a quote, or a binding commitment to perform services.` },
       ] },
-      { heading: "2. Eligibility", blocks: [
+      { heading: "2. The Service", blocks: [
+        { p: `Admov is an AI-powered creative tool that lets you generate, edit, and enhance advertising and marketing images and videos from photos and text prompts you provide. Output is produced using artificial intelligence and may vary in quality and accuracy.` },
+      ] },
+      { heading: "3. Eligibility", blocks: [
         { p: `You must be at least 13 years old (or the minimum digital-consent age in your country) to use the Service. If you use Admov on behalf of a business, you represent that you are authorized to bind that business to these Terms.` },
       ] },
-      { heading: "3. Accounts", blocks: [
+      { heading: "4. Accounts", blocks: [
         { p: `You can browse parts of the app as a guest, but creating content requires an account. You are responsible for safeguarding your login credentials and for all activity under your account. Sign-in is provided via Apple, Google, or email. Notify us at info@admov.io of any unauthorized use.` },
       ] },
-      { heading: "4. Credits, Purchases & Subscriptions", blocks: [
+      { heading: "5. Credits, Purchases & Subscriptions", blocks: [
         { p: `The Service runs on a credit system. Credits and subscriptions are sold as in-app purchases processed by Apple.` },
         { list: [
           `**Consumable credits** are deducted when you generate or process content and are non-refundable once used, except where required by law.`,
@@ -26,7 +34,7 @@ const content: Record<Lang, LegalDoc> = {
           `Prices may change with notice. Refunds are handled by Apple under the App Store terms.`,
         ] },
       ] },
-      { heading: "5. Acceptable Use", blocks: [
+      { heading: "6. Acceptable Use", blocks: [
         { p: `You agree not to use the Service to create, upload, or share content that:` },
         { list: [
           `is illegal, infringing, defamatory, hateful, harassing, or violent;`,
@@ -37,10 +45,10 @@ const content: Record<Lang, LegalDoc> = {
         ] },
         { p: `We may filter prompts, review generated content, suspend accounts, and remove content that violates these Terms.` },
       ] },
-      { heading: "6. Your Content", blocks: [
+      { heading: "7. Your Content", blocks: [
         { p: `You retain ownership of the photos, logos, text, and other materials you upload ("Your Content"). You grant Admov a worldwide, non-exclusive license to host, process, and transmit Your Content solely to operate and improve the Service, including sending it to third-party AI providers to fulfill your requests. You represent that you have all rights necessary to upload Your Content and to authorize this processing.` },
       ] },
-      { heading: "7. Generated Output", blocks: [
+      { heading: "8. Generated Output", blocks: [
         { p: `Subject to your compliance with these Terms and applicable law, you may use the images you generate ("Output") for personal and commercial purposes. Because Output is produced by AI:` },
         { list: [
           `similar Output may be generated for other users;`,
@@ -48,36 +56,45 @@ const content: Record<Lang, LegalDoc> = {
           `you are solely responsible for how you use Output, including compliance with advertising, trademark, and consumer-protection laws.`,
         ] },
       ] },
-      { heading: "8. Intellectual Property", blocks: [
+      { heading: "9. Intellectual Property", blocks: [
         { p: `The Service, including its software, design, branding, and templates, is owned by Admov and protected by law. We grant you a limited, revocable, non-transferable license to use the app for its intended purpose. You may not copy, reverse engineer, or resell the Service.` },
       ] },
-      { heading: "9. Third-Party Services", blocks: [
+      { heading: "10. Website, Blog & Newsletter", blocks: [
+        { p: `The website is provided for information. You may read and share it, but you may not copy it wholesale, scrape it at scale, or reuse our branding, designs, or case studies without permission.` },
+        { p: `Some blog articles are drafted with the help of AI tools and reviewed by our team before publication. Articles are general information, not professional, legal, or financial advice, and we do not guarantee that they are complete or up to date.` },
+        { p: `If you submit the contact form or subscribe to the newsletter, you confirm the details you give us are yours and accurate. You can unsubscribe at any time by emailing info@admov.io.` },
+      ] },
+      { heading: "11. Agency & Professional Services", blocks: [
+        { p: `Any project work we take on — AI content production, automation, websites, apps, store management, or advertising — is agreed separately in writing, including scope, price, timeline, and ownership of deliverables. Where that agreement conflicts with these Terms, the signed agreement governs.` },
+        { p: `Portfolio work, testimonials, and results shown on the website are examples of past projects. They describe what we produced for those clients and are not a promise of similar results for you.` },
+      ] },
+      { heading: "12. Third-Party Services", blocks: [
         { p: `Admov relies on third parties including Apple, Google, and AI model and infrastructure providers. Your use of those services is subject to their terms, and we are not responsible for them.` },
       ] },
-      { heading: "10. Termination", blocks: [
+      { heading: "13. Termination", blocks: [
         { p: `We may suspend or terminate your access at any time for violation of these Terms or to protect the Service. You may stop using the Service and delete your account at any time from within the app.` },
       ] },
-      { heading: "11. Disclaimers", blocks: [
+      { heading: "14. Disclaimers", blocks: [
         { p: `THE SERVICE AND OUTPUT ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.` },
       ] },
-      { heading: "12. Limitation of Liability", blocks: [
+      { heading: "15. Limitation of Liability", blocks: [
         { p: `TO THE MAXIMUM EXTENT PERMITTED BY LAW, ADMOV WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES, OR FOR LOST PROFITS OR DATA. OUR TOTAL LIABILITY FOR ANY CLAIM WILL NOT EXCEED THE AMOUNT YOU PAID US IN THE 12 MONTHS BEFORE THE CLAIM.` },
       ] },
-      { heading: "13. Indemnification", blocks: [
+      { heading: "16. Indemnification", blocks: [
         { p: `You agree to indemnify and hold Admov harmless from claims arising out of Your Content, your Output, or your violation of these Terms or applicable law.` },
       ] },
-      { heading: "14. Apple App Store", blocks: [
+      { heading: "17. Apple App Store", blocks: [
         { p: `These Terms are between you and Admov, not Apple. Apple is not responsible for the Service or its content. Apple has no obligation to provide support or handle warranty claims, and is not responsible for any third-party claims relating to the app. Apple and its subsidiaries are third-party beneficiaries of these Terms and may enforce them against you.` },
       ] },
-      { heading: "15. Changes", blocks: [
+      { heading: "18. Changes", blocks: [
         { p: `We may update these Terms from time to time. Material changes will be posted in the app or on this page with a new "Last updated" date. Continued use after changes means you accept them.` },
       ] },
-      { heading: "16. Governing Law", blocks: [
+      { heading: "19. Governing Law", blocks: [
         { p: `These Terms are governed by the laws of **the Republic of Türkiye**, without regard to conflict-of-law rules. Disputes will be resolved in the courts of **Istanbul**, unless otherwise required by mandatory local law.` },
       ] },
     ],
     contact: {
-      heading: "17. Contact",
+      heading: "20. Contact",
       intro: `For questions about these Terms, you can reach us at:`,
       emailLabel: "Email",
       websiteLabel: "Website",
@@ -87,19 +104,27 @@ const content: Record<Lang, LegalDoc> = {
   ar: {
     eyebrow: "قانوني",
     title: "شروط الاستخدام",
-    updated: "آخر تحديث: 26 مايو 2026",
-    intro: `تحكم شروط الاستخدام هذه ("الشروط") وصولك إلى تطبيق Admov للهواتف المحمولة والخدمات المرتبطة به (يُشار إليها مجتمعةً بـ "الخدمة") واستخدامك لها، وتُشغّلها **Admov** ("نحن"، "لنا"، أو "خاصتنا"). بتنزيلك الخدمة أو الوصول إليها أو استخدامها، فإنك توافق على هذه الشروط. وإذا لم توافق، فلا تستخدم الخدمة.`,
+    updated: "آخر تحديث: 2 سبتمبر 2026",
+    intro: `تحكم شروط الاستخدام هذه ("الشروط") وصولك إلى تطبيق Admov للهواتف المحمولة وموقعنا على https://admov.io (يُشار إليهما مجتمعَين بـ "الخدمة") واستخدامك لهما، وتُشغّلها **Admov** ("نحن"، "لنا"، أو "خاصتنا"). بتنزيلك الخدمة أو الوصول إليها أو استخدامها، فإنك توافق على هذه الشروط. وإذا لم توافق، فلا تستخدم الخدمة.`,
     sections: [
-      { heading: "1. الخدمة", blocks: [
+      { heading: "1. ما الذي تغطّيه هذه الشروط", blocks: [
+        { p: `تقدّم Admov أمرين مختلفين، وتغطّي هذه الشروط كليهما:` },
+        { list: [
+          `**تطبيق Admov** — أداة ذكاء اصطناعي ذاتية الاستخدام تنزّلها من App Store وتستخدمها عبر الأرصدة أو الاشتراك. وتنطبق الأقسام من 2 إلى 9 عليه بصورة أساسية.`,
+          `**موقع admov.io** — موقعنا العام، بما في ذلك المدونة والنشرة البريدية وصفحات المنتجات. وينطبق عليه قسم الموقع أدناه.`,
+        ] },
+        { p: `كما نقدّم **خدمات وكالة وخدمات احترافية** (إنتاج محتوى بالذكاء الاصطناعي، وأتمتة، ومواقع، وتطبيقات، وإعلانات) لعملاء الأعمال. ولا تُباع هذه الخدمات عبر هذا الموقع: بل تحكمها اتفاقية مكتوبة منفصلة أو عرض سعر موقّع مع العميل، ويسري ذلك الاتفاق على هذه الشروط فيما يخص ذلك العمل. ولا يُعدّ أي محتوى على الموقع عرضاً أو تسعيرة أو التزاماً ملزماً بتقديم خدمات.` },
+      ] },
+      { heading: "2. الخدمة", blocks: [
         { p: `Admov أداة إبداعية مدعومة بالذكاء الاصطناعي تتيح لك إنشاء صور إعلانية وتسويقية وتحريرها وتحسينها انطلاقًا من الصور والنصوص التوجيهية التي تقدّمها. تُنتَج المُخرجات باستخدام الذكاء الاصطناعي وقد تتفاوت في الجودة والدقة.` },
       ] },
-      { heading: "2. الأهلية", blocks: [
+      { heading: "3. الأهلية", blocks: [
         { p: `يجب أن يكون عمرك 13 عامًا على الأقل (أو الحد الأدنى لسن الموافقة الرقمية في بلدك) لاستخدام الخدمة. إذا كنت تستخدم Admov نيابةً عن نشاط تجاري، فإنك تقرّ بأنك مخوّل بإلزام ذلك النشاط بهذه الشروط.` },
       ] },
-      { heading: "3. الحسابات", blocks: [
+      { heading: "4. الحسابات", blocks: [
         { p: `يمكنك تصفّح أجزاء من التطبيق كضيف، لكن إنشاء المحتوى يتطلّب حسابًا. أنت مسؤول عن حماية بيانات تسجيل دخولك وعن جميع الأنشطة التي تتم ضمن حسابك. يتوفّر تسجيل الدخول عبر Apple أو Google أو البريد الإلكتروني. أبلغنا عبر info@admov.io بأي استخدام غير مصرّح به.` },
       ] },
-      { heading: "4. الأرصدة والمشتريات والاشتراكات", blocks: [
+      { heading: "5. الأرصدة والمشتريات والاشتراكات", blocks: [
         { p: `تعمل الخدمة بنظام أرصدة. تُباع الأرصدة والاشتراكات كعمليات شراء داخل التطبيق تتم معالجتها عبر Apple.` },
         { list: [
           `**الأرصدة الاستهلاكية** تُخصَم عند إنشاء المحتوى أو معالجته وغير قابلة للاسترداد بعد استخدامها، إلا حيثما يقتضي القانون ذلك.`,
@@ -107,7 +132,7 @@ const content: Record<Lang, LegalDoc> = {
           `قد تتغيّر الأسعار مع إشعار مسبق. تتم معالجة عمليات الاسترداد عبر Apple بموجب شروط App Store.`,
         ] },
       ] },
-      { heading: "5. الاستخدام المقبول", blocks: [
+      { heading: "6. الاستخدام المقبول", blocks: [
         { p: `أنت توافق على عدم استخدام الخدمة لإنشاء أو رفع أو مشاركة محتوى:` },
         { list: [
           `غير قانوني أو مُنتهِك للحقوق أو تشهيري أو يحضّ على الكراهية أو يتضمّن مضايقة أو عنفًا؛`,
@@ -118,10 +143,10 @@ const content: Record<Lang, LegalDoc> = {
         ] },
         { p: `يجوز لنا تصفية النصوص التوجيهية، ومراجعة المحتوى المُنشأ، وتعليق الحسابات، وإزالة المحتوى الذي ينتهك هذه الشروط.` },
       ] },
-      { heading: "6. المحتوى الخاص بك", blocks: [
+      { heading: "7. المحتوى الخاص بك", blocks: [
         { p: `تحتفظ بملكية الصور والشعارات والنصوص والمواد الأخرى التي ترفعها ("المحتوى الخاص بك"). وتمنح Admov ترخيصًا عالميًا غير حصري لاستضافة المحتوى الخاص بك ومعالجته ونقله فقط لتشغيل الخدمة وتحسينها، بما في ذلك إرساله إلى مزوّدي ذكاء اصطناعي خارجيين لتلبية طلباتك. وتقرّ بأنك تملك جميع الحقوق اللازمة لرفع المحتوى الخاص بك والإذن بهذه المعالجة.` },
       ] },
-      { heading: "7. المُخرجات المُنشأة", blocks: [
+      { heading: "8. المُخرجات المُنشأة", blocks: [
         { p: `رهنًا بالتزامك بهذه الشروط والقانون المعمول به، يجوز لك استخدام الصور التي تنشئها ("المُخرجات") للأغراض الشخصية والتجارية. ولأن المُخرجات تُنتَج بواسطة الذكاء الاصطناعي:` },
         { list: [
           `قد تُنشأ مُخرجات مشابهة لمستخدمين آخرين؛`,
@@ -129,36 +154,45 @@ const content: Record<Lang, LegalDoc> = {
           `أنت وحدك المسؤول عن كيفية استخدامك للمُخرجات، بما في ذلك الامتثال لقوانين الإعلان والعلامات التجارية وحماية المستهلك.`,
         ] },
       ] },
-      { heading: "8. الملكية الفكرية", blocks: [
+      { heading: "9. الملكية الفكرية", blocks: [
         { p: `الخدمة، بما في ذلك برمجياتها وتصميمها وعلامتها التجارية وقوالبها، مملوكة لـ Admov ومحمية بموجب القانون. نمنحك ترخيصًا محدودًا وقابلاً للإلغاء وغير قابل للنقل لاستخدام التطبيق للغرض المقصود منه. لا يجوز لك نسخ الخدمة أو هندستها عكسيًا أو إعادة بيعها.` },
       ] },
-      { heading: "9. خدمات الأطراف الثالثة", blocks: [
+      { heading: "10. الموقع والمدونة والنشرة البريدية", blocks: [
+        { p: `يُقدَّم الموقع لأغراض المعلومات. يمكنك قراءته ومشاركته، لكن لا يجوز نسخه بالكامل أو استخلاص محتواه على نطاق واسع أو إعادة استخدام علامتنا التجارية أو تصاميمنا أو دراسات الحالة دون إذن.` },
+        { p: `تُصاغ بعض مقالات المدونة بمساعدة أدوات الذكاء الاصطناعي ويراجعها فريقنا قبل النشر. والمقالات معلومات عامة وليست استشارة مهنية أو قانونية أو مالية، ولا نضمن اكتمالها أو حداثتها.` },
+        { p: `عند إرسال نموذج التواصل أو الاشتراك في النشرة البريدية، فإنك تؤكد أن البيانات التي تقدّمها تخصّك وأنها صحيحة. ويمكنك إلغاء الاشتراك في أي وقت بمراسلة info@admov.io.` },
+      ] },
+      { heading: "11. خدمات الوكالة والخدمات الاحترافية", blocks: [
+        { p: `أي عمل مشروعي نتولّاه — إنتاج محتوى بالذكاء الاصطناعي، أو أتمتة، أو مواقع، أو تطبيقات، أو إدارة متاجر، أو إعلانات — يُتفق عليه كتابةً بصورة منفصلة، بما في ذلك النطاق والسعر والجدول الزمني وملكية المُخرجات. وعند تعارض ذلك الاتفاق مع هذه الشروط، يسري الاتفاق الموقّع.` },
+        { p: `الأعمال والشهادات والنتائج المعروضة على الموقع هي أمثلة على مشاريع سابقة. وهي تصف ما أنجزناه لأولئك العملاء ولا تُعدّ وعداً بتحقيق نتائج مماثلة لك.` },
+      ] },
+      { heading: "12. خدمات الأطراف الثالثة", blocks: [
         { p: `تعتمد Admov على أطراف ثالثة، منها Apple وGoogle ومزوّدو نماذج الذكاء الاصطناعي والبنية التحتية. ويخضع استخدامك لتلك الخدمات لشروطها، ولسنا مسؤولين عنها.` },
       ] },
-      { heading: "10. الإنهاء", blocks: [
+      { heading: "13. الإنهاء", blocks: [
         { p: `يجوز لنا تعليق وصولك أو إنهاؤه في أي وقت بسبب انتهاك هذه الشروط أو لحماية الخدمة. ويمكنك التوقف عن استخدام الخدمة وحذف حسابك في أي وقت من داخل التطبيق.` },
       ] },
-      { heading: "11. إخلاء المسؤولية", blocks: [
+      { heading: "14. إخلاء المسؤولية", blocks: [
         { p: `تُقدَّم الخدمة والمُخرجات "كما هي" و"حسب توفّرها" دون أي ضمانات من أي نوع، صريحة كانت أو ضمنية، بما في ذلك ضمانات القابلية للتسويق والملاءمة لغرض معيّن وعدم انتهاك الحقوق.` },
       ] },
-      { heading: "12. تحديد المسؤولية", blocks: [
+      { heading: "15. تحديد المسؤولية", blocks: [
         { p: `إلى أقصى حدّ يسمح به القانون، لن تكون Admov مسؤولة عن الأضرار غير المباشرة أو العَرَضية أو الخاصة أو التبعية، أو عن خسارة الأرباح أو البيانات. ولن تتجاوز مسؤوليتنا الإجمالية عن أي مطالبة المبلغ الذي دفعته لنا خلال الـ 12 شهرًا السابقة للمطالبة.` },
       ] },
-      { heading: "13. التعويض", blocks: [
+      { heading: "16. التعويض", blocks: [
         { p: `أنت توافق على تعويض Admov وإبراء ذمتها من أي مطالبات تنشأ عن المحتوى الخاص بك أو مُخرجاتك أو انتهاكك لهذه الشروط أو للقانون المعمول به.` },
       ] },
-      { heading: "14. متجر Apple App Store", blocks: [
+      { heading: "17. متجر Apple App Store", blocks: [
         { p: `هذه الشروط مبرمة بينك وبين Admov، وليست مع Apple. ليست Apple مسؤولة عن الخدمة أو محتواها. ولا يقع على Apple أي التزام بتقديم الدعم أو معالجة مطالبات الضمان، وليست مسؤولة عن أي مطالبات من أطراف ثالثة تتعلق بالتطبيق. وتُعدّ Apple وشركاتها التابعة مستفيدين من أطراف ثالثة بموجب هذه الشروط ويجوز لها إنفاذها بحقك.` },
       ] },
-      { heading: "15. التغييرات", blocks: [
+      { heading: "18. التغييرات", blocks: [
         { p: `قد نحدّث هذه الشروط من وقت لآخر. ستُنشر التغييرات الجوهرية داخل التطبيق أو على هذه الصفحة مع تاريخ "آخر تحديث" جديد. ويعني استمرارك في الاستخدام بعد التغييرات قبولك لها.` },
       ] },
-      { heading: "16. القانون الحاكم", blocks: [
+      { heading: "19. القانون الحاكم", blocks: [
         { p: `تخضع هذه الشروط لقوانين **جمهورية تركيا**، دون اعتبار لقواعد تنازع القوانين. وتُحَلّ النزاعات في محاكم **إسطنبول**، ما لم يقتضِ القانون المحلي الإلزامي خلاف ذلك.` },
       ] },
     ],
     contact: {
-      heading: "17. التواصل",
+      heading: "20. التواصل",
       intro: `لأي أسئلة حول هذه الشروط، يمكنك التواصل معنا عبر:`,
       emailLabel: "البريد الإلكتروني",
       websiteLabel: "الموقع الإلكتروني",
@@ -168,19 +202,27 @@ const content: Record<Lang, LegalDoc> = {
   tr: {
     eyebrow: "Yasal",
     title: "Kullanım Koşulları",
-    updated: "Son güncelleme: 26 Mayıs 2026",
-    intro: `Bu Kullanım Koşulları ("Koşullar"), Admov mobil uygulamasına ve ilgili hizmetlere (topluca "Hizmet") erişiminizi ve bunları kullanımınızı düzenler; Hizmet **Admov** ("biz", "bize" veya "bizim") tarafından işletilir. Hizmeti indirerek, ona erişerek veya kullanarak bu Koşulları kabul edersiniz. Kabul etmiyorsanız Hizmeti kullanmayın.`,
+    updated: "Son güncelleme: 2 Eylül 2026",
+    intro: `Bu Kullanım Koşulları ("Koşullar"), Admov mobil uygulamasına ve https://admov.io adresindeki web sitemize (topluca "Hizmet") erişiminizi ve bunları kullanımınızı düzenler; Hizmet **Admov** ("biz", "bize" veya "bizim") tarafından işletilir. Hizmeti indirerek, ona erişerek veya kullanarak bu Koşulları kabul edersiniz. Kabul etmiyorsanız Hizmeti kullanmayın.`,
     sections: [
-      { heading: "1. Hizmet", blocks: [
+      { heading: "1. Bu Koşullar Neyi Kapsar", blocks: [
+        { p: `Admov birbirinden farklı iki şey sunar ve bu Koşullar her ikisini de kapsar:` },
+        { list: [
+          `**Admov uygulaması** — App Store'dan indirdiğiniz, kredi veya abonelikle kullandığınız self servis bir yapay zeka aracı. 2 ile 9 arasındaki bölümler esas olarak bunun içindir.`,
+          `**admov.io web sitesi** — blog, bülten ve ürün sayfaları dahil olmak üzere herkese açık sitemiz. Aşağıdaki web sitesi bölümü bunun içindir.`,
+        ] },
+        { p: `Ayrıca kurumsal müşterilere **ajans ve profesyonel hizmetler** (yapay zeka içerik üretimi, otomasyon, web siteleri, uygulamalar ve reklamcılık) sunuyoruz. Bu işler bu site üzerinden satılmaz: müşteriyle imzalanan ayrı bir yazılı sözleşme veya teklif ile düzenlenir ve o iş bakımından bu Koşulların önüne geçer. Web sitesindeki hiçbir içerik bir teklif, fiyat taahhüdü veya hizmet sunma yükümlülüğü doğurmaz.` },
+      ] },
+      { heading: "2. Hizmet", blocks: [
         { p: `Admov, sağladığınız fotoğraflar ve metin istemlerinden reklam ve pazarlama görselleri oluşturmanıza, düzenlemenize ve geliştirmenize olanak tanıyan yapay zeka destekli bir yaratıcı araçtır. Çıktı yapay zeka kullanılarak üretilir ve kalite ile doğrulukta değişiklik gösterebilir.` },
       ] },
-      { heading: "2. Uygunluk", blocks: [
+      { heading: "3. Uygunluk", blocks: [
         { p: `Hizmeti kullanmak için en az 13 yaşında (veya ülkenizdeki asgari dijital onay yaşında) olmalısınız. Admov'u bir işletme adına kullanıyorsanız, o işletmeyi bu Koşullarla bağlama yetkiniz olduğunu beyan edersiniz.` },
       ] },
-      { heading: "3. Hesaplar", blocks: [
+      { heading: "4. Hesaplar", blocks: [
         { p: `Uygulamanın bazı bölümlerine misafir olarak göz atabilirsiniz, ancak içerik oluşturmak bir hesap gerektirir. Giriş bilgilerinizi korumaktan ve hesabınız altındaki tüm etkinliklerden siz sorumlusunuz. Giriş Apple, Google veya e-posta ile sağlanır. Yetkisiz herhangi bir kullanımı info@admov.io adresinden bize bildirin.` },
       ] },
-      { heading: "4. Krediler, Satın Almalar ve Abonelikler", blocks: [
+      { heading: "5. Krediler, Satın Almalar ve Abonelikler", blocks: [
         { p: `Hizmet bir kredi sistemiyle çalışır. Krediler ve abonelikler, Apple tarafından işlenen uygulama içi satın almalar olarak satılır.` },
         { list: [
           `**Tüketilebilir krediler**, içerik oluşturduğunuzda veya işlediğinizde düşülür ve yasaların gerektirdiği durumlar dışında, kullanıldıktan sonra iade edilemez.`,
@@ -188,7 +230,7 @@ const content: Record<Lang, LegalDoc> = {
           `Fiyatlar bildirimde bulunularak değişebilir. İadeler, App Store koşulları kapsamında Apple tarafından yönetilir.`,
         ] },
       ] },
-      { heading: "5. Kabul Edilebilir Kullanım", blocks: [
+      { heading: "6. Kabul Edilebilir Kullanım", blocks: [
         { p: `Hizmeti, aşağıdaki nitelikte içerik oluşturmak, yüklemek veya paylaşmak için kullanmamayı kabul edersiniz:` },
         { list: [
           `yasa dışı, hak ihlali içeren, hakaret edici, nefret söylemi içeren, taciz edici veya şiddet içeren;`,
@@ -199,10 +241,10 @@ const content: Record<Lang, LegalDoc> = {
         ] },
         { p: `İstemleri filtreleyebilir, oluşturulan içeriği inceleyebilir, hesapları askıya alabilir ve bu Koşulları ihlal eden içeriği kaldırabiliriz.` },
       ] },
-      { heading: "6. İçeriğiniz", blocks: [
+      { heading: "7. İçeriğiniz", blocks: [
         { p: `Yüklediğiniz fotoğrafların, logoların, metinlerin ve diğer materyallerin ("İçeriğiniz") mülkiyetini elinizde tutarsınız. Admov'a, yalnızca Hizmeti işletmek ve geliştirmek amacıyla — taleplerinizi yerine getirmek üzere üçüncü taraf yapay zeka sağlayıcılarına göndermek dahil — İçeriğinizi barındırması, işlemesi ve iletmesi için dünya çapında, münhasır olmayan bir lisans verirsiniz. İçeriğinizi yüklemek ve bu işlemeye izin vermek için gerekli tüm haklara sahip olduğunuzu beyan edersiniz.` },
       ] },
-      { heading: "7. Oluşturulan Çıktı", blocks: [
+      { heading: "8. Oluşturulan Çıktı", blocks: [
         { p: `Bu Koşullara ve geçerli yasalara uymanız koşuluyla, oluşturduğunuz görselleri ("Çıktı") kişisel ve ticari amaçlarla kullanabilirsiniz. Çıktı yapay zeka tarafından üretildiğinden:` },
         { list: [
           `diğer kullanıcılar için benzer Çıktı oluşturulabilir;`,
@@ -210,36 +252,45 @@ const content: Record<Lang, LegalDoc> = {
           `Çıktıyı nasıl kullandığınızdan — reklam, ticari marka ve tüketici koruma yasalarına uyum dahil — yalnızca siz sorumlusunuz.`,
         ] },
       ] },
-      { heading: "8. Fikri Mülkiyet", blocks: [
+      { heading: "9. Fikri Mülkiyet", blocks: [
         { p: `Yazılımı, tasarımı, markası ve şablonları dahil olmak üzere Hizmet, Admov'a aittir ve yasalarca korunur. Size, uygulamayı amaçlanan şekilde kullanmanız için sınırlı, geri alınabilir ve devredilemez bir lisans veririz. Hizmeti kopyalayamaz, tersine mühendislik yapamaz veya yeniden satamazsınız.` },
       ] },
-      { heading: "9. Üçüncü Taraf Hizmetleri", blocks: [
+      { heading: "10. Web Sitesi, Blog ve Bülten", blocks: [
+        { p: `Web sitesi bilgilendirme amaçlıdır. İçeriği okuyabilir ve paylaşabilirsiniz; ancak toptan kopyalayamaz, büyük ölçekli veri kazıması yapamaz ya da marka, tasarım ve vaka çalışmalarımızı izinsiz yeniden kullanamazsınız.` },
+        { p: `Bazı blog yazıları yapay zeka araçlarının yardımıyla hazırlanır ve yayımlanmadan önce ekibimiz tarafından gözden geçirilir. Yazılar genel bilgi niteliğindedir; profesyonel, hukuki veya mali danışmanlık değildir ve eksiksiz ya da güncel olduklarını garanti etmeyiz.` },
+        { p: `İletişim formunu gönderdiğinizde veya bültene abone olduğunuzda, verdiğiniz bilgilerin size ait ve doğru olduğunu beyan edersiniz. info@admov.io adresine yazarak istediğiniz zaman abonelikten çıkabilirsiniz.` },
+      ] },
+      { heading: "11. Ajans ve Profesyonel Hizmetler", blocks: [
+        { p: `Üstlendiğimiz her proje işi — yapay zeka içerik üretimi, otomasyon, web siteleri, uygulamalar, mağaza yönetimi veya reklamcılık — kapsam, fiyat, takvim ve teslim edilen işlerin mülkiyeti dahil olmak üzere ayrıca yazılı olarak kararlaştırılır. Bu sözleşme ile Koşullar çeliştiğinde imzalı sözleşme geçerlidir.` },
+        { p: `Web sitesinde gösterilen portföy çalışmaları, referanslar ve sonuçlar geçmiş projelere ait örneklerdir. O müşteriler için ürettiğimiz işi anlatır; sizin için benzer sonuçlar elde edileceği taahhüdü değildir.` },
+      ] },
+      { heading: "12. Üçüncü Taraf Hizmetleri", blocks: [
         { p: `Admov; Apple, Google ve yapay zeka modeli ile altyapı sağlayıcıları dahil üçüncü taraflara dayanır. Bu hizmetleri kullanımınız onların koşullarına tabidir ve biz onlardan sorumlu değiliz.` },
       ] },
-      { heading: "10. Fesih", blocks: [
+      { heading: "13. Fesih", blocks: [
         { p: `Bu Koşulların ihlali nedeniyle veya Hizmeti korumak için erişiminizi istediğimiz zaman askıya alabilir veya sonlandırabiliriz. Hizmeti kullanmayı bırakabilir ve hesabınızı istediğiniz zaman uygulama içinden silebilirsiniz.` },
       ] },
-      { heading: "11. Sorumluluk Reddi", blocks: [
+      { heading: "14. Sorumluluk Reddi", blocks: [
         { p: `HİZMET VE ÇIKTI; TİCARİ ELVERİŞLİLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME DAHİL OLMAK ÜZERE, AÇIK VEYA ZIMNİ HİÇBİR GARANTİ OLMAKSIZIN "OLDUĞU GİBİ" VE "MEVCUT HÂLİYLE" SAĞLANIR.` },
       ] },
-      { heading: "12. Sorumluluğun Sınırlandırılması", blocks: [
+      { heading: "15. Sorumluluğun Sınırlandırılması", blocks: [
         { p: `YASALARIN İZİN VERDİĞİ AZAMİ ÖLÇÜDE, ADMOV DOLAYLI, ARIZİ, ÖZEL VEYA SONUÇSAL ZARARLARDAN YA DA KÂR VEYA VERİ KAYBINDAN SORUMLU OLMAYACAKTIR. HERHANGİ BİR TALEP İÇİN TOPLAM SORUMLULUĞUMUZ, TALEPTEN ÖNCEKİ 12 AY İÇİNDE BİZE ÖDEDİĞİNİZ TUTARI AŞMAYACAKTIR.` },
       ] },
-      { heading: "13. Tazminat", blocks: [
+      { heading: "16. Tazminat", blocks: [
         { p: `İçeriğinizden, Çıktınızdan veya bu Koşulları ya da geçerli yasaları ihlal etmenizden kaynaklanan taleplere karşı Admov'u tazmin etmeyi ve zarar görmemesini sağlamayı kabul edersiniz.` },
       ] },
-      { heading: "14. Apple App Store", blocks: [
+      { heading: "17. Apple App Store", blocks: [
         { p: `Bu Koşullar sizinle Admov arasındadır, Apple ile değil. Apple, Hizmetten veya içeriğinden sorumlu değildir. Apple'ın destek sağlama veya garanti taleplerini ele alma yükümlülüğü yoktur ve uygulamayla ilgili herhangi bir üçüncü taraf talebinden sorumlu değildir. Apple ve bağlı kuruluşları bu Koşulların üçüncü taraf yararlanıcılarıdır ve bunları size karşı uygulayabilirler.` },
       ] },
-      { heading: "15. Değişiklikler", blocks: [
+      { heading: "18. Değişiklikler", blocks: [
         { p: `Bu Koşulları zaman zaman güncelleyebiliriz. Önemli değişiklikler, yeni bir "Son güncelleme" tarihiyle uygulamada veya bu sayfada yayınlanacaktır. Değişikliklerden sonra kullanmaya devam etmeniz, bunları kabul ettiğiniz anlamına gelir.` },
       ] },
-      { heading: "16. Geçerli Hukuk", blocks: [
+      { heading: "19. Geçerli Hukuk", blocks: [
         { p: `Bu Koşullar, kanunlar ihtilafı kurallarına bakılmaksızın **Türkiye Cumhuriyeti** yasalarına tabidir. Zorunlu yerel yasaların aksini gerektirdiği durumlar dışında, uyuşmazlıklar **İstanbul** mahkemelerinde çözümlenecektir.` },
       ] },
     ],
     contact: {
-      heading: "17. İletişim",
+      heading: "20. İletişim",
       intro: `Bu Koşullar hakkında sorularınız için bize şu adresten ulaşabilirsiniz:`,
       emailLabel: "E-posta",
       websiteLabel: "Web Sitesi",

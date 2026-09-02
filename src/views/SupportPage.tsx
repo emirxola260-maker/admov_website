@@ -28,10 +28,10 @@ const content: Record<Lang, SupportContent> = {
   en: {
     eyebrow: "Help Center",
     title: "Admov Support",
-    subtitle: "Need help with Admov? We're here for you.",
+    subtitle: "Help with the Admov app, and where to reach us about a project. We're here for you.",
     contactHeading: "Contact us",
     contactIntro: "The fastest way to reach us is email:",
-    includeIntro: "We typically reply within 1–2 business days. To help us help you faster, please include:",
+    includeIntro: "We typically reply within 1–2 business days. If you are writing about the app, please include:",
     includeItems: [
       "Your account email",
       "The device and iOS version you're using",
@@ -65,6 +65,11 @@ const content: Record<Lang, SupportContent> = {
         { q: "Who owns the images I create?", a: "You can use the images you generate for personal and commercial purposes, subject to our Terms of Use. Because output is AI-generated, please review it before publishing." },
         { q: "How do I report a problem with generated content?", a: "Use the report option on any result, or email info@admov.io. Prompts are filtered and content may be reviewed to keep Admov safe." },
       ] },
+      { title: "Business & project enquiries", faqs: [
+        { q: "Can you build something for my business?", a: "Yes. Alongside the app, Admov works with businesses on AI video and photo production, automation systems, websites and apps, ads, and Shopify stores. Tell us what you need at info@admov.io, or book a free call from the contact section on our homepage." },
+        { q: "How much does a project cost?", a: "Every project is quoted after a free discovery call, once we understand the scope. Creative work is usually a fixed price; automation, ads, and store management are usually a monthly plan." },
+        { q: "Who owns the work you produce for us?", a: "You do. Delivered creatives, code, automations, and accounts are yours, and we hand them over with documentation so your team can run them. The specifics are set out in the written agreement for your project." },
+      ] },
     ],
     legalHeading: "Legal",
     termsLabel: "Terms of Use",
@@ -76,10 +81,10 @@ const content: Record<Lang, SupportContent> = {
   ar: {
     eyebrow: "مركز المساعدة",
     title: "دعم Admov",
-    subtitle: "هل تحتاج إلى مساعدة في Admov؟ نحن هنا من أجلك.",
+    subtitle: "مساعدة في تطبيق Admov، وكيفية التواصل معنا بشأن مشروع. نحن هنا من أجلك.",
     contactHeading: "تواصل معنا",
     contactIntro: "أسرع طريقة للوصول إلينا هي البريد الإلكتروني:",
-    includeIntro: "نردّ عادةً خلال يوم إلى يومين من أيام العمل. ولمساعدتنا على مساعدتك بشكل أسرع، يُرجى تضمين:",
+    includeIntro: "نردّ عادةً خلال يوم إلى يومين من أيام العمل. وإذا كانت رسالتك بخصوص التطبيق، يُرجى تضمين:",
     includeItems: [
       "البريد الإلكتروني لحسابك",
       "نوع الجهاز وإصدار iOS الذي تستخدمه",
@@ -113,6 +118,11 @@ const content: Record<Lang, SupportContent> = {
         { q: "من يملك الصور التي أنشئها؟", a: "يمكنك استخدام الصور التي تنشئها للأغراض الشخصية والتجارية، وفقًا لشروط الاستخدام لدينا. ولأن المُخرجات مولّدة بالذكاء الاصطناعي، يُرجى مراجعتها قبل النشر." },
         { q: "كيف أبلّغ عن مشكلة في المحتوى المُنشأ؟", a: "استخدم خيار الإبلاغ على أي نتيجة، أو راسلنا على info@admov.io. تُصفّى النصوص التوجيهية وقد تتم مراجعة المحتوى للحفاظ على سلامة Admov." },
       ] },
+      { title: "استفسارات الأعمال والمشاريع", faqs: [
+        { q: "هل يمكنكم بناء شيء لنشاطي التجاري؟", a: "نعم. إلى جانب التطبيق، تعمل Admov مع الشركات على إنتاج الفيديو والصور بالذكاء الاصطناعي، وأنظمة الأتمتة، والمواقع والتطبيقات، والإعلانات، ومتاجر Shopify. أخبرنا بما تحتاجه على info@admov.io، أو احجز مكالمة مجانية من قسم التواصل في صفحتنا الرئيسية." },
+        { q: "كم تكلفة المشروع؟", a: "يُسعَّر كل مشروع بعد مكالمة اكتشاف مجانية، بمجرد أن نفهم النطاق. الأعمال الإبداعية عادةً بسعر ثابت، أما الأتمتة والإعلانات وإدارة المتاجر فتكون عادةً بخطة شهرية." },
+        { q: "من يملك العمل الذي تنجزونه لنا؟", a: "أنت تملكه. التصاميم والأكواد والأتمتة والحسابات المسلَّمة ملك لك، ونسلّمها مع التوثيق ليتمكن فريقك من تشغيلها. وتُحدَّد التفاصيل في الاتفاقية المكتوبة الخاصة بمشروعك." },
+      ] },
     ],
     legalHeading: "قانوني",
     termsLabel: "شروط الاستخدام",
@@ -124,10 +134,10 @@ const content: Record<Lang, SupportContent> = {
   tr: {
     eyebrow: "Yardım Merkezi",
     title: "Admov Destek",
-    subtitle: "Admov ile ilgili yardıma mı ihtiyacınız var? Buradayız.",
+    subtitle: "Admov uygulaması için yardım ve proje görüşmeleri için bize ulaşabileceğiniz yer. Buradayız.",
     contactHeading: "Bize ulaşın",
     contactIntro: "Bize ulaşmanın en hızlı yolu e-postadır:",
-    includeIntro: "Genellikle 1–2 iş günü içinde yanıt veririz. Size daha hızlı yardımcı olabilmemiz için lütfen şunları ekleyin:",
+    includeIntro: "Genellikle 1–2 iş günü içinde yanıt veririz. Uygulamayla ilgili yazıyorsanız lütfen şunları ekleyin:",
     includeItems: [
       "Hesap e-postanız",
       "Kullandığınız cihaz ve iOS sürümü",
@@ -160,6 +170,11 @@ const content: Record<Lang, SupportContent> = {
       { title: "İçerik ve güvenlik", faqs: [
         { q: "Oluşturduğum görsellerin sahibi kim?", a: "Oluşturduğunuz görselleri, Kullanım Koşullarımıza tabi olarak kişisel ve ticari amaçlarla kullanabilirsiniz. Çıktı yapay zeka ile üretildiğinden, yayınlamadan önce lütfen gözden geçirin." },
         { q: "Oluşturulan içerikle ilgili bir sorunu nasıl bildiririm?", a: "Herhangi bir sonuçtaki bildirme seçeneğini kullanın veya info@admov.io adresine e-posta gönderin. Admov'u güvende tutmak için istemler filtrelenir ve içerik incelenebilir." },
+      ] },
+      { title: "İş ve proje talepleri", faqs: [
+        { q: "İşletmem için bir şey geliştirebilir misiniz?", a: "Evet. Admov, uygulamanın yanı sıra işletmelerle yapay zeka video ve fotoğraf üretimi, otomasyon sistemleri, web siteleri ve uygulamalar, reklamlar ve Shopify mağazaları üzerine çalışır. İhtiyacınızı info@admov.io adresine yazın veya ana sayfamızdaki iletişim bölümünden ücretsiz görüşme planlayın." },
+        { q: "Bir proje ne kadara mal olur?", a: "Her proje, kapsamı anladıktan sonra ücretsiz bir keşif görüşmesinin ardından fiyatlandırılır. Kreatif işler genellikle sabit fiyatlıdır; otomasyon, reklam ve mağaza yönetimi genellikle aylık plan şeklindedir." },
+        { q: "Bizim için ürettiğiniz işin sahibi kim?", a: "Siz. Teslim edilen kreatifler, kodlar, otomasyonlar ve hesaplar size aittir; ekibinizin yönetebilmesi için dokümantasyonuyla birlikte devrederiz. Ayrıntılar projenizin yazılı sözleşmesinde belirlenir." },
       ] },
     ],
     legalHeading: "Yasal",
