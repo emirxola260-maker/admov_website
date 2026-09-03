@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Play } from "lucide-react";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ShinyText from "./ShinyText";
 import dynamic from "next/dynamic";
@@ -99,7 +100,7 @@ export function Hero() {
                 <ArrowRight size={20} className="rtl:rotate-180" />
               </a>
               <Link
-                href="/work"
+                href={localePath(lang, "/work")}
                 className="text-zinc-50 px-8 py-4 rounded-full font-syne font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95 backdrop-blur-xl border border-white/20 w-full sm:w-auto"
                 style={{
                   backgroundImage: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
@@ -174,11 +175,14 @@ export function Hero() {
           >
             <div className="aspect-square rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl relative group">
               <video
-                src="/hero-video.mp4"
+                src="/hero-video-1280.mp4"
+                poster="/hero-poster.jpg"
+                preload="metadata"
                 autoPlay
                 loop
                 muted
                 playsInline
+                aria-label="ADMOV showreel"
                 className="w-full h-full object-cover opacity-90"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 to-transparent" />

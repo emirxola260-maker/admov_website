@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 export type Lang = "en" | "ar" | "tr";
@@ -126,9 +127,9 @@ export function PageChrome({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-zinc-500">© {new Date().getFullYear()} ADMOV. {t.footer.rights}</p>
           <div className="flex gap-6">
-            <Link href="/support" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.support}</Link>
-            <Link href="/privacy" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.privacy}</Link>
-            <Link href="/terms" className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.terms}</Link>
+            <Link href={localePath(lang, "/support")} className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.support}</Link>
+            <Link href={localePath(lang, "/privacy")} className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.privacy}</Link>
+            <Link href={localePath(lang, "/terms")} className="text-sm text-zinc-400 hover:text-violet transition-colors">{t.footer.terms}</Link>
           </div>
         </div>
       </footer>

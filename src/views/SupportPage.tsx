@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { PageChrome, renderRich, type Lang } from "./legalShared";
 
@@ -240,8 +241,8 @@ export function SupportPage() {
         <section>
           <h2 className="text-2xl font-syne font-bold text-zinc-50 mb-4">{c.legalHeading}</h2>
           <ul className="list-disc list-inside mt-3 space-y-2 text-zinc-400">
-            <li><Link href="/terms" className="text-violet hover:text-violet-light transition-colors">{c.termsLabel}</Link></li>
-            <li><Link href="/privacy" className="text-violet hover:text-violet-light transition-colors">{c.privacyLabel}</Link></li>
+            <li><Link href={localePath(lang, "/terms")} className="text-violet hover:text-violet-light transition-colors">{c.termsLabel}</Link></li>
+            <li><Link href={localePath(lang, "/privacy")} className="text-violet hover:text-violet-light transition-colors">{c.privacyLabel}</Link></li>
           </ul>
         </section>
 

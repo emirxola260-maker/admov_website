@@ -1,6 +1,6 @@
 /**
  * Returns the URL only if it is a root-relative path (same-origin asset such as
- * `/work-kyom.png`) or uses the http(s) scheme; otherwise returns `fallback`.
+ * `/work-kyom.webp`) or uses the http(s) scheme; otherwise returns `fallback`.
  * Prevents `javascript:`, `data:`, protocol-relative (`//evil.com`) and other
  * dangerous values from reaching `href`/`src` attributes when the value comes
  * from admin-editable content.

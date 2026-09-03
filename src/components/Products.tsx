@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import type { Language } from "@/i18n/config";
 import type { Product } from "@/lib/products/types";
@@ -57,7 +58,7 @@ export function ProductCard({ product, lang, index = 0 }: { product: Product; la
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
               {logo ? (
-                <img src={logo} alt="" className="w-full h-full object-contain p-1.5" />
+                <img src={logo} alt={`${product.name} logo`} className="w-full h-full object-contain p-1.5" />
               ) : (
                 <span className="font-syne font-extrabold text-violet-light">{product.name.charAt(0)}</span>
               )}
@@ -112,7 +113,7 @@ export function Products({ products }: { products: Product[] }) {
             </h2>
             <p className="mt-4 text-lg text-zinc-400">{t.products.subtext}</p>
           </div>
-          <Link href="/products" className="font-syne font-bold text-zinc-50 hover:text-violet transition-colors flex items-center gap-2 group shrink-0">
+          <Link href={localePath(lang, "/products")} className="font-syne font-bold text-zinc-50 hover:text-violet transition-colors flex items-center gap-2 group shrink-0">
             {t.products.viewAll}
             <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform rtl:-scale-x-100" />
           </Link>

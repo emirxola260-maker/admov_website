@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SUPPORTED_LANGS } from "@/i18n/config";
 import { getAllPublishedSlugs } from "@/lib/data/posts";
 import { blogHref } from "@/lib/blog/utils";
+import { LOCALIZED_PATHS, localePath } from "@/lib/i18n/paths";
 import { SITE_URL } from "@/lib/blog/metadata";
 
 // Rendered per request: the post list is cached in the data layer under the
@@ -15,12 +16,19 @@ function languagesFor(slug?: string) {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const staticRoutes: MetadataRoute.Sitemap = ["", "/work", "/products", "/support", "/privacy", "/terms"].map((path) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified: now,
-    changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : 0.7,
-  }));
+  // Every marketing page now exists in all three languages, each with its own
+  // URL and hreflang set, so Google can index the Arabic and Turkish versions.
+  const staticRoutes: MetadataRoute.Sitemap = LOCALIZED_PATHS.flatMap((path) =>
+    SUPPORTED_LANGS.map((lang) => ({
+      url: `${SITE_URL}${localePath(lang, path)}`,
+      lastModified: now,
+      changeFrequency: (path === "/" ? "weekly" : "monthly") as "weekly" | "monthly",
+      priority: path === "/" ? 1 : 0.7,
+      alternates: {
+        languages: Object.fromEntries(SUPPORTED_LANGS.map((l) => [l, `${SITE_URL}${localePath(l, path)}`])),
+      },
+    })),
+  );
 
   const blogIndexes: MetadataRoute.Sitemap = SUPPORTED_LANGS.map((lang) => ({
     url: `${SITE_URL}${blogHref(lang)}`,

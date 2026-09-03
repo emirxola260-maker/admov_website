@@ -69,7 +69,7 @@ export async function PostView({ post, lang, more, isPreview = false }: { post: 
             </div>
             <ShareBar url={url} title={title} lang={lang} />
           </div>
-          {cover && <img src={cover} alt="" className="w-full rounded-3xl mb-10 border border-white/10" />}
+          {cover && <img src={cover} alt={title} className="w-full rounded-3xl mb-10 border border-white/10" />}
           <PostArticle markdown={body} lang={lang} />
           {post.tags.length > 0 && (
             <div className="mt-10 flex flex-wrap gap-2">

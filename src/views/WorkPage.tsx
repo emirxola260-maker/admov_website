@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Play, ArrowLeft, ArrowRight, ExternalLink, Plus, Filter } from "lucide-react";
 import Link from "next/link";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useAdminContent } from "@/admin/useAdminContent";
 import content from "@/data/content.json";
@@ -345,8 +346,8 @@ export function WorkPage() {
           </div>
           <p className="text-sm text-zinc-500">&copy; {new Date().getFullYear()} ADMOV. {t.footer.rights}</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="text-sm text-zinc-500 hover:text-violet transition-colors">{t.footer.privacy}</Link>
-            <Link href="/terms" className="text-sm text-zinc-500 hover:text-violet transition-colors">{t.footer.terms}</Link>
+            <Link href={localePath(lang as Language, "/privacy")} className="text-sm text-zinc-500 hover:text-violet transition-colors">{t.footer.privacy}</Link>
+            <Link href={localePath(lang as Language, "/terms")} className="text-sm text-zinc-500 hover:text-violet transition-colors">{t.footer.terms}</Link>
           </div>
         </div>
       </footer>

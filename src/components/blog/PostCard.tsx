@@ -26,7 +26,7 @@ export function PostCard({ post, lang, large = false }: { post: PostSummary; lan
       <div className={cn("relative overflow-hidden bg-zinc-900 aspect-[16/10] shrink-0", large && "lg:w-1/2 lg:aspect-auto")}>
         <img
           src={cover}
-          alt=""
+          alt={title}
           loading="lazy"
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

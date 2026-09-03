@@ -53,6 +53,31 @@ const organizationJsonLd = {
       description: DEFAULT_DESCRIPTION,
       address: { "@type": "PostalAddress", addressLocality: "Istanbul", addressCountry: "TR" },
       sameAs: ["https://www.instagram.com/admov.io", "https://www.tiktok.com/@admov.io"],
+      // The three languages the site is published in — a strong entity signal
+      // for AI engines deciding whether we serve a given market.
+      knowsLanguage: ["en", "ar", "tr"],
+      areaServed: [
+        { "@type": "Country", name: "Türkiye" },
+        { "@type": "Country", name: "Kuwait" },
+        { "@type": "Place", name: "Middle East" },
+      ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "AI services",
+        itemListElement: [
+          "AI Generated Videos",
+          "AI Generated Photos",
+          "AI Automation Systems",
+          "LLM Setup & Integration",
+          "Website Development",
+          "App Development",
+          "Meta, Google & TikTok Ads",
+          "Shopify & E-Commerce",
+        ].map((name) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name, provider: { "@id": `${SITE_URL}/#organization` } },
+        })),
+      },
     },
     {
       "@type": "WebSite",

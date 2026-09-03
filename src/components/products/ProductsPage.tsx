@@ -80,7 +80,7 @@ export function ProductsPage({ products }: { products: Product[] }) {
                         <img src={image} alt={product.name} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-violet/20 to-zinc-900">
-                          {logo ? <img src={logo} alt="" className="w-24 h-24 object-contain" /> : <span className="font-syne font-extrabold text-6xl text-violet/60">{product.name.charAt(0)}</span>}
+                          {logo ? <img src={logo} alt={`${product.name} logo`} className="w-24 h-24 object-contain" /> : <span className="font-syne font-extrabold text-6xl text-violet/60">{product.name.charAt(0)}</span>}
                         </div>
                       )}
                     </div>

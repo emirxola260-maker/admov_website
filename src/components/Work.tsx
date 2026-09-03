@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, Play, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import content from "@/data/content.json";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import ShinyText from "./ShinyText";
 import { useAdminContent, getAdminWork } from "@/admin/useAdminContent";
@@ -74,7 +75,7 @@ export function Work() {
             </h2>
           </div>
           <Link
-            href="/work"
+            href={localePath(lang, "/work")}
             className="font-syne font-bold text-zinc-50 hover:text-violet transition-colors flex items-center gap-2 group shrink-0"
           >
             {work.viewAll}

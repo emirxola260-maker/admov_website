@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { languages } from "@/i18n/translations";
 import type { Language } from "@/i18n/config";
-import { localizeBlogPath } from "@/lib/blog/utils";
+import { localizePath } from "@/lib/i18n/paths";
 
 export function LanguageSelector() {
   const { lang, setLang } = useLanguage();
@@ -28,8 +28,8 @@ export function LanguageSelector() {
   const choose = (code: Language) => {
     setOpen(false);
     setLang(code);
-    // Blog URLs are language-specific: jump to the same post/index in the chosen language.
-    const mapped = localizeBlogPath(pathname ?? "", code);
+    // Every page now has a per-language URL: jump to the same page in the chosen language.
+    const mapped = localizePath(pathname ?? "", code);
     if (mapped && mapped !== pathname) router.push(mapped);
   };
 

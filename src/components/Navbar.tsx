@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { blogHref } from "@/lib/blog/utils";
+import { localePath } from "@/lib/i18n/paths";
 import { LanguageSelector } from "./LanguageSelector";
 import { Logo } from "./ui/Logo";
 
@@ -22,17 +23,18 @@ export function Navbar() {
   );
 
   // Hash links are prefixed with "/" so they also work from /work, /blog, etc.
+  const home = localePath(lang, "/");
   const navLinks = [
-    { name: t.nav.home, href: "/" },
-    { name: t.nav.services, href: "/#services" },
-    { name: t.nav.products, href: "/products" },
-    { name: t.nav.work, href: "/work" },
+    { name: t.nav.home, href: home },
+    { name: t.nav.services, href: `${home}#services` },
+    { name: t.nav.products, href: localePath(lang, "/products") },
+    { name: t.nav.work, href: localePath(lang, "/work") },
     { name: t.nav.blog, href: blogHref(lang) },
   ];
 
   const cta = (
     <Link
-      href="/#contact"
+      href={`${home}#contact`}
       onClick={() => setIsOpen(false)}
       className="px-6 py-2.5 rounded-full font-syne font-bold text-sm text-white transition-all hover:scale-105 active:scale-95 backdrop-blur-xl border border-violet/30 text-center"
       style={{
@@ -47,7 +49,7 @@ export function Navbar() {
   return (
     <motion.nav style={{ backgroundColor, borderBottom }} className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" aria-label="ADMOV home">
+        <Link href={home} aria-label="ADMOV home">
           <Logo />
         </Link>
 

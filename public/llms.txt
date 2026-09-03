@@ -1,0 +1,34 @@
+# ADMOV
+
+> AI agency based in Istanbul, Türkiye. We build AI-generated video and photography,
+> automation systems, LLM integrations, websites, apps and e-commerce stores for
+> businesses in Türkiye and the Middle East. The site is published in English,
+> Arabic and Turkish.
+
+Contact: info@admov.io
+
+## Services
+- AI Generated Videos — cinematic product and brand video produced with generative models
+- AI Generated Photos — product and lifestyle photography at scale, without a studio shoot
+- AI Automation Systems — n8n and Make workflows for lead handling, reporting and operations
+- LLM Setup & Integration — custom assistants and AI features wired into existing tools
+- Website Development — marketing sites and web apps
+- App Development — mobile applications
+- Meta, Google & TikTok Ads — paid acquisition and creative testing
+- Shopify & E-Commerce — full store builds and ongoing management
+
+## Products we build and run
+- i8chat (https://i8chat.com) — turns Instagram comments into DMs with your link, via the official Instagram API. Live.
+- ContentOS (https://creatorflow-alpha-three.vercel.app) — content operations studio for agencies. Arabic-first, bilingual. Coming soon.
+- CreatorFlow (https://creatorflow-studio-six.vercel.app) — trend discovery and content production pipeline for creators. Coming soon.
+- Vivaldi (https://vivaldi-gold.vercel.app) — AI upholstery preview: see a sofa in new fabric before it is reupholstered. Coming soon.
+
+## Key pages
+- https://admov.io/ — services overview and contact
+- https://admov.io/work — client case studies
+- https://admov.io/products — software built by ADMOV
+- https://admov.io/blog — practical articles on AI automation, ads and content, published in English, Arabic and Turkish
+
+## Notes
+- Articles are published daily in three languages; each has /blog/, /ar/blog/ and /tr/blog/ versions.
+- Full page list: https://admov.io/sitemap.xml

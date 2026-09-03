@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Instagram } from "lucide-react";
+import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { getAdminContact, useAdminContent } from "@/admin/useAdminContent";
 import { blogHref } from "@/lib/blog/utils";
@@ -24,25 +25,25 @@ export function Footer() {
     {
       title: t.footer.company,
       links: [
-        { label: t.footer.home, href: "/" },
-        { label: t.footer.services, href: "/#services" },
-        { label: t.footer.work, href: "/work" },
-        { label: t.footer.contact, href: "/#contact" },
+        { label: t.footer.home, href: localePath(lang, "/") },
+        { label: t.footer.services, href: `${localePath(lang, "/")}#services` },
+        { label: t.footer.work, href: localePath(lang, "/work") },
+        { label: t.footer.contact, href: `${localePath(lang, "/")}#contact` },
       ],
     },
     {
       title: t.footer.resources,
       links: [
-        { label: t.footer.products, href: "/products" },
+        { label: t.footer.products, href: localePath(lang, "/products") },
         { label: t.footer.blog, href: blogHref(lang) },
-        { label: t.footer.support, href: "/support" },
+        { label: t.footer.support, href: localePath(lang, "/support") },
       ],
     },
     {
       title: t.footer.legal,
       links: [
-        { label: t.footer.privacy, href: "/privacy" },
-        { label: t.footer.terms, href: "/terms" },
+        { label: t.footer.privacy, href: localePath(lang, "/privacy") },
+        { label: t.footer.terms, href: localePath(lang, "/terms") },
       ],
     },
   ];
