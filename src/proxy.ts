@@ -24,6 +24,16 @@ function langFromPath(pathname: string): Language | null {
 }
 
 export function proxy(request: NextRequest) {
+  // One hostname for the site. www serves the same pages, so without this the
+  // content would exist at two addresses and any link to www would build
+  // authority for a hostname we don't rank.
+  const host = request.headers.get("host") ?? "";
+  if (host.startsWith("www.")) {
+    const apex = request.nextUrl.clone();
+    apex.host = host.slice(4);
+    return NextResponse.redirect(apex, 308);
+  }
+
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
   const csp = [
