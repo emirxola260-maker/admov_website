@@ -33,6 +33,7 @@ export function Navbar() {
     { name: t.nav.home, href: home },
     { name: t.nav.services, href: `${home}#services` },
     { name: t.nav.products, href: localePath(lang, "/products") },
+    { name: t.nav.apps, href: localePath(lang, "/apps") },
     { name: t.nav.work, href: localePath(lang, "/work") },
 
     ...(pricingLive ? [{ name: t.nav.pricing, href: `${home}#pricing` }] : []),

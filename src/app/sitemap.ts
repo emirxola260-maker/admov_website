@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SUPPORTED_LANGS } from "@/i18n/config";
 import { getAllPublishedSlugs } from "@/lib/data/posts";
+import { getPublishedApps } from "@/lib/data/apps";
 import { blogHref } from "@/lib/blog/utils";
 import { LOCALIZED_PATHS, localePath } from "@/lib/i18n/paths";
 import { SITE_URL } from "@/lib/blog/metadata";
@@ -38,6 +39,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: { languages: languagesFor() },
   }));
 
+  const apps = await getPublishedApps();
+  const appRoutes: MetadataRoute.Sitemap = apps.flatMap((app) =>
+    SUPPORTED_LANGS.map((lang) => ({
+      url: `${SITE_URL}${localePath(lang, "/apps")}/${app.slug}`,
+      lastModified: new Date(app.updated_at),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+      alternates: {
+        languages: Object.fromEntries(
+          SUPPORTED_LANGS.map((l) => [l, `${SITE_URL}${localePath(l, "/apps")}/${app.slug}`]),
+        ),
+      },
+    })),
+  );
+
   const posts = await getAllPublishedSlugs();
   const postRoutes: MetadataRoute.Sitemap = posts.flatMap((p) =>
     SUPPORTED_LANGS.map((lang) => ({
@@ -49,5 +65,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
-  return [...staticRoutes, ...blogIndexes, ...postRoutes];
+  return [...staticRoutes, ...appRoutes, ...blogIndexes, ...postRoutes];
 }

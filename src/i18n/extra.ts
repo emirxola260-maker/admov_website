@@ -3,7 +3,7 @@
 // ./translations.ts so every component keeps using `t.*`.
 
 const en = {
-  nav: { products: "Products", blog: "Blog", pricing: "Pricing" },
+  nav: { products: "Products", blog: "Blog", pricing: "Pricing", apps: "Apps" },
   footer: {
     tagline: "AI content, automation and software for businesses that want to move faster.",
     company: "Company",
@@ -166,10 +166,34 @@ const en = {
       },
     ],
   },
+  apps: {
+    label: "App Store",
+    heading: "Apps we build, ",
+    headingHighlight: "ready to use",
+    subtext: "Finished apps, mini-apps and templates from the ADMOV team — for iPhone, Android, Mac and the web.",
+    pageTitle: "Apps",
+    all: "All",
+    empty: "Nothing here yet — check back soon.",
+    back: "Back to apps",
+    features: "What you get",
+    platforms: { ios: "iPhone", android: "Android", macos: "Mac", windows: "Windows", web: "Web" },
+    kinds: { app: "App", mini_app: "Mini app", template: "Template", saas: "SaaS" },
+    billing: { one_time: "one-time", monthly: "/month", yearly: "/year" },
+    actions: {
+      buy: "Buy now",
+      subscribe: "Subscribe",
+      appStore: "Get it on the App Store",
+      playStore: "Get it on Google Play",
+      visit: "Open the app",
+      demo: "Try the demo",
+    },
+    checkoutNote: "Secure payment by Stripe. You'll get an email the moment it's done.",
+    storeNote: "Downloads through the official store.",
+  },
 };
 
 const ar: typeof en = {
-  nav: { products: "منتجاتنا", blog: "المدونة", pricing: "الأسعار" },
+  nav: { products: "منتجاتنا", blog: "المدونة", pricing: "الأسعار", apps: "التطبيقات" },
   footer: {
     tagline: "محتوى وأتمتة وبرمجيات بالذكاء الاصطناعي للشركات التي تريد التقدم بسرعة.",
     company: "الشركة",
@@ -330,10 +354,34 @@ const ar: typeof en = {
       },
     ],
   },
+  apps: {
+    label: "متجر التطبيقات",
+    heading: "تطبيقات نصنعها، ",
+    headingHighlight: "جاهزة للاستخدام",
+    subtext: "تطبيقات وتطبيقات مصغّرة وقوالب من فريق ADMOV — للآيفون والأندرويد وماك والويب.",
+    pageTitle: "التطبيقات",
+    all: "الكل",
+    empty: "لا يوجد شيء هنا بعد — عد قريباً.",
+    back: "العودة إلى التطبيقات",
+    features: "ماذا تحصل عليه",
+    platforms: { ios: "آيفون", android: "أندرويد", macos: "ماك", windows: "ويندوز", web: "الويب" },
+    kinds: { app: "تطبيق", mini_app: "تطبيق مصغّر", template: "قالب", saas: "خدمة سحابية" },
+    billing: { one_time: "دفعة واحدة", monthly: "/شهرياً", yearly: "/سنوياً" },
+    actions: {
+      buy: "اشترِ الآن",
+      subscribe: "اشترك",
+      appStore: "حمّله من App Store",
+      playStore: "حمّله من Google Play",
+      visit: "افتح التطبيق",
+      demo: "جرّب العرض التجريبي",
+    },
+    checkoutNote: "دفع آمن عبر Stripe. ستصلك رسالة فور اكتمال العملية.",
+    storeNote: "التحميل عبر المتجر الرسمي.",
+  },
 };
 
 const tr: typeof en = {
-  nav: { products: "Ürünler", blog: "Blog", pricing: "Fiyatlar" },
+  nav: { products: "Ürünler", blog: "Blog", pricing: "Fiyatlar", apps: "Uygulamalar" },
   footer: {
     tagline: "Daha hızlı ilerlemek isteyen işletmeler için yapay zeka destekli içerik, otomasyon ve yazılım.",
     company: "Şirket",
@@ -493,6 +541,30 @@ const tr: typeof en = {
         ],
       },
     ],
+  },
+  apps: {
+    label: "Uygulama Mağazası",
+    heading: "Geliştirdiğimiz uygulamalar, ",
+    headingHighlight: "kullanıma hazır",
+    subtext: "ADMOV ekibinden tamamlanmış uygulamalar, mini uygulamalar ve şablonlar — iPhone, Android, Mac ve web için.",
+    pageTitle: "Uygulamalar",
+    all: "Tümü",
+    empty: "Burada henüz bir şey yok — yakında tekrar bakın.",
+    back: "Uygulamalara dön",
+    features: "Neler dahil",
+    platforms: { ios: "iPhone", android: "Android", macos: "Mac", windows: "Windows", web: "Web" },
+    kinds: { app: "Uygulama", mini_app: "Mini uygulama", template: "Şablon", saas: "SaaS" },
+    billing: { one_time: "tek seferlik", monthly: "/ay", yearly: "/yıl" },
+    actions: {
+      buy: "Satın al",
+      subscribe: "Abone ol",
+      appStore: "App Store'dan indir",
+      playStore: "Google Play'den indir",
+      visit: "Uygulamayı aç",
+      demo: "Demoyu dene",
+    },
+    checkoutNote: "Stripe ile güvenli ödeme. İşlem biter bitmez e-posta alacaksınız.",
+    storeNote: "İndirme resmi mağaza üzerinden yapılır.",
   },
 };
 

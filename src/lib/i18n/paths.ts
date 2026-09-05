@@ -9,7 +9,7 @@ import { blogHref, localizeBlogPath } from "@/lib/blog/utils";
  * therefore has its own URL, which is what search engines need in order to
  * index and rank the Arabic and Turkish versions at all.
  */
-export const LOCALIZED_PATHS = ["/", "/work", "/products", "/support", "/privacy", "/terms"] as const;
+export const LOCALIZED_PATHS = ["/", "/work", "/products", "/apps", "/support", "/privacy", "/terms"] as const;
 
 /** `/work` for English, `/ar/work` and `/tr/work` otherwise. */
 export function localePath(lang: Language, path: string): string {

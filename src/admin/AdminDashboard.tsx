@@ -6,15 +6,16 @@ import {
   LayoutDashboard, Layers, Briefcase, MessageSquareQuote,
   AtSign, Search, LogOut, ChevronDown, Check, Save, Eye,
   BarChart3, Lightbulb, Image, Settings, Plus, Trash2, Star,
-  ArrowRight, Globe, Loader2, Package, Newspaper, Tag
+  ArrowRight, Globe, Loader2, Package, Newspaper, Tag, ShoppingBag
 } from "lucide-react";
 import { Field, Input, Textarea, Toggle, Notice, Pill } from "./ui";
+import { AppsEditor } from "./AppsEditor";
 import { ProductsEditor } from "./ProductsEditor";
 import { BlogEditor } from "./BlogEditor";
 import { revalidateTags } from "@/lib/admin/api";
 import { saveAdminContentToSupabase } from "@/lib/supabase/client";
 
-type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "contact" | "seo" | "products" | "blog";
+type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "contact" | "seo" | "products" | "apps" | "blog";
 type LangTab = "en" | "ar" | "tr";
 
 interface ContentData {
@@ -170,6 +171,7 @@ const sidebarItems: { id: SectionId; label: string; icon: React.ReactNode }[] = 
   { id: "contact", label: "Contact Info", icon: <AtSign size={18} /> },
   { id: "seo", label: "SEO & Meta", icon: <Search size={18} /> },
   { id: "products", label: "Products", icon: <Package size={18} /> },
+  { id: "apps", label: "Apps & Store", icon: <ShoppingBag size={18} /> },
   { id: "blog", label: "Blog & AI Writer", icon: <Newspaper size={18} /> },
 ];
 
@@ -299,6 +301,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     contact: "Contact Information",
     seo: "SEO & Meta Tags",
     products: "Products",
+    apps: "Apps & Store",
     blog: "Blog & AI Writer",
   };
 
@@ -312,6 +315,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     contact: "Update your contact details and social links.",
     seo: "Optimize search engine visibility and meta information.",
     products: "Your own apps, SaaS and websites shown in the Products section and on /products. Changes go live immediately.",
+    apps: "Everything you sell on /apps. Store listings link to the App Store or Google Play; the other kinds are paid through Stripe.",
     blog: "Review AI-generated drafts, edit them per language, publish, and queue topics for the daily writer.",
   };
 
@@ -430,7 +434,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
 
             {/* Language Tabs - only for content sections */}
-            {["hero", "services", "work", "work-page", "testimonials", "pricing", "products", "blog"].includes(activeSection) && (
+            {["hero", "services", "work", "work-page", "testimonials", "pricing", "products", "apps", "blog"].includes(activeSection) && (
               <div className="bg-[#F6F3F2] p-1.5 rounded-2xl flex items-center shadow-sm shrink-0">
                 {(["en", "ar", "tr"] as LangTab[]).map((lang) => (
                   <button
@@ -483,6 +487,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 <SeoEditor content={content} setContent={setContent} />
               )}
               {activeSection === "products" && <ProductsEditor lang={activeLang} />}
+              {activeSection === "apps" && <AppsEditor lang={activeLang} />}
               {activeSection === "blog" && <BlogEditor lang={activeLang} />}
             </motion.div>
           </AnimatePresence>
