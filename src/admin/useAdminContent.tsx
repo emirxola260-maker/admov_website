@@ -56,6 +56,34 @@ export function getAdminHero(adminContent: any, lang: string, fallback: any) {
   };
 }
 
+/**
+ * Pricing for a language, or `null` when the section should not be on the site.
+ *
+ * Pricing is off unless it is explicitly switched on in /admin *and* at least
+ * one tier has a price, so the section can never ship with empty or unreviewed
+ * figures. The nav and footer links use the same check, so the section and the
+ * links that point at it appear and disappear together.
+ */
+export function getAdminPricing(adminContent: any, lang: string, fallback: any) {
+  const admin = adminContent?.pricing;
+  if (!admin?.enabled || !Array.isArray(admin.tiers)) return null;
+
+  const tiers = admin.tiers
+    .map((tier: any, i: number) => ({
+      name: tier?.name?.[lang]?.trim() || fallback.tiers[i]?.name || "",
+      price: String(tier?.price ?? "").trim(),
+      tagline: tier?.tagline?.[lang]?.trim() || fallback.tiers[i]?.tagline || "",
+      features: String(tier?.features?.[lang] ?? "")
+        .split("\n")
+        .map((line: string) => line.trim())
+        .filter(Boolean),
+    }))
+    .filter((tier: { name: string }) => tier.name);
+
+  if (!tiers.length || !tiers.some((tier: { price: string }) => tier.price)) return null;
+  return { ...fallback, tiers };
+}
+
 /** Services content for a language, with admin overrides. */
 export function getAdminServices(adminContent: any, lang: string, fallback: any) {
   if (!adminContent?.services?.[lang]) return fallback;

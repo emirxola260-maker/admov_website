@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useAdminContent, getAdminPricing } from "@/admin/useAdminContent";
 import { localePath } from "@/lib/i18n/paths";
 import ShinyText from "./ShinyText";
 
@@ -15,8 +16,12 @@ import ShinyText from "./ShinyText";
  */
 export function Pricing() {
   const { t, lang } = useLanguage();
-  const p = t.pricing;
+  const { content: adminContent } = useAdminContent();
+  const p = getAdminPricing(adminContent, lang, t.pricing);
   const contactHref = `${localePath(lang, "/")}#contact`;
+
+  // Nothing until prices are set and published from /admin.
+  if (!p) return null;
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-zinc-950">

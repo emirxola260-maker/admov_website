@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { blogHref } from "@/lib/blog/utils";
+import { useAdminContent, getAdminPricing } from "@/admin/useAdminContent";
 import { localePath } from "@/lib/i18n/paths";
 import { LanguageSelector } from "./LanguageSelector";
 import { Logo } from "./ui/Logo";
@@ -22,14 +23,19 @@ export function Navbar() {
     ["1px solid rgba(139, 125, 240, 0)", "1px solid rgba(139, 125, 240, 0.1)"],
   );
 
+  const { content: adminContent } = useAdminContent();
+
   // Hash links are prefixed with "/" so they also work from /work, /blog, etc.
   const home = localePath(lang, "/");
+  // Pricing is admin-controlled, so the link comes and goes with the section.
+  const pricingLive = !!getAdminPricing(adminContent, lang, t.pricing);
   const navLinks = [
     { name: t.nav.home, href: home },
     { name: t.nav.services, href: `${home}#services` },
     { name: t.nav.products, href: localePath(lang, "/products") },
     { name: t.nav.work, href: localePath(lang, "/work") },
-    { name: t.nav.pricing, href: `${home}#pricing` },
+
+    ...(pricingLive ? [{ name: t.nav.pricing, href: `${home}#pricing` }] : []),
     { name: t.nav.blog, href: blogHref(lang) },
   ];
 

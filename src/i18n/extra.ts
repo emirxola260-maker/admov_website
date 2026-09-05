@@ -116,8 +116,8 @@ const en = {
     label: "Trusted by brands across MENA & Türkiye",
     items: ["Kyom", "Belind Perfumes", "Jaeje Factory", "Hareem al-sultan", "Riviera", "Bokhoor", "TipTob"],
   },
-  // NOTE: the two starting prices below are PLACEHOLDERS — replace them with
-  // your real figures. The third tier is quoted, so it carries no number.
+  // Prices live in the admin dashboard (Pricing tab), not here — these are the
+  // labels and feature lists only. An empty price renders as "Let's talk".
   pricing: {
     label: "Packages",
     heading: "Clear starting points, ",
@@ -131,7 +131,7 @@ const en = {
     tiers: [
       {
         name: "Starter",
-        price: "$750",
+        price: "",
         tagline: "One service, done properly.",
         features: [
           "One AI video or photo package",
@@ -142,7 +142,7 @@ const en = {
       },
       {
         name: "Growth",
-        price: "$2,000",
+        price: "",
         tagline: "Content and automation working together.",
         features: [
           "Everything in Starter",
@@ -295,7 +295,7 @@ const ar: typeof en = {
     tiers: [
       {
         name: "البداية",
-        price: "$750",
+        price: "",
         tagline: "خدمة واحدة، منفَّذة باحتراف.",
         features: [
           "باقة فيديو أو صور واحدة بالذكاء الاصطناعي",
@@ -306,7 +306,7 @@ const ar: typeof en = {
       },
       {
         name: "النمو",
-        price: "$2,000",
+        price: "",
         tagline: "المحتوى والأتمتة يعملان معاً.",
         features: [
           "كل ما في باقة البداية",
@@ -459,7 +459,7 @@ const tr: typeof en = {
     tiers: [
       {
         name: "Başlangıç",
-        price: "$750",
+        price: "",
         tagline: "Tek hizmet, hakkıyla yapılmış.",
         features: [
           "Bir AI video veya fotoğraf paketi",
@@ -470,7 +470,7 @@ const tr: typeof en = {
       },
       {
         name: "Büyüme",
-        price: "$2,000",
+        price: "",
         tagline: "İçerik ve otomasyon birlikte çalışır.",
         features: [
           "Başlangıç paketindeki her şey",

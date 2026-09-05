@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Instagram } from "lucide-react";
 import { localePath } from "@/lib/i18n/paths";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { getAdminContact, useAdminContent } from "@/admin/useAdminContent";
+import { getAdminContact, getAdminPricing, useAdminContent } from "@/admin/useAdminContent";
 import { blogHref } from "@/lib/blog/utils";
 import { sanitizeHttpUrl } from "@/lib/security";
 import { Logo } from "./ui/Logo";
@@ -21,6 +21,9 @@ export function Footer() {
     { name: "WhatsApp", href: sanitizeHttpUrl(contact?.whatsapp, "https://wa.me/905375755445"), icon: <WhatsAppIcon size={18} /> },
   ];
 
+  // Pricing is admin-controlled, so the link comes and goes with the section.
+  const pricingLive = !!getAdminPricing(content, lang, t.pricing);
+
   const columns = [
     {
       title: t.footer.company,
@@ -28,7 +31,7 @@ export function Footer() {
         { label: t.footer.home, href: localePath(lang, "/") },
         { label: t.footer.services, href: `${localePath(lang, "/")}#services` },
         { label: t.footer.work, href: localePath(lang, "/work") },
-        { label: t.nav.pricing, href: `${localePath(lang, "/")}#pricing` },
+        ...(pricingLive ? [{ label: t.nav.pricing, href: `${localePath(lang, "/")}#pricing` }] : []),
         { label: t.footer.contact, href: `${localePath(lang, "/")}#contact` },
       ],
     },

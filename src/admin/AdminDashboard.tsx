@@ -6,14 +6,15 @@ import {
   LayoutDashboard, Layers, Briefcase, MessageSquareQuote,
   AtSign, Search, LogOut, ChevronDown, Check, Save, Eye,
   BarChart3, Lightbulb, Image, Settings, Plus, Trash2, Star,
-  ArrowRight, Globe, Loader2, Package, Newspaper
+  ArrowRight, Globe, Loader2, Package, Newspaper, Tag
 } from "lucide-react";
+import { Field, Input, Textarea, Toggle, Notice, Pill } from "./ui";
 import { ProductsEditor } from "./ProductsEditor";
 import { BlogEditor } from "./BlogEditor";
 import { revalidateTags } from "@/lib/admin/api";
 import { saveAdminContentToSupabase } from "@/lib/supabase/client";
 
-type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "contact" | "seo" | "products" | "blog";
+type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "contact" | "seo" | "products" | "blog";
 type LangTab = "en" | "ar" | "tr";
 
 interface ContentData {
@@ -36,6 +37,18 @@ interface ContentData {
   };
   contact: { email: string; phone: string; instagram: string; tiktok: string; whatsapp: string };
   seo: { title: string; description: string; ogImage: string };
+  pricing: {
+    /** The section stays off the site until this is switched on in /admin. */
+    enabled: boolean;
+    tiers: {
+      name: { en: string; ar: string; tr: string };
+      /** Shared across languages — one figure, e.g. "$750". Empty = quoted tier. */
+      price: string;
+      tagline: { en: string; ar: string; tr: string };
+      /** One feature per line. */
+      features: { en: string; ar: string; tr: string };
+    }[];
+  };
   workPage: {
     sections: {
       id: string;
@@ -56,6 +69,41 @@ const defaultContent: ContentData = {
       ar: ["8+ سنوات خبرة", "20+ عميل"],
       tr: ["8+ Yıl Deneyim", "20+ Müşteri"],
     },
+  },
+  pricing: {
+    enabled: false,
+    tiers: [
+      {
+        name: { en: "Starter", ar: "البداية", tr: "Başlangıç" },
+        price: "",
+        tagline: { en: "One service, done properly.", ar: "خدمة واحدة، منفَّذة باحتراف.", tr: "Tek hizmet, hakkıyla yapılmış." },
+        features: {
+          en: "One AI video or photo package\nTwo rounds of revisions\nDelivery in 5–7 business days\nFull commercial usage rights",
+          ar: "باقة فيديو أو صور واحدة بالذكاء الاصطناعي\nجولتا تعديلات\nالتسليم خلال ٥–٧ أيام عمل\nحقوق استخدام تجاري كاملة",
+          tr: "Bir AI video veya fotoğraf paketi\nİki revizyon turu\n5–7 iş gününde teslim\nTam ticari kullanım hakkı",
+        },
+      },
+      {
+        name: { en: "Growth", ar: "النمو", tr: "Büyüme" },
+        price: "",
+        tagline: { en: "Content and automation working together.", ar: "المحتوى والأتمتة يعملان معاً.", tr: "İçerik ve otomasyon birlikte çalışır." },
+        features: {
+          en: "Everything in Starter\nMonthly content package\nOne automation workflow (n8n or Make)\nPriority delivery\nMonthly performance review",
+          ar: "كل ما في باقة البداية\nباقة محتوى شهرية\nسير عمل أتمتة واحد (n8n أو Make)\nأولوية في التسليم\nمراجعة أداء شهرية",
+          tr: "Başlangıç paketindeki her şey\nAylık içerik paketi\nBir otomasyon akışı (n8n veya Make)\nÖncelikli teslim\nAylık performans değerlendirmesi",
+        },
+      },
+      {
+        name: { en: "Full Business", ar: "الأعمال الكاملة", tr: "Tam İşletme" },
+        price: "",
+        tagline: { en: "We run your content and operations end to end.", ar: "ندير المحتوى والعمليات من البداية إلى النهاية.", tr: "İçeriğinizi ve operasyonlarınızı uçtan uca yönetiriz." },
+        features: {
+          en: "Everything in Growth\nPaid ads managed end to end\nWebsite or Shopify build and upkeep\nCustom LLM setup and integration\nA dedicated point of contact",
+          ar: "كل ما في باقة النمو\nإدارة الإعلانات المدفوعة بالكامل\nبناء وصيانة موقع أو متجر شوبيفاي\nإعداد ودمج نماذج لغوية مخصصة\nمسؤول حساب مخصص",
+          tr: "Büyüme paketindeki her şey\nUçtan uca reklam yönetimi\nWeb sitesi veya Shopify kurulumu ve bakımı\nÖzel LLM kurulumu ve entegrasyonu\nSize özel bir muhatap",
+        },
+      },
+    ],
   },
   services: {
     en: [
@@ -118,6 +166,7 @@ const sidebarItems: { id: SectionId; label: string; icon: React.ReactNode }[] = 
   { id: "work", label: "Work", icon: <Briefcase size={18} /> },
   { id: "work-page", label: "Work Page", icon: <Image size={18} /> },
   { id: "testimonials", label: "Testimonials", icon: <MessageSquareQuote size={18} /> },
+  { id: "pricing", label: "Pricing", icon: <Tag size={18} /> },
   { id: "contact", label: "Contact Info", icon: <AtSign size={18} /> },
   { id: "seo", label: "SEO & Meta", icon: <Search size={18} /> },
   { id: "products", label: "Products", icon: <Package size={18} /> },
@@ -163,6 +212,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             testimonials: { ...defaultContent.testimonials, ...(data.testimonials || {}) },
             contact: { ...defaultContent.contact, ...(data.contact || {}) },
             seo: { ...defaultContent.seo, ...(data.seo || {}) },
+            pricing: { ...defaultContent.pricing, ...(data.pricing || {}) },
           }));
         }
       } catch (error) {
@@ -245,6 +295,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     work: "Work & Projects Editor",
     "work-page": "Work Page Manager",
     testimonials: "Testimonials Editor",
+    pricing: "Pricing Editor",
     contact: "Contact Information",
     seo: "SEO & Meta Tags",
     products: "Products",
@@ -257,6 +308,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     work: "Showcase your best projects and case studies.",
     "work-page": "Manage sections and projects on the dedicated /work page. Add sections, add projects with images and videos.",
     testimonials: "Manage client testimonials and social proof.",
+    pricing: "Set your package prices. The section stays off the website until you switch it on here.",
     contact: "Update your contact details and social links.",
     seo: "Optimize search engine visibility and meta information.",
     products: "Your own apps, SaaS and websites shown in the Products section and on /products. Changes go live immediately.",
@@ -378,7 +430,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
 
             {/* Language Tabs - only for content sections */}
-            {["hero", "services", "work", "work-page", "testimonials", "products", "blog"].includes(activeSection) && (
+            {["hero", "services", "work", "work-page", "testimonials", "pricing", "products", "blog"].includes(activeSection) && (
               <div className="bg-[#F6F3F2] p-1.5 rounded-2xl flex items-center shadow-sm shrink-0">
                 {(["en", "ar", "tr"] as LangTab[]).map((lang) => (
                   <button
@@ -420,6 +472,9 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               )}
               {activeSection === "testimonials" && (
                 <TestimonialsEditor content={content} setContent={setContent} lang={activeLang} />
+              )}
+              {activeSection === "pricing" && (
+                <PricingEditor content={content} setContent={setContent} lang={activeLang} />
               )}
               {activeSection === "contact" && (
                 <ContactEditor content={content} setContent={setContent} />
@@ -1088,6 +1143,78 @@ function WorkPageEditor({ content, setContent, lang }: { content: ContentData; s
         <p className="text-xs text-[#5D54A0] leading-relaxed font-medium">
           Each section appears as a titled group on the /work page with its own grid of project cards. The "Featured" section uses a special large-card layout. If no sections are added here, the page auto-generates from your homepage Work data. Add videos (MP4 URLs) for auto-play on hover.
         </p>
+      </div>
+    </div>
+  );
+}
+
+function PricingEditor({ content, setContent, lang }: { content: ContentData; setContent: (c: ContentData) => void; lang: LangTab }) {
+  const pricing = content.pricing;
+
+  const updateTier = (index: number, field: "name" | "tagline" | "features" | "price", value: string) => {
+    const tiers = [...pricing.tiers];
+    tiers[index] =
+      field === "price"
+        ? { ...tiers[index], price: value }
+        : { ...tiers[index], [field]: { ...tiers[index][field], [lang]: value } };
+    setContent({ ...content, pricing: { ...pricing, tiers } });
+  };
+
+  const priced = pricing.tiers.some((t) => t.price.trim());
+
+  return (
+    <div className="space-y-6" dir={lang === "ar" ? "rtl" : "ltr"}>
+      <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-[0px_20px_40px_rgba(27,28,28,0.06)] space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="font-bold text-stone-800">Show pricing on the website</p>
+            <p className="text-sm text-stone-500 mt-1">
+              {pricing.enabled
+                ? "The pricing section is live on your homepage."
+                : "The section is hidden. Set your prices below, then switch this on."}
+            </p>
+          </div>
+          <Toggle
+            checked={pricing.enabled}
+            onChange={(v) => setContent({ ...content, pricing: { ...pricing, enabled: v } })}
+            label={pricing.enabled ? "Live" : "Hidden"}
+          />
+        </div>
+        {pricing.enabled && !priced && (
+          <Notice tone="error">
+            No prices set yet, so the section will stay hidden even while this is on. Add at least one price below.
+          </Notice>
+        )}
+        <Notice tone="info">
+          A price is one figure shown in every language — write it exactly as it should appear, e.g. <b>$750</b>. Leave it
+          empty for a quoted tier and the card shows &ldquo;Let&rsquo;s talk&rdquo; instead.
+        </Notice>
+      </div>
+
+      <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-[0px_20px_40px_rgba(27,28,28,0.06)]">
+        <LangIndicator lang={lang} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {pricing.tiers.map((tier, i) => (
+            <div key={i} className="p-6 bg-[#F6F3F2] rounded-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">Tier {i + 1}</span>
+                {i === 1 && <Pill tone="violet">Most popular</Pill>}
+              </div>
+              <Field label="Name">
+                <Input value={tier.name[lang]} onChange={(e) => updateTier(i, "name", e.target.value)} placeholder="Starter" />
+              </Field>
+              <Field label="Price" hint="Same in all languages. Empty = “Let’s talk”.">
+                <Input value={tier.price} onChange={(e) => updateTier(i, "price", e.target.value)} placeholder="$750" dir="ltr" />
+              </Field>
+              <Field label="One-line summary">
+                <Input value={tier.tagline[lang]} onChange={(e) => updateTier(i, "tagline", e.target.value)} placeholder="One service, done properly." />
+              </Field>
+              <Field label="What's included" hint="One per line.">
+                <Textarea rows={6} value={tier.features[lang]} onChange={(e) => updateTier(i, "features", e.target.value)} />
+              </Field>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
