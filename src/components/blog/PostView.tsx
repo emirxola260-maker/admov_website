@@ -13,6 +13,7 @@ import { PostArticle } from "./PostArticle";
 import { PostCard } from "./PostCard";
 import { PostCta } from "./PostCta";
 import { ShareBar } from "./ShareBar";
+import { ReadingProgress } from "./ReadingProgress";
 
 export async function PostView({ post, lang, more, isPreview = false }: { post: Post; lang: Language; more: PostSummary[]; isPreview?: boolean }) {
   const t = translations[lang].blog;
@@ -45,8 +46,9 @@ export async function PostView({ post, lang, more, isPreview = false }: { post: 
         <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       )}
       <Navbar />
+      {!isPreview && <ReadingProgress targetId="post-article" lang={lang} />}
       <main className="pt-32 md:pt-40 pb-24 px-6">
-        <article className="max-w-3xl mx-auto">
+        <article id="post-article" className="max-w-3xl mx-auto">
           {isPreview && (
             <div className="mb-8 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
               Draft preview — this post is not published yet.
