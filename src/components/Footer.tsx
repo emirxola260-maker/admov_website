@@ -28,6 +28,7 @@ export function Footer() {
         { label: t.footer.home, href: localePath(lang, "/") },
         { label: t.footer.services, href: `${localePath(lang, "/")}#services` },
         { label: t.footer.work, href: localePath(lang, "/work") },
+        { label: t.nav.pricing, href: `${localePath(lang, "/")}#pricing` },
         { label: t.footer.contact, href: `${localePath(lang, "/")}#contact` },
       ],
     },

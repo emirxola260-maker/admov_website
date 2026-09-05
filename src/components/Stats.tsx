@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { GlassCard } from "./ui/GlassCard";
+import { CountUp } from "./ui/CountUp";
 
 export function Stats() {
   const { t } = useLanguage();
@@ -20,7 +21,7 @@ export function Stats() {
               transition={{ delay: i * 0.08, duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
             >
               <GlassCard className="p-6 md:p-8 text-center h-full">
-                <div className="font-syne font-extrabold text-4xl md:text-5xl text-violet mb-2">{stat.value}</div>
+                <CountUp value={stat.value} className="block font-syne font-extrabold text-4xl md:text-5xl text-violet mb-2" />
                 <div className="text-sm text-zinc-400">{stat.label}</div>
               </GlassCard>
             </motion.div>

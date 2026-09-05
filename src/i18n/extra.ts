@@ -3,7 +3,7 @@
 // ./translations.ts so every component keeps using `t.*`.
 
 const en = {
-  nav: { products: "Products", blog: "Blog" },
+  nav: { products: "Products", blog: "Blog", pricing: "Pricing" },
   footer: {
     tagline: "AI content, automation and software for businesses that want to move faster.",
     company: "Company",
@@ -116,10 +116,60 @@ const en = {
     label: "Trusted by brands across MENA & Türkiye",
     items: ["Kyom", "Belind Perfumes", "Jaeje Factory", "Hareem al-sultan", "Riviera", "Bokhoor", "TipTob"],
   },
+  // NOTE: the two starting prices below are PLACEHOLDERS — replace them with
+  // your real figures. The third tier is quoted, so it carries no number.
+  pricing: {
+    label: "Packages",
+    heading: "Clear starting points, ",
+    headingHighlight: "no surprises",
+    subtext: "Every project begins with a free call. These are starting points — the final quote depends on scope, volume and turnaround.",
+    popular: "Most popular",
+    from: "From",
+    custom: "Let's talk",
+    cta: "Book a free call",
+    note: "Prices exclude VAT where applicable. Retainers and one-off projects both available.",
+    tiers: [
+      {
+        name: "Starter",
+        price: "$750",
+        tagline: "One service, done properly.",
+        features: [
+          "One AI video or photo package",
+          "Two rounds of revisions",
+          "Delivery in 5–7 business days",
+          "Full commercial usage rights",
+        ],
+      },
+      {
+        name: "Growth",
+        price: "$2,000",
+        tagline: "Content and automation working together.",
+        features: [
+          "Everything in Starter",
+          "Monthly content package",
+          "One automation workflow (n8n or Make)",
+          "Priority delivery",
+          "Monthly performance review",
+        ],
+      },
+      {
+        name: "Full Business",
+        price: "",
+        tagline: "We run your content and operations end to end.",
+        features: [
+          "Everything in Growth",
+          "Paid ads managed end to end",
+          "Website or Shopify build and upkeep",
+          "Custom LLM setup and integration",
+          "A dedicated point of contact",
+        ],
+      },
+    ],
+  },
 };
 
 const ar: typeof en = {
-  nav: { products: "منتجاتنا", blog: "المدونة" },
+  nav: { products: "منتجاتنا", blog: "المدونة", pricing: "الأسعار" },
   footer: {
     tagline: "محتوى وأتمتة وبرمجيات بالذكاء الاصطناعي للشركات التي تريد التقدم بسرعة.",
     company: "الشركة",
@@ -232,10 +282,58 @@ const ar: typeof en = {
     label: "تثق بنا علامات تجارية في الشرق الأوسط وتركيا",
     items: ["Kyom", "Belind Perfumes", "Jaeje Factory", "Hareem al-sultan", "Riviera", "Bokhoor", "TipTob"],
   },
+  pricing: {
+    label: "الباقات",
+    heading: "نقاط انطلاق واضحة، ",
+    headingHighlight: "بلا مفاجآت",
+    subtext: "كل مشروع يبدأ بمكالمة مجانية. هذه أسعار البداية، والعرض النهائي يعتمد على النطاق والكمية ومدة التنفيذ.",
+    popular: "الأكثر طلباً",
+    from: "تبدأ من",
+    custom: "لنتحدث",
+    cta: "احجز مكالمة مجانية",
+    note: "الأسعار لا تشمل ضريبة القيمة المضافة إن وُجدت. نعمل بنظام الاشتراك الشهري أو المشروع الواحد.",
+    tiers: [
+      {
+        name: "البداية",
+        price: "$750",
+        tagline: "خدمة واحدة، منفَّذة باحتراف.",
+        features: [
+          "باقة فيديو أو صور واحدة بالذكاء الاصطناعي",
+          "جولتا تعديلات",
+          "التسليم خلال ٥–٧ أيام عمل",
+          "حقوق استخدام تجاري كاملة",
+        ],
+      },
+      {
+        name: "النمو",
+        price: "$2,000",
+        tagline: "المحتوى والأتمتة يعملان معاً.",
+        features: [
+          "كل ما في باقة البداية",
+          "باقة محتوى شهرية",
+          "سير عمل أتمتة واحد (n8n أو Make)",
+          "أولوية في التسليم",
+          "مراجعة أداء شهرية",
+        ],
+      },
+      {
+        name: "الأعمال الكاملة",
+        price: "",
+        tagline: "ندير المحتوى والعمليات من البداية إلى النهاية.",
+        features: [
+          "كل ما في باقة النمو",
+          "إدارة الإعلانات المدفوعة بالكامل",
+          "بناء وصيانة موقع أو متجر شوبيفاي",
+          "إعداد ودمج نماذج لغوية مخصصة",
+          "مسؤول حساب مخصص",
+        ],
+      },
+    ],
+  },
 };
 
 const tr: typeof en = {
-  nav: { products: "Ürünler", blog: "Blog" },
+  nav: { products: "Ürünler", blog: "Blog", pricing: "Fiyatlar" },
   footer: {
     tagline: "Daha hızlı ilerlemek isteyen işletmeler için yapay zeka destekli içerik, otomasyon ve yazılım.",
     company: "Şirket",
@@ -347,6 +445,54 @@ const tr: typeof en = {
   clients: {
     label: "MENA ve Türkiye genelinde markaların güvendiği ekip",
     items: ["Kyom", "Belind Perfumes", "Jaeje Factory", "Hareem al-sultan", "Riviera", "Bokhoor", "TipTob"],
+  },
+  pricing: {
+    label: "Paketler",
+    heading: "Net başlangıç noktaları, ",
+    headingHighlight: "sürpriz yok",
+    subtext: "Her proje ücretsiz bir görüşmeyle başlar. Bunlar başlangıç fiyatlarıdır; nihai teklif kapsama, hacme ve teslim süresine göre belirlenir.",
+    popular: "En çok tercih edilen",
+    from: "Başlangıç",
+    custom: "Konuşalım",
+    cta: "Ücretsiz görüşme ayarla",
+    note: "Fiyatlara KDV dahil değildir. Aylık anlaşma veya tek seferlik proje olarak çalışıyoruz.",
+    tiers: [
+      {
+        name: "Başlangıç",
+        price: "$750",
+        tagline: "Tek hizmet, hakkıyla yapılmış.",
+        features: [
+          "Bir AI video veya fotoğraf paketi",
+          "İki revizyon turu",
+          "5–7 iş gününde teslim",
+          "Tam ticari kullanım hakkı",
+        ],
+      },
+      {
+        name: "Büyüme",
+        price: "$2,000",
+        tagline: "İçerik ve otomasyon birlikte çalışır.",
+        features: [
+          "Başlangıç paketindeki her şey",
+          "Aylık içerik paketi",
+          "Bir otomasyon akışı (n8n veya Make)",
+          "Öncelikli teslim",
+          "Aylık performans değerlendirmesi",
+        ],
+      },
+      {
+        name: "Tam İşletme",
+        price: "",
+        tagline: "İçeriğinizi ve operasyonlarınızı uçtan uca yönetiriz.",
+        features: [
+          "Büyüme paketindeki her şey",
+          "Uçtan uca reklam yönetimi",
+          "Web sitesi veya Shopify kurulumu ve bakımı",
+          "Özel LLM kurulumu ve entegrasyonu",
+          "Size özel bir muhatap",
+        ],
+      },
+    ],
   },
 };
 

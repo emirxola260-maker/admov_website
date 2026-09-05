@@ -5,6 +5,7 @@ import { Services } from "@/components/Services";
 import { TechStack } from "@/components/TechStack";
 import { Products } from "@/components/Products";
 import { Showcase } from "@/components/Showcase";
+import { Pricing } from "./Pricing";
 import { Process } from "@/components/Process";
 import { Work } from "@/components/Work";
 import { Stats } from "@/components/Stats";
@@ -29,6 +30,7 @@ export function HomePage({ products, posts }: { products: Product[]; posts: Post
         <Products products={products} />
         <Showcase />
         <Process />
+      <Pricing />
         <Work />
         <Stats />
         <Testimonials />

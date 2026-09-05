@@ -11,6 +11,22 @@ const icons: React.ElementType[] = [
   Video, Camera, Settings, BrainCircuit, Code, Smartphone, Megaphone, ShoppingBag,
 ];
 
+/**
+ * Bento spans on the 4-column desktop grid, index-aligned with `icons`.
+ * Row 1: [0 spans 2x2][1 spans 2] · Row 2: [0 cont.][2][3] · Rows 3-4: pairs.
+ * Anything beyond this list falls back to a single cell.
+ */
+const SPANS = [
+  "lg:col-span-2 lg:row-span-2",
+  "lg:col-span-2",
+  "",
+  "",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "lg:col-span-2",
+];
+
 export function Services() {
   const { t, lang } = useLanguage();
   const { content: adminContent } = useAdminContent();
@@ -29,9 +45,14 @@ export function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Bento layout: the lead service takes a double tile so the section has
+            a focal point. Previously all eight cards were the same size and the
+            same violet, which flattened the hierarchy — nothing read as primary. */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(0,1fr)] gap-5">
           {services.items.map((service, index) => {
             const Icon = icons[index] || Settings;
+            const featured = index === 0;
+            const wide = SPANS[index] ?? "";
             return (
               <motion.div
                 key={index}
@@ -39,21 +60,38 @@ export function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: Math.min(index * 0.05, 0.2), duration: 0.4 }}
-                className="p-8 rounded-3xl border border-violet/30 transition-colors group hover:border-violet/60"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, rgba(139, 125, 240, 0.55) 0%, rgba(115, 103, 240, 0.35) 100%)',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 20px rgba(139, 125, 240, 0.2)',
-                }}
+                className={`${wide} flex flex-col rounded-3xl border transition-colors group ${
+                  featured
+                    ? "p-8 md:p-10 border-violet/40 hover:border-violet/70 lg:justify-between"
+                    : "p-7 border-white/10 hover:border-violet/50"
+                }`}
+                style={
+                  featured
+                    ? {
+                        backgroundImage: "linear-gradient(135deg, rgba(139, 125, 240, 0.55) 0%, rgba(115, 103, 240, 0.35) 100%)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 20px rgba(139, 125, 240, 0.2)",
+                      }
+                    : {
+                        backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                      }
+                }
               >
-                <div className="mb-6 inline-block origin-center text-white transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
-                  {React.createElement(Icon, { size: 32, strokeWidth: 1.5 })}
+                <div
+                  className={`mb-5 inline-block origin-center transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1 ${
+                    featured ? "text-white" : "text-violet"
+                  }`}
+                >
+                  {React.createElement(Icon, { size: featured ? 40 : 28, strokeWidth: 1.5 })}
                 </div>
-                <h3 className="text-xl mb-3 text-white">
-                  {service.title}
-                </h3>
-                <p className="text-white/80 text-sm leading-relaxed">
-                  {service.desc}
-                </p>
+                <div>
+                  <h3 className={`mb-3 ${featured ? "text-2xl md:text-3xl text-white" : "text-lg text-zinc-50"}`}>
+                    {service.title}
+                  </h3>
+                  <p className={`leading-relaxed ${featured ? "text-white/85 text-base max-w-md" : "text-zinc-400 text-sm"}`}>
+                    {service.desc}
+                  </p>
+                </div>
               </motion.div>
             );
           })}

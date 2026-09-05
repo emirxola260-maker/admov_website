@@ -29,6 +29,7 @@ export function Navbar() {
     { name: t.nav.services, href: `${home}#services` },
     { name: t.nav.products, href: localePath(lang, "/products") },
     { name: t.nav.work, href: localePath(lang, "/work") },
+    { name: t.nav.pricing, href: `${home}#pricing` },
     { name: t.nav.blog, href: blogHref(lang) },
   ];
 
