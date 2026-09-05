@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -11,6 +13,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AppPrice, PlatformBadges } from "./AppMeta";
 import { AppAction } from "./AppAction";
+import { PurchaseResult } from "./PurchaseResult";
 
 export function AppDetail({ app }: { app: AppItem }) {
   const { t, lang } = useLanguage();
@@ -34,6 +37,10 @@ export function AppDetail({ app }: { app: AppItem }) {
             <ArrowLeft size={16} className="rtl:rotate-180" aria-hidden />
             {a.back}
           </Link>
+
+          <React.Suspense fallback={null}>
+            <PurchaseResult />
+          </React.Suspense>
 
           <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
             <div className="rounded-3xl overflow-hidden border border-white/10 bg-zinc-900 aspect-[4/3]">
