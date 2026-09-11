@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { syne, dmSans, changa } from "@/lib/fonts";
 import { DEFAULT_LANG, dirFor, isLanguage, type Language } from "@/i18n/config";
@@ -90,6 +91,17 @@ const organizationJsonLd = {
   ],
 };
 
+/**
+ * Google Analytics 4. Loaded only on the production deployment, so local dev
+ * and Vercel preview URLs never send hits into the real property.
+ *
+ * Both tags carry the per-request CSP nonce: the site's policy is
+ * nonce-based with 'strict-dynamic', so an un-nonced inline gtag snippet —
+ * the form Google's install page hands out — would be blocked silently.
+ */
+const GA_ID = "G-35B5ZKGN2K";
+const LOAD_GA = process.env.NODE_ENV === "production" && process.env.VERCEL_ENV !== "preview";
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Set by src/proxy.ts: URL prefix > cookie > Accept-Language.
   const requestHeaders = await headers();
@@ -113,6 +125,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </Providers>
         <Analytics />
+        {LOAD_GA && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" nonce={nonce} />
+            <Script id="ga4" strategy="afterInteractive" nonce={nonce}>
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
