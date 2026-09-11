@@ -25,12 +25,12 @@ export function AnnouncementBar({ announcement, closeLabel }: { announcement: An
   if (!open) return null;
 
   const external = announcement.href?.startsWith("http");
-  const linkClass = "inline-flex items-center gap-1 font-bold underline underline-offset-2 whitespace-nowrap hover:no-underline";
+  const linkClass = "inline-flex shrink-0 items-center gap-1 font-bold underline underline-offset-2 whitespace-nowrap hover:no-underline";
 
   return (
     <div className="fixed top-0 inset-x-0 z-[55] h-10 bg-violet text-zinc-950">
-      <div className="max-w-7xl mx-auto h-full px-4 md:px-6 flex items-center justify-center gap-3 text-sm">
-        <p className="truncate font-medium">{announcement.text}</p>
+      <div className="relative max-w-7xl mx-auto h-full px-10 md:px-12 flex items-center justify-center gap-3 text-sm">
+        <p className="min-w-0 truncate font-medium">{announcement.text}</p>
         {announcement.href && announcement.linkLabel && (
           external ? (
             <a href={announcement.href} target="_blank" rel="noopener noreferrer" className={linkClass}>

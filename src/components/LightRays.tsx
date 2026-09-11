@@ -110,10 +110,19 @@ const LightRays: React.FC<LightRaysProps> = ({
 
       if (!containerRef.current) return;
 
-      const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
-        alpha: true
-      });
+      // ogl assigns onto the WebGL context in its constructor, so a browser with
+      // WebGL disabled or unavailable throws here. The rays are decoration: skip
+      // them rather than leave an unhandled rejection in every such visitor's logs.
+      let renderer: InstanceType<typeof Renderer>;
+      try {
+        renderer = new Renderer({
+          dpr: Math.min(window.devicePixelRatio, 2),
+          alpha: true
+        });
+      } catch {
+        return;
+      }
+      if (!renderer.gl) return;
       rendererRef.current = renderer;
 
       const gl = renderer.gl;
