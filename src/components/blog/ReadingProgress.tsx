@@ -64,7 +64,7 @@ export function ReadingProgress({ targetId, lang }: { targetId: string; lang: La
   }, [targetId]);
 
   return (
-    <div aria-hidden className="fixed top-20 left-0 right-0 z-40 h-[3px] bg-transparent pointer-events-none">
+    <div aria-hidden className="fixed left-0 right-0 z-40 h-[3px] bg-transparent pointer-events-none" style={{ top: "calc(5rem + var(--announce-h, 0px))" }}>
       <div
         ref={barRef}
         className="h-full w-full bg-violet"

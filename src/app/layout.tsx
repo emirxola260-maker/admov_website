@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import Script from "next/script";
 import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
+import { ANNOUNCE_COOKIE, getAnnouncement } from "@/lib/announcement";
+import { translations } from "@/i18n/translations";
 import { Analytics } from "@vercel/analytics/next";
 import { syne, dmSans, changa } from "@/lib/fonts";
 import { DEFAULT_LANG, dirFor, isLanguage, type Language } from "@/i18n/config";
@@ -111,17 +114,29 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const adminContent = await getAdminContent();
 
+  // Announcement bar: off on /admin, and off for anyone who already closed this
+  // exact message. Decided here on the server so a dismissed bar never flashes.
+  const pathname = requestHeaders.get("x-pathname") ?? "/";
+  const announcement = pathname.startsWith("/admin") ? null : getAnnouncement(adminContent, lang);
+  const dismissedVersion = (await cookies()).get(ANNOUNCE_COOKIE)?.value;
+  const showAnnouncement = !!announcement && announcement.version !== dismissedVersion;
+
   return (
     <html
       lang={lang}
       dir={dirFor(lang)}
       className={`${syne.variable} ${dmSans.variable} ${changa.variable} ${lang}`}
       suppressHydrationWarning
+      // Every fixed header offsets itself by this, so the bar never covers the navbar.
+      style={{ ["--announce-h" as string]: showAnnouncement ? "2.5rem" : "0px" }}
     >
       <head>
         <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       </head>
       <body className={`bg-zinc-950 text-zinc-50 antialiased lang-${lang}`} suppressHydrationWarning>
+        {showAnnouncement && announcement && (
+          <AnnouncementBar announcement={announcement} closeLabel={translations[lang].announce.close} />
+        )}
         <Providers initialLang={lang} adminContent={adminContent}>
           <ConsentProvider enabled={LOAD_GA}>{children}</ConsentProvider>
         </Providers>

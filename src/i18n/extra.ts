@@ -208,6 +208,7 @@ const en = {
     policy: "Privacy policy",
     settings: "Cookie settings",
   },
+  announce: { close: "Close announcement" },
 };
 
 const ar: typeof en = {
@@ -414,6 +415,7 @@ const ar: typeof en = {
     policy: "سياسة الخصوصية",
     settings: "إعدادات ملفات تعريف الارتباط",
   },
+  announce: { close: "إغلاق الإعلان" },
 };
 
 const tr: typeof en = {
@@ -620,6 +622,7 @@ const tr: typeof en = {
     policy: "Gizlilik politikası",
     settings: "Çerez ayarları",
   },
+  announce: { close: "Duyuruyu kapat" },
 };
 
 export const extra = { en, ar, tr };

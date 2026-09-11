@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Layers, Briefcase, MessageSquareQuote,
   AtSign, Search, LogOut, ChevronDown, Check, Save, Eye,
   BarChart3, Lightbulb, Image, Settings, Plus, Trash2, Star,
-  ArrowRight, Globe, Loader2, Package, Newspaper, Tag, ShoppingBag
+  ArrowRight, Globe, Loader2, Package, Newspaper, Tag, ShoppingBag, Megaphone
 } from "lucide-react";
 import { Field, Input, Textarea, Toggle, Notice, Pill } from "./ui";
 import { AppsEditor } from "./AppsEditor";
@@ -15,7 +15,7 @@ import { BlogEditor } from "./BlogEditor";
 import { revalidateTags } from "@/lib/admin/api";
 import { saveAdminContentToSupabase } from "@/lib/supabase/client";
 
-type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "contact" | "seo" | "products" | "apps" | "blog";
+type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "announcement" | "contact" | "seo" | "products" | "apps" | "blog";
 type LangTab = "en" | "ar" | "tr";
 
 interface ContentData {
@@ -38,6 +38,13 @@ interface ContentData {
   };
   contact: { email: string; phone: string; instagram: string; tiktok: string; whatsapp: string };
   seo: { title: string; description: string; ogImage: string };
+  announcement: {
+    enabled: boolean;
+    text: { en: string; ar: string; tr: string };
+    /** "/apps" stays in the visitor's language; full URLs open in a new tab. */
+    linkUrl: string;
+    linkLabel: { en: string; ar: string; tr: string };
+  };
   pricing: {
     /** The section stays off the site until this is switched on in /admin. */
     enabled: boolean;
@@ -70,6 +77,12 @@ const defaultContent: ContentData = {
       ar: ["8+ سنوات خبرة", "20+ عميل"],
       tr: ["8+ Yıl Deneyim", "20+ Müşteri"],
     },
+  },
+  announcement: {
+    enabled: false,
+    text: { en: "", ar: "", tr: "" },
+    linkUrl: "",
+    linkLabel: { en: "", ar: "", tr: "" },
   },
   pricing: {
     enabled: false,
@@ -168,6 +181,7 @@ const sidebarItems: { id: SectionId; label: string; icon: React.ReactNode }[] = 
   { id: "work-page", label: "Work Page", icon: <Image size={18} /> },
   { id: "testimonials", label: "Testimonials", icon: <MessageSquareQuote size={18} /> },
   { id: "pricing", label: "Pricing", icon: <Tag size={18} /> },
+  { id: "announcement", label: "Announcement Bar", icon: <Megaphone size={18} /> },
   { id: "contact", label: "Contact Info", icon: <AtSign size={18} /> },
   { id: "seo", label: "SEO & Meta", icon: <Search size={18} /> },
   { id: "products", label: "Products", icon: <Package size={18} /> },
@@ -215,6 +229,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             contact: { ...defaultContent.contact, ...(data.contact || {}) },
             seo: { ...defaultContent.seo, ...(data.seo || {}) },
             pricing: { ...defaultContent.pricing, ...(data.pricing || {}) },
+            announcement: { ...defaultContent.announcement, ...(data.announcement || {}) },
           }));
         }
       } catch (error) {
@@ -298,6 +313,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     "work-page": "Work Page Manager",
     testimonials: "Testimonials Editor",
     pricing: "Pricing Editor",
+    announcement: "Announcement Bar",
     contact: "Contact Information",
     seo: "SEO & Meta Tags",
     products: "Products",
@@ -312,6 +328,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     "work-page": "Manage sections and projects on the dedicated /work page. Add sections, add projects with images and videos.",
     testimonials: "Manage client testimonials and social proof.",
     pricing: "Set your package prices. The section stays off the website until you switch it on here.",
+    announcement: "A thin bar above the navbar on every page. Visitors can close it; change the message and it shows again.",
     contact: "Update your contact details and social links.",
     seo: "Optimize search engine visibility and meta information.",
     products: "Your own apps, SaaS and websites shown in the Products section and on /products. Changes go live immediately.",
@@ -434,7 +451,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
 
             {/* Language Tabs - only for content sections */}
-            {["hero", "services", "work", "work-page", "testimonials", "pricing", "products", "apps", "blog"].includes(activeSection) && (
+            {["hero", "services", "work", "work-page", "testimonials", "pricing", "announcement", "products", "apps", "blog"].includes(activeSection) && (
               <div className="bg-[#F6F3F2] p-1.5 rounded-2xl flex items-center shadow-sm shrink-0">
                 {(["en", "ar", "tr"] as LangTab[]).map((lang) => (
                   <button
@@ -476,6 +493,9 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               )}
               {activeSection === "testimonials" && (
                 <TestimonialsEditor content={content} setContent={setContent} lang={activeLang} />
+              )}
+              {activeSection === "announcement" && (
+                <AnnouncementEditor content={content} setContent={setContent} lang={activeLang} />
               )}
               {activeSection === "pricing" && (
                 <PricingEditor content={content} setContent={setContent} lang={activeLang} />
@@ -1148,6 +1168,66 @@ function WorkPageEditor({ content, setContent, lang }: { content: ContentData; s
         <p className="text-xs text-[#5D54A0] leading-relaxed font-medium">
           Each section appears as a titled group on the /work page with its own grid of project cards. The "Featured" section uses a special large-card layout. If no sections are added here, the page auto-generates from your homepage Work data. Add videos (MP4 URLs) for auto-play on hover.
         </p>
+      </div>
+    </div>
+  );
+}
+
+function AnnouncementEditor({ content, setContent, lang }: { content: ContentData; setContent: (c: ContentData) => void; lang: LangTab }) {
+  const a = content.announcement;
+  const update = (patch: Partial<ContentData["announcement"]>) => setContent({ ...content, announcement: { ...a, ...patch } });
+  const text = a.text[lang] ?? "";
+  const tooLong = text.length > 80;
+
+  return (
+    <div className="space-y-6" dir={lang === "ar" ? "rtl" : "ltr"}>
+      <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-[0px_20px_40px_rgba(27,28,28,0.06)] space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="font-bold text-stone-800">Show the announcement bar</p>
+            <p className="text-sm text-stone-500 mt-1">
+              {a.enabled ? "Live on every page except the admin panel." : "Hidden. Write a message, then switch this on."}
+            </p>
+          </div>
+          <Toggle checked={a.enabled} onChange={(v) => update({ enabled: v })} label={a.enabled ? "Live" : "Hidden"} />
+        </div>
+        {a.enabled && !(a.text.en || "").trim() && (
+          <Notice tone="error">Add an English message — it is the fallback for any language left empty.</Notice>
+        )}
+      </div>
+
+      <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-[0px_20px_40px_rgba(27,28,28,0.06)] space-y-5">
+        <LangIndicator lang={lang} />
+        <Field label="Message" hint={`${text.length}/80 — longer messages are cut off on phones.`}>
+          <Input
+            value={text}
+            onChange={(e) => update({ text: { ...a.text, [lang]: e.target.value } })}
+            placeholder="CreatorFlow is coming soon — join the early list"
+          />
+        </Field>
+        {tooLong && <Notice tone="info">This is over 80 characters, so phones will show it cut off with “…”.</Notice>}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Field label="Link" hint="Optional. “/apps” keeps visitors in their language; a full URL opens in a new tab.">
+            <Input value={a.linkUrl} onChange={(e) => update({ linkUrl: e.target.value })} placeholder="/apps" dir="ltr" />
+          </Field>
+          <Field label="Link text">
+            <Input
+              value={a.linkLabel[lang] ?? ""}
+              onChange={(e) => update({ linkLabel: { ...a.linkLabel, [lang]: e.target.value } })}
+              placeholder="See our apps"
+            />
+          </Field>
+        </div>
+
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Preview</p>
+          <div className="rounded-lg bg-[#8B7DF0] text-zinc-950 h-10 px-4 flex items-center justify-center gap-3 text-sm overflow-hidden">
+            <span className="truncate font-medium">{text || a.text.en || "Your message appears here"}</span>
+            {a.linkUrl && (a.linkLabel[lang] || a.linkLabel.en) && (
+              <span className="font-bold underline underline-offset-2 whitespace-nowrap">{a.linkLabel[lang] || a.linkLabel.en} →</span>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
