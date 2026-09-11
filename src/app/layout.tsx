@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import Script from "next/script";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { syne, dmSans, changa } from "@/lib/fonts";
 import { DEFAULT_LANG, dirFor, isLanguage, type Language } from "@/i18n/config";
@@ -122,14 +123,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className={`bg-zinc-950 text-zinc-50 antialiased lang-${lang}`} suppressHydrationWarning>
         <Providers initialLang={lang} adminContent={adminContent}>
-          {children}
+          <ConsentProvider enabled={LOAD_GA}>{children}</ConsentProvider>
         </Providers>
         <Analytics />
         {LOAD_GA && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" nonce={nonce} />
             <Script id="ga4" strategy="afterInteractive" nonce={nonce}>
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+              {/* Consent Mode v2: everything denied until the visitor accepts in the
+                  banner, so GA writes no cookies before then. A returning visitor who
+                  already accepted is restored here, before config, so their first hit
+                  is not lost waiting for React to hydrate. */}
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{if(localStorage.getItem('admov-consent')==='granted')gtag('consent','update',{analytics_storage:'granted'});}catch(e){}gtag('js',new Date());gtag('config','${GA_ID}');`}
             </Script>
           </>
         )}

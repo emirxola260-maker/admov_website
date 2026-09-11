@@ -10,6 +10,7 @@ import { sanitizeHttpUrl } from "@/lib/security";
 import { Logo } from "./ui/Logo";
 import { TikTokIcon, WhatsAppIcon } from "./ui/SocialIcons";
 import { Newsletter } from "./Newsletter";
+import { ConsentSettingsButton } from "./consent/ConsentProvider";
 
 export function Footer() {
   const { t, lang } = useLanguage();
@@ -101,9 +102,12 @@ export function Footer() {
           <p>
             &copy; {new Date().getFullYear()} ADMOV. {t.footer.rights}
           </p>
-          <a href="mailto:info@admov.io" dir="ltr" className="hover:text-violet transition-colors">
-            info@admov.io
-          </a>
+          <div className="flex items-center gap-5">
+            <ConsentSettingsButton className="hover:text-violet transition-colors" />
+            <a href="mailto:info@admov.io" dir="ltr" className="hover:text-violet transition-colors">
+              info@admov.io
+            </a>
+          </div>
         </div>
       </div>
     </footer>

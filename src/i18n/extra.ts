@@ -201,6 +201,13 @@ const en = {
     },
     storeNote: "Downloads through the official store.",
   },
+  consent: {
+    text: "We use cookies to understand how visitors use our site. Analytics stay off unless you accept.",
+    accept: "Accept",
+    reject: "Reject",
+    policy: "Privacy policy",
+    settings: "Cookie settings",
+  },
 };
 
 const ar: typeof en = {
@@ -400,6 +407,13 @@ const ar: typeof en = {
     },
     storeNote: "التحميل عبر المتجر الرسمي.",
   },
+  consent: {
+    text: "نستخدم ملفات تعريف الارتباط لفهم كيفية استخدام الزوار لموقعنا. تبقى التحليلات متوقفة ما لم توافق.",
+    accept: "موافقة",
+    reject: "رفض",
+    policy: "سياسة الخصوصية",
+    settings: "إعدادات ملفات تعريف الارتباط",
+  },
 };
 
 const tr: typeof en = {
@@ -598,6 +612,13 @@ const tr: typeof en = {
       keepSafe: "Bunu güvenli bir yerde saklayın. İndirme bağlantısı 14 gün geçerlidir.",
     },
     storeNote: "İndirme resmi mağaza üzerinden yapılır.",
+  },
+  consent: {
+    text: "Ziyaretçilerin sitemizi nasıl kullandığını anlamak için çerezler kullanıyoruz. Kabul etmediğiniz sürece analitik kapalı kalır.",
+    accept: "Kabul et",
+    reject: "Reddet",
+    policy: "Gizlilik politikası",
+    settings: "Çerez ayarları",
   },
 };
 

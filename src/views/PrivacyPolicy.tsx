@@ -6,7 +6,7 @@ const content: Record<Lang, LegalDoc> = {
   en: {
     eyebrow: "Legal",
     title: "Privacy Policy",
-    updated: "Last updated: September 2, 2026",
+    updated: "Last updated: September 11, 2026",
     intro: `This Privacy Policy explains how **Admov** ("we", "us") collects, uses, and shares information when you use the Admov mobile app, our website at https://admov.io, and related services (together, the "Service"). Sections that apply only to the app or only to the website say so. By using the Service, you agree to this Policy.`,
     sections: [
       {
@@ -97,7 +97,7 @@ const content: Record<Lang, LegalDoc> = {
           { p: "This section applies to our website at https://admov.io, including the blog and the newsletter." },
           { list: [
             "**Language preference.** We store a cookie named admov-lang so the site opens in the language you chose. It contains only the language code and expires after one year.",
-            "**Analytics.** We use Vercel Web Analytics, which counts page views without cookies and without collecting personal data.",
+            "**Analytics.** We use Vercel Web Analytics, which counts page views without cookies and without collecting personal data. With your consent, we also use Google Analytics 4 to understand how visitors use the site; it sets the cookies _ga and _ga_35B5ZKGN2K, which last up to two years. Google Analytics stays off until you accept it in the cookie banner, and you can change your choice at any time from “Cookie settings” at the bottom of every page.",
             "**Contact form.** Details you submit (name, email, phone, message) are sent to our team so we can reply. We do not use them for marketing unless you ask us to.",
             "**Newsletter.** If you subscribe, we store your email address and language to send you our emails. You can unsubscribe at any time by emailing info@admov.io.",
             "**Blog content.** Some articles are drafted with the help of AI tools and reviewed by our team before publication.",
@@ -122,7 +122,7 @@ const content: Record<Lang, LegalDoc> = {
   ar: {
     eyebrow: "قانوني",
     title: "سياسة الخصوصية",
-    updated: "آخر تحديث: 2 سبتمبر 2026",
+    updated: "آخر تحديث: 11 سبتمبر 2026",
     intro: `توضّح سياسة الخصوصية هذه كيف تقوم **Admov** ("نحن"، "لنا") بجمع المعلومات واستخدامها ومشاركتها عند استخدامك لتطبيق Admov للهواتف، وموقعنا على https://admov.io، والخدمات المرتبطة بها (يُشار إليها مجتمعةً بـ "الخدمة"). وتوضّح الأقسام التي تنطبق على التطبيق وحده أو الموقع وحده ذلك صراحةً. باستخدامك الخدمة فإنك توافق على هذه السياسة.`,
     sections: [
       {
@@ -213,7 +213,7 @@ const content: Record<Lang, LegalDoc> = {
           { p: "ينطبق هذا القسم على موقعنا الإلكتروني https://admov.io، بما في ذلك المدونة والنشرة البريدية." },
           { list: [
             "**تفضيل اللغة.** نخزن ملف تعريف ارتباط باسم admov-lang ليفتح الموقع باللغة التي اخترتها. يحتوي فقط على رمز اللغة وتنتهي صلاحيته بعد عام واحد.",
-            "**التحليلات.** نستخدم Vercel Web Analytics الذي يحصي مشاهدات الصفحات دون ملفات تعريف ارتباط ودون جمع بيانات شخصية.",
+            "**التحليلات.** نستخدم Vercel Web Analytics الذي يحصي مشاهدات الصفحات دون ملفات تعريف ارتباط ودون جمع بيانات شخصية. وبموافقتك، نستخدم أيضاً Google Analytics 4 لفهم كيفية استخدام الزوار للموقع؛ وهو يضع ملفَي تعريف الارتباط _ga و_ga_35B5ZKGN2K اللذين يبقيان حتى عامين. يبقى Google Analytics متوقفاً إلى أن توافق عليه في شريط ملفات تعريف الارتباط، ويمكنك تغيير اختيارك في أي وقت من «إعدادات ملفات تعريف الارتباط» أسفل كل صفحة.",
             "**نموذج التواصل.** تُرسل البيانات التي تقدمها (الاسم والبريد الإلكتروني والهاتف والرسالة) إلى فريقنا لنتمكن من الرد عليك. لا نستخدمها للتسويق إلا إذا طلبت ذلك.",
             "**النشرة البريدية.** إذا اشتركت، نخزن بريدك الإلكتروني ولغتك لإرسال رسائلنا إليك. يمكنك إلغاء الاشتراك في أي وقت بمراسلة info@admov.io.",
             "**محتوى المدونة.** تُصاغ بعض المقالات بمساعدة أدوات الذكاء الاصطناعي ويراجعها فريقنا قبل النشر.",
@@ -238,7 +238,7 @@ const content: Record<Lang, LegalDoc> = {
   tr: {
     eyebrow: "Yasal",
     title: "Gizlilik Politikası",
-    updated: "Son güncelleme: 2 Eylül 2026",
+    updated: "Son güncelleme: 11 Eylül 2026",
     intro: `Bu Gizlilik Politikası, Admov mobil uygulamasını, https://admov.io adresindeki web sitemizi ve ilgili hizmetleri (birlikte "Hizmet") kullandığınızda **Admov**'un ("biz", "bize") bilgileri nasıl topladığını, kullandığını ve paylaştığını açıklar. Yalnızca uygulama veya yalnızca web sitesi için geçerli olan bölümler bunu ayrıca belirtir. Hizmeti kullanarak bu Politikayı kabul etmiş olursunuz.`,
     sections: [
       {
@@ -329,7 +329,7 @@ const content: Record<Lang, LegalDoc> = {
           { p: "Bu bölüm, blog ve bülten dahil olmak üzere https://admov.io adresindeki web sitemiz için geçerlidir." },
           { list: [
             "**Dil tercihi.** Sitenin seçtiğiniz dilde açılması için admov-lang adlı bir çerez saklarız. Yalnızca dil kodunu içerir ve bir yıl sonra sona erer.",
-            "**Analitik.** Çerez kullanmadan ve kişisel veri toplamadan sayfa görüntülemelerini sayan Vercel Web Analytics'i kullanırız.",
+            "**Analitik.** Çerez kullanmadan ve kişisel veri toplamadan sayfa görüntülemelerini sayan Vercel Web Analytics'i kullanırız. Onayınızla, ziyaretçilerin siteyi nasıl kullandığını anlamak için Google Analytics 4'ü de kullanırız; bu hizmet iki yıla kadar kalan _ga ve _ga_35B5ZKGN2K çerezlerini yerleştirir. Google Analytics, çerez bildiriminde kabul edene kadar kapalı kalır ve seçiminizi her sayfanın altındaki “Çerez ayarları” bağlantısından istediğiniz zaman değiştirebilirsiniz.",
             "**İletişim formu.** Gönderdiğiniz bilgiler (ad, e-posta, telefon, mesaj) size yanıt verebilmemiz için ekibimize iletilir. Siz istemedikçe pazarlama amacıyla kullanılmaz.",
             "**Bülten.** Abone olursanız e-postalarımızı göndermek için e-posta adresinizi ve dilinizi saklarız. info@admov.io adresine yazarak istediğiniz zaman abonelikten çıkabilirsiniz.",
             "**Blog içeriği.** Bazı yazılar yapay zeka araçlarının yardımıyla hazırlanır ve yayınlanmadan önce ekibimiz tarafından gözden geçirilir.",
