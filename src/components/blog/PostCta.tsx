@@ -3,6 +3,8 @@ import type { Language } from "@/i18n/config";
 import { VioletButton } from "@/components/ui/VioletButton";
 
 const I8CHAT_PILLARS = new Set(["automation", "product-spotlight"]);
+// /courses now exists on this site. Point the academy CTA there once a course
+// is published — switching earlier would send blog readers to an empty page.
 const ACADEMY_PILLARS = new Set(["ai-ads", "llm-setup", "web-app", "market"]);
 
 /** Contextual call-to-action at the end of a post: cross-sells ADMOV products by topic. */

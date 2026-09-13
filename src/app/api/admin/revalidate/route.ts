@@ -1,7 +1,7 @@
 import { purgeTags } from "@/lib/cache";
 import { requireAdmin } from "@/lib/server/auth";
 
-const ALLOWED = new Set(["admin-content", "products", "posts"]);
+const ALLOWED = new Set(["admin-content", "products", "posts", "apps"]);
 
 /** Called by the admin UI after it writes to Supabase so cached pages refresh immediately. */
 export async function POST(request: Request) {

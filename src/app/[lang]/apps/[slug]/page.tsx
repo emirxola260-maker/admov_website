@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPublishedApp } from "@/lib/data/apps";
+import { getPublishedStoreApp } from "@/lib/data/apps";
 import { appMetadata } from "@/lib/apps/metadata";
 import { resolveLang } from "@/lib/routes/lang";
 import { AppDetail } from "@/components/apps/AppDetail";
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { lang, slug } = await params;
   resolveLang(lang);
-  const app = await getPublishedApp(slug);
+  const app = await getPublishedStoreApp(slug);
   if (!app) notFound();
   return <AppDetail app={app} />;
 }

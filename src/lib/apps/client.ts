@@ -26,6 +26,9 @@ export async function saveApp(input: AppInput & { id?: string }): Promise<AppIte
     logo_url: rest.logo_url || null,
     image_url: rest.image_url || null,
     video_url: rest.video_url || null,
+    duration: rest.duration || null,
+    level: rest.level || null,
+    curriculum_md: rest.curriculum_md ?? {},
     price_cents: rest.fulfilment === "store_link" ? null : rest.price_cents,
   };
   const query = id

@@ -11,6 +11,7 @@ import { Logo } from "./ui/Logo";
 import { TikTokIcon, WhatsAppIcon } from "./ui/SocialIcons";
 import { Newsletter } from "./Newsletter";
 import { ConsentSettingsButton } from "./consent/ConsentProvider";
+import { useCourseLangs } from "./courses/CourseLangsProvider";
 
 export function Footer() {
   const { t, lang } = useLanguage();
@@ -24,6 +25,7 @@ export function Footer() {
 
   // Pricing is admin-controlled, so the link comes and goes with the section.
   const pricingLive = !!getAdminPricing(content, lang, t.pricing);
+  const coursesLive = useCourseLangs().includes(lang);
 
   const columns = [
     {
@@ -40,6 +42,7 @@ export function Footer() {
       title: t.footer.resources,
       links: [
         { label: t.footer.products, href: localePath(lang, "/products") },
+        ...(coursesLive ? [{ label: t.nav.courses, href: localePath(lang, "/courses") }] : []),
         { label: t.footer.blog, href: blogHref(lang) },
         { label: t.footer.support, href: localePath(lang, "/support") },
       ],

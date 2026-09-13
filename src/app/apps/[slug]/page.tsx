@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DEFAULT_LANG } from "@/i18n/config";
-import { getPublishedApp } from "@/lib/data/apps";
+import { getPublishedStoreApp } from "@/lib/data/apps";
 import { appMetadata } from "@/lib/apps/metadata";
 import { AppDetail } from "@/components/apps/AppDetail";
 
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const app = await getPublishedApp((await params).slug);
+  const app = await getPublishedStoreApp((await params).slug);
   if (!app) notFound();
   return <AppDetail app={app} />;
 }

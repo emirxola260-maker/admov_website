@@ -78,7 +78,7 @@ export async function POST(request: Request) {
   }
 
   await sendTelegramMessage(
-    `💰 <b>New sale</b>\n${session.metadata?.app_slug ?? appId}\n${email}\n${((session.amount_total ?? 0) / 100).toFixed(2)} ${(session.currency ?? "usd").toUpperCase()}`,
+    `${fulfilment === "enrolment" ? "🎓 <b>New enrolment</b> — contact the student" : "💰 <b>New sale</b>"}\n${session.metadata?.app_slug ?? appId}\n${email}\n${((session.amount_total ?? 0) / 100).toFixed(2)} ${(session.currency ?? "usd").toUpperCase()}`,
   ).catch(() => {});
 
   return Response.json({ received: true });

@@ -6,7 +6,7 @@ import { Field, Input, Textarea, Select, Button, Pill, Card, Notice, Toggle } fr
 import { listAppsAdmin, saveApp, deleteApp } from "@/lib/apps/client";
 import { revalidateTags } from "@/lib/admin/api";
 import {
-  APP_KINDS, BILLINGS, EMPTY_APP, FULFILMENTS, PLATFORMS, formatPrice, isPaid,
+  BILLINGS, EMPTY_APP, PLATFORMS, STORE_FULFILMENTS, STORE_KINDS, formatPrice, isCourse, isPaid,
   type AppInput, type AppItemAdmin, type Fulfilment, type Platform,
 } from "@/lib/apps/types";
 
@@ -17,6 +17,7 @@ const FULFILMENT_HELP: Record<Fulfilment, string> = {
   download: "Paid once, then the buyer gets a private download link that expires.",
   subscription: "Recurring payment through Stripe for access to a hosted app.",
   license: "Paid once, then the buyer gets a licence key your app checks.",
+  enrolment: "A course seat — courses are managed in the Courses tab.",
 };
 
 export function AppsEditor({ lang }: { lang: Lang }) {
@@ -29,7 +30,7 @@ export function AppsEditor({ lang }: { lang: Lang }) {
   const load = React.useCallback(async () => {
     setLoading(true);
     try {
-      setApps(await listAppsAdmin());
+      setApps((await listAppsAdmin()).filter((a) => !isCourse(a)));
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not load apps");
@@ -41,7 +42,8 @@ export function AppsEditor({ lang }: { lang: Lang }) {
   const commit = async () => {
     if (!draft) return;
     if (!draft.slug.trim() || !draft.name.trim()) return setError("Name and slug are required.");
-    if (isPaid(draft.fulfilment) && !draft.price_cents) return setError("A paid app needs a price.");
+    if (draft.status === "published" && isPaid(draft.fulfilment) && !draft.price_cents)
+      return setError("Set a price before publishing a paid app — or save it as a draft.");
     if (draft.fulfilment === "store_link" && !draft.store_url?.trim()) return setError("A store listing needs a link.");
     setBusy(true);
     try {
@@ -113,7 +115,7 @@ export function AppsEditor({ lang }: { lang: Lang }) {
             <div className="grid md:grid-cols-2 gap-4">
               <Field label="Type">
                 <Select value={draft.kind} onChange={(e) => set("kind", e.target.value as AppInput["kind"])}>
-                  {APP_KINDS.map((k) => <option key={k} value={k}>{k.replace("_", " ")}</option>)}
+                  {STORE_KINDS.map((k) => <option key={k} value={k}>{k.replace("_", " ")}</option>)}
                 </Select>
               </Field>
               <Field label="Platforms">
@@ -136,7 +138,7 @@ export function AppsEditor({ lang }: { lang: Lang }) {
 
             <Field label="How it's delivered" hint={FULFILMENT_HELP[draft.fulfilment]}>
               <Select value={draft.fulfilment} onChange={(e) => set("fulfilment", e.target.value as Fulfilment)}>
-                {FULFILMENTS.map((f) => <option key={f} value={f}>{f.replace("_", " ")}</option>)}
+                {STORE_FULFILMENTS.map((f) => <option key={f} value={f}>{f.replace("_", " ")}</option>)}
               </Select>
             </Field>
 

@@ -6,16 +6,17 @@ import {
   LayoutDashboard, Layers, Briefcase, MessageSquareQuote,
   AtSign, Search, LogOut, ChevronDown, Check, Save, Eye,
   BarChart3, Lightbulb, Image, Settings, Plus, Trash2, Star,
-  ArrowRight, Globe, Loader2, Package, Newspaper, Tag, ShoppingBag, Megaphone
+  ArrowRight, Globe, Loader2, Package, Newspaper, Tag, ShoppingBag, Megaphone, GraduationCap
 } from "lucide-react";
 import { Field, Input, Textarea, Toggle, Notice, Pill } from "./ui";
 import { AppsEditor } from "./AppsEditor";
+import { CoursesEditor } from "./CoursesEditor";
 import { ProductsEditor } from "./ProductsEditor";
 import { BlogEditor } from "./BlogEditor";
 import { revalidateTags } from "@/lib/admin/api";
 import { saveAdminContentToSupabase } from "@/lib/supabase/client";
 
-type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "announcement" | "contact" | "seo" | "products" | "apps" | "blog";
+type SectionId = "hero" | "services" | "work" | "work-page" | "testimonials" | "pricing" | "announcement" | "contact" | "seo" | "products" | "apps" | "courses" | "blog";
 type LangTab = "en" | "ar" | "tr";
 
 interface ContentData {
@@ -186,6 +187,7 @@ const sidebarItems: { id: SectionId; label: string; icon: React.ReactNode }[] = 
   { id: "seo", label: "SEO & Meta", icon: <Search size={18} /> },
   { id: "products", label: "Products", icon: <Package size={18} /> },
   { id: "apps", label: "Apps & Store", icon: <ShoppingBag size={18} /> },
+  { id: "courses", label: "Courses", icon: <GraduationCap size={18} /> },
   { id: "blog", label: "Blog & AI Writer", icon: <Newspaper size={18} /> },
 ];
 
@@ -206,7 +208,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
   // Deep links from Telegram / the site: /admin#blog, /admin#products
   React.useEffect(() => {
     const hash = window.location.hash.replace("#", "");
-    if (hash === "blog" || hash === "products") setActiveSection(hash);
+    if (hash === "blog" || hash === "products" || hash === "apps" || hash === "courses") setActiveSection(hash);
   }, []);
 
   // Load content from Supabase on mount
@@ -318,6 +320,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     seo: "SEO & Meta Tags",
     products: "Products",
     apps: "Apps & Store",
+    courses: "Courses",
     blog: "Blog & AI Writer",
   };
 
@@ -333,6 +336,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
     seo: "Optimize search engine visibility and meta information.",
     products: "Your own apps, SaaS and websites shown in the Products section and on /products. Changes go live immediately.",
     apps: "Everything you sell on /apps. Store listings link to the App Store or Google Play; the other kinds are paid through Stripe.",
+    courses: "Training courses sold on /courses through Stripe. Keep a course as a draft until it has a price, then publish it.",
     blog: "Review AI-generated drafts, edit them per language, publish, and queue topics for the daily writer.",
   };
 
@@ -420,7 +424,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               <Eye size={16} />
               <span className="hidden sm:inline">Preview</span>
             </a>
-            {!["products", "blog"].includes(activeSection) && (
+            {!["products", "blog", "apps", "courses"].includes(activeSection) && (
             <button
               onClick={handleSave}
               disabled={saving}
@@ -451,7 +455,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
 
             {/* Language Tabs - only for content sections */}
-            {["hero", "services", "work", "work-page", "testimonials", "pricing", "announcement", "products", "apps", "blog"].includes(activeSection) && (
+            {["hero", "services", "work", "work-page", "testimonials", "pricing", "announcement", "products", "apps", "courses", "blog"].includes(activeSection) && (
               <div className="bg-[#F6F3F2] p-1.5 rounded-2xl flex items-center shadow-sm shrink-0">
                 {(["en", "ar", "tr"] as LangTab[]).map((lang) => (
                   <button
@@ -508,6 +512,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               )}
               {activeSection === "products" && <ProductsEditor lang={activeLang} />}
               {activeSection === "apps" && <AppsEditor lang={activeLang} />}
+              {activeSection === "courses" && <CoursesEditor lang={activeLang} />}
               {activeSection === "blog" && <BlogEditor lang={activeLang} />}
             </motion.div>
           </AnimatePresence>

@@ -46,6 +46,7 @@ export async function GET(request: Request) {
 
   return Response.json({
     status: "paid",
+    fulfilment: app?.fulfilment ?? null,
     appName: app?.name ?? null,
     email: order.email,
     licenseKey: order.license_key ?? null,

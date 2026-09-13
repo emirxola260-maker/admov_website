@@ -60,7 +60,7 @@ export function AppAction({ app, large = false }: { app: AppItem; large?: boolea
     <div className="flex flex-col gap-2">
       <button type="button" onClick={checkout} disabled={busy} className={`${solid} disabled:opacity-60`}>
         {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <ShoppingCart size={16} aria-hidden />}
-        {app.fulfilment === "subscription" ? a.actions.subscribe : a.actions.buy}
+        {app.fulfilment === "enrolment" ? t.courses.enrol : app.fulfilment === "subscription" ? a.actions.subscribe : a.actions.buy}
       </button>
       {error && <p className="text-sm text-red-300">{error}</p>}
     </div>

@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Check, Copy, Download, Loader2 } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-type Result = { status: string; licenseKey?: string | null; downloadUrl?: string | null; email?: string };
+type Result = { status: string; fulfilment?: string | null; licenseKey?: string | null; downloadUrl?: string | null; email?: string };
 
 /**
  * Shown after Stripe redirects back.
@@ -14,7 +14,7 @@ type Result = { status: string; licenseKey?: string | null; downloadUrl?: string
  * so this polls briefly rather than telling someone who has just paid that
  * nothing happened.
  */
-export function PurchaseResult() {
+export function PurchaseResult({ fulfilment }: { fulfilment?: string } = {}) {
   const { t } = useLanguage();
   const p = t.apps.purchase;
   const params = useSearchParams();
@@ -78,6 +78,11 @@ export function PurchaseResult() {
   return (
     <Banner tone="ok">
       <p className="font-syne font-bold text-emerald-200">{p.thanks}</p>
+
+      {/* A course seat has no key or file — tell the student what happens next. */}
+      {(fulfilment ?? result.fulfilment) === "enrolment" && (
+        <p className="mt-3 text-emerald-100/90 leading-relaxed">{t.courses.enrolled}</p>
+      )}
 
       {result.licenseKey && (
         <div className="mt-4">

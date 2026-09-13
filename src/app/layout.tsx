@@ -5,6 +5,7 @@ import { ConsentProvider } from "@/components/consent/ConsentProvider";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { ANNOUNCE_COOKIE, getAnnouncement } from "@/lib/announcement";
 import { translations } from "@/i18n/translations";
+import { getCourseLangs } from "@/lib/data/apps";
 import { Analytics } from "@vercel/analytics/next";
 import { syne, dmSans, changa } from "@/lib/fonts";
 import { DEFAULT_LANG, dirFor, isLanguage, type Language } from "@/i18n/config";
@@ -113,6 +114,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const lang: Language = isLanguage(headerLang) ? headerLang : DEFAULT_LANG;
   const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const adminContent = await getAdminContent();
+  // Same cached query the course pages use (tag "apps"), so this costs no extra DB hit.
+  const courseLangs = await getCourseLangs();
 
   // Announcement bar: off on /admin, and off for anyone who already closed this
   // exact message. Decided here on the server so a dismissed bar never flashes.
@@ -137,7 +140,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {showAnnouncement && announcement && (
           <AnnouncementBar announcement={announcement} closeLabel={translations[lang].announce.close} />
         )}
-        <Providers initialLang={lang} adminContent={adminContent}>
+        <Providers initialLang={lang} adminContent={adminContent} courseLangs={courseLangs}>
           <ConsentProvider enabled={LOAD_GA}>{children}</ConsentProvider>
         </Providers>
         <Analytics />

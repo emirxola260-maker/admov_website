@@ -1,7 +1,8 @@
 import type { LocalizedText } from "@/lib/blog/types";
+import { SUPPORTED_LANGS, type Language } from "@/i18n/config";
 
 export type AppStatus = "draft" | "published";
-export type AppKind = "app" | "mini_app" | "template" | "saas";
+export type AppKind = "app" | "mini_app" | "template" | "saas" | "course";
 export type Platform = "ios" | "android" | "macos" | "windows" | "web";
 
 /**
@@ -9,19 +10,41 @@ export type Platform = "ios" | "android" | "macos" | "windows" | "web";
  *
  * `store_link` exists because Apple (and in practice Google) do not allow
  * selling their apps outside their own stores — those entries link out and
- * carry no price. The other three are ours to fulfil.
+ * carry no price. The others are ours to fulfil. `enrolment` is a course
+ * seat: paid once, no artefact — the owner is told and contacts the student.
  */
-export type Fulfilment = "store_link" | "download" | "subscription" | "license";
+export type Fulfilment = "store_link" | "download" | "subscription" | "license" | "enrolment";
 export type Billing = "one_time" | "monthly" | "yearly";
 
-export const APP_KINDS: AppKind[] = ["app", "mini_app", "template", "saas"];
+export const APP_KINDS: AppKind[] = ["app", "mini_app", "template", "saas", "course"];
 export const PLATFORMS: Platform[] = ["ios", "android", "macos", "windows", "web"];
-export const FULFILMENTS: Fulfilment[] = ["store_link", "download", "subscription", "license"];
+export const FULFILMENTS: Fulfilment[] = ["store_link", "download", "subscription", "license", "enrolment"];
+
+/** What the Apps editor offers — courses have their own tab and editor. */
+export const STORE_KINDS: AppKind[] = APP_KINDS.filter((k) => k !== "course");
+export const STORE_FULFILMENTS: Fulfilment[] = FULFILMENTS.filter((f) => f !== "enrolment");
 export const BILLINGS: Billing[] = ["one_time", "monthly", "yearly"];
 
 /** Fulfilments that take money. `store_link` never does. */
-export const PAID_FULFILMENTS: Fulfilment[] = ["download", "subscription", "license"];
+export const PAID_FULFILMENTS: Fulfilment[] = ["download", "subscription", "license", "enrolment"];
 export const isPaid = (fulfilment: Fulfilment) => PAID_FULFILMENTS.includes(fulfilment);
+
+export const isCourse = (app: Pick<AppItem, "kind">) => app.kind === "course";
+
+/**
+ * Where a row lives on the site. Courses and apps share a table and a
+ * checkout, so this is the one place that decides which URL they get.
+ */
+export const storeBase = (kind: AppKind): "/apps" | "/courses" => (kind === "course" ? "/courses" : "/apps");
+
+/**
+ * Languages a course actually has a curriculum in. This single definition
+ * drives the nav link, the index, the detail page, hreflang and the sitemap,
+ * so an Arabic-only course never shows up as an empty English page.
+ */
+export function courseLangs(app: Pick<AppItem, "curriculum_md">): Language[] {
+  return SUPPORTED_LANGS.filter((l) => Boolean(app.curriculum_md?.[l]?.trim()));
+}
 
 export interface AppItem {
   id: string;
@@ -44,6 +67,10 @@ export interface AppItem {
   tagline: LocalizedText;
   description: LocalizedText;
   features: Partial<Record<"en" | "ar" | "tr", string[]>>;
+  /** Courses only. Markdown per language, rendered with PostArticle. */
+  curriculum_md: LocalizedText | null;
+  duration: string | null;
+  level: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -80,6 +107,9 @@ export const EMPTY_APP: AppInput = {
   tagline: { en: "" },
   description: { en: "" },
   features: { en: [] },
+  curriculum_md: {},
+  duration: "",
+  level: "",
 };
 
 /**
@@ -94,7 +124,12 @@ export function formatPrice(cents: number | null | undefined, currency: string, 
   try {
     const formatter = new Intl.NumberFormat(locale, { style: "currency", currency: code });
     const digits = formatter.resolvedOptions().maximumFractionDigits ?? 2;
-    return formatter.format(cents / 10 ** digits);
+    const amount = cents / 10 ** digits;
+    // A whole amount reads as $299, not $299.00.
+    if (Number.isInteger(amount)) {
+      return new Intl.NumberFormat(locale, { style: "currency", currency: code, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+    }
+    return formatter.format(amount);
   } catch {
     return `${(cents / 100).toFixed(2)} ${code}`;
   }

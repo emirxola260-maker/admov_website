@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { translations } from "@/i18n/translations";
-import { getPublishedApps } from "@/lib/data/apps";
+import { getPublishedStoreApps } from "@/lib/data/apps";
 import { pathAlternates } from "@/lib/i18n/paths";
 import { SITE_URL } from "@/lib/blog/metadata";
 import { AppsPage } from "@/components/apps/AppsPage";
@@ -12,5 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <AppsPage apps={await getPublishedApps()} />;
+  return <AppsPage apps={await getPublishedStoreApps()} />;
 }

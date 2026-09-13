@@ -1,6 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe/server";
-import { isPaid, type AppItem } from "@/lib/apps/types";
+import { isPaid, storeBase, type AppItem } from "@/lib/apps/types";
 import { SITE_URL } from "@/lib/blog/metadata";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +37,8 @@ export async function POST(request: Request) {
   }
 
   const subscription = app.fulfilment === "subscription";
-  const base = `${SITE_URL}${lang === "en" ? "" : `/${lang}`}/apps`;
+  // Courses live at /courses: returning a course buyer to /apps/<slug> would land on a 404.
+  const base = `${SITE_URL}${lang === "en" ? "" : `/${lang}`}${storeBase(app.kind)}`;
 
   try {
     const session = await stripe.checkout.sessions.create({

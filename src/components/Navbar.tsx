@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { blogHref } from "@/lib/blog/utils";
 import { useAdminContent, getAdminPricing } from "@/admin/useAdminContent";
+import { useCourseLangs } from "@/components/courses/CourseLangsProvider";
 import { localePath } from "@/lib/i18n/paths";
 import { LanguageSelector } from "./LanguageSelector";
 import { Logo } from "./ui/Logo";
@@ -29,11 +30,14 @@ export function Navbar() {
   const home = localePath(lang, "/");
   // Pricing is admin-controlled, so the link comes and goes with the section.
   const pricingLive = !!getAdminPricing(adminContent, lang, t.pricing);
+  // Only where a published course has a curriculum in this language.
+  const coursesLive = useCourseLangs().includes(lang);
   const navLinks = [
     { name: t.nav.home, href: home },
     { name: t.nav.services, href: `${home}#services` },
     { name: t.nav.products, href: localePath(lang, "/products") },
     { name: t.nav.apps, href: localePath(lang, "/apps") },
+    ...(coursesLive ? [{ name: t.nav.courses, href: localePath(lang, "/courses") }] : []),
     { name: t.nav.work, href: localePath(lang, "/work") },
 
     ...(pricingLive ? [{ name: t.nav.pricing, href: `${home}#pricing` }] : []),

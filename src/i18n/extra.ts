@@ -3,7 +3,7 @@
 // ./translations.ts so every component keeps using `t.*`.
 
 const en = {
-  nav: { products: "Products", blog: "Blog", pricing: "Pricing", apps: "Apps" },
+  nav: { products: "Products", blog: "Blog", pricing: "Pricing", apps: "Apps", courses: "Courses" },
   footer: {
     tagline: "AI content, automation and software for businesses that want to move faster.",
     company: "Company",
@@ -177,7 +177,7 @@ const en = {
     back: "Back to apps",
     features: "What you get",
     platforms: { ios: "iPhone", android: "Android", macos: "Mac", windows: "Windows", web: "Web" },
-    kinds: { app: "App", mini_app: "Mini app", template: "Template", saas: "SaaS" },
+    kinds: { app: "App", mini_app: "Mini app", template: "Template", saas: "SaaS", course: "Course" },
     billing: { one_time: "one-time", monthly: "/month", yearly: "/year" },
     actions: {
       buy: "Buy now",
@@ -209,10 +209,28 @@ const en = {
     settings: "Cookie settings",
   },
   announce: { close: "Close announcement" },
+  courses: {
+    label: "Courses",
+    heading: "Learn to build with ",
+    headingHighlight: "AI",
+    subtext: "Hands-on training from the ADMOV team — you work on your own project from the very first session.",
+    pageTitle: "Courses",
+    empty: "No courses yet — check back soon.",
+    notInLang: "Our courses aren't available in English yet.",
+    availableIn: "Available in",
+    back: "Back to courses",
+    curriculum: "What we cover",
+    outcomes: "By the end, you'll be able to",
+    duration: "Duration",
+    level: "Level",
+    enrol: "Enrol now",
+    enrolNote: "Secure payment by Stripe. We'll be in touch within 24 hours to arrange your start date.",
+    enrolled: "You're enrolled — thank you. We'll contact you within 24 hours with your start date and next steps.",
+  },
 };
 
 const ar: typeof en = {
-  nav: { products: "منتجاتنا", blog: "المدونة", pricing: "الأسعار", apps: "التطبيقات" },
+  nav: { products: "منتجاتنا", blog: "المدونة", pricing: "الأسعار", apps: "التطبيقات", courses: "الدورات" },
   footer: {
     tagline: "محتوى وأتمتة وبرمجيات بالذكاء الاصطناعي للشركات التي تريد التقدم بسرعة.",
     company: "الشركة",
@@ -384,7 +402,7 @@ const ar: typeof en = {
     back: "العودة إلى التطبيقات",
     features: "ماذا تحصل عليه",
     platforms: { ios: "آيفون", android: "أندرويد", macos: "ماك", windows: "ويندوز", web: "الويب" },
-    kinds: { app: "تطبيق", mini_app: "تطبيق مصغّر", template: "قالب", saas: "خدمة سحابية" },
+    kinds: { app: "تطبيق", mini_app: "تطبيق مصغّر", template: "قالب", saas: "خدمة سحابية", course: "دورة" },
     billing: { one_time: "دفعة واحدة", monthly: "/شهرياً", yearly: "/سنوياً" },
     actions: {
       buy: "اشترِ الآن",
@@ -416,10 +434,28 @@ const ar: typeof en = {
     settings: "إعدادات ملفات تعريف الارتباط",
   },
   announce: { close: "إغلاق الإعلان" },
+  courses: {
+    label: "الدورات",
+    heading: "تعلّم كيف تبني مع ",
+    headingHighlight: "الذكاء الاصطناعي",
+    subtext: "مسارات تدريبية عملية من فريق ADMOV — تعمل على مشروعك الخاص من الجلسة الأولى.",
+    pageTitle: "الدورات",
+    empty: "لا توجد دورات بعد — عد قريباً.",
+    notInLang: "دوراتنا غير متاحة بالعربية بعد.",
+    availableIn: "متاحة بـ",
+    back: "العودة إلى الدورات",
+    curriculum: "محتوى المسار",
+    outcomes: "ماذا ستتمكن من فعله في نهاية المسار",
+    duration: "المدة",
+    level: "المستوى",
+    enrol: "سجّل الآن",
+    enrolNote: "دفع آمن عبر Stripe. سنتواصل معك خلال ٢٤ ساعة لترتيب موعد البدء.",
+    enrolled: "تم تسجيلك — شكراً لك. سنتواصل معك خلال ٢٤ ساعة بموعد البدء والخطوات التالية.",
+  },
 };
 
 const tr: typeof en = {
-  nav: { products: "Ürünler", blog: "Blog", pricing: "Fiyatlar", apps: "Uygulamalar" },
+  nav: { products: "Ürünler", blog: "Blog", pricing: "Fiyatlar", apps: "Uygulamalar", courses: "Kurslar" },
   footer: {
     tagline: "Daha hızlı ilerlemek isteyen işletmeler için yapay zeka destekli içerik, otomasyon ve yazılım.",
     company: "Şirket",
@@ -591,7 +627,7 @@ const tr: typeof en = {
     back: "Uygulamalara dön",
     features: "Neler dahil",
     platforms: { ios: "iPhone", android: "Android", macos: "Mac", windows: "Windows", web: "Web" },
-    kinds: { app: "Uygulama", mini_app: "Mini uygulama", template: "Şablon", saas: "SaaS" },
+    kinds: { app: "Uygulama", mini_app: "Mini uygulama", template: "Şablon", saas: "SaaS", course: "Kurs" },
     billing: { one_time: "tek seferlik", monthly: "/ay", yearly: "/yıl" },
     actions: {
       buy: "Satın al",
@@ -623,6 +659,24 @@ const tr: typeof en = {
     settings: "Çerez ayarları",
   },
   announce: { close: "Duyuruyu kapat" },
+  courses: {
+    label: "Kurslar",
+    heading: "Yapay zekâ ile ",
+    headingHighlight: "üretmeyi öğrenin",
+    subtext: "ADMOV ekibinden uygulamalı eğitimler — ilk dersten itibaren kendi projeniz üzerinde çalışırsınız.",
+    pageTitle: "Kurslar",
+    empty: "Henüz kurs yok — yakında tekrar bakın.",
+    notInLang: "Kurslarımız henüz Türkçe olarak sunulmuyor.",
+    availableIn: "Şu dilde mevcut",
+    back: "Kurslara dön",
+    curriculum: "Neler öğreneceksiniz",
+    outcomes: "Kursun sonunda yapabilecekleriniz",
+    duration: "Süre",
+    level: "Seviye",
+    enrol: "Hemen kaydol",
+    enrolNote: "Stripe ile güvenli ödeme. Başlangıç tarihini ayarlamak için 24 saat içinde size ulaşacağız.",
+    enrolled: "Kaydınız alındı — teşekkürler. Başlangıç tarihi ve sonraki adımlar için 24 saat içinde size ulaşacağız.",
+  },
 };
 
 export const extra = { en, ar, tr };
