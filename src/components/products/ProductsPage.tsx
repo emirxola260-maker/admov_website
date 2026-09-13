@@ -1,121 +1,129 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "motion/react";
-import { ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { productShowcase } from "@/i18n/product-showcase";
 import type { Product, ProductCategory } from "@/lib/products/types";
 import { pickLang } from "@/lib/blog/utils";
 import { sanitizeHttpUrl } from "@/lib/security";
 import { isComingSoonBadge } from "@/lib/products/badges";
-import { VioletButton } from "@/components/ui/VioletButton";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { localePath } from "@/lib/i18n/paths";
+import { ProductMedia } from "./ProductMedia";
+import styles from "./products.module.css";
 
 export function ProductsPage({ products }: { products: Product[] }) {
   const { t, lang } = useLanguage();
+  const copy = productShowcase[lang];
   const [filter, setFilter] = React.useState<"all" | ProductCategory>("all");
   const categories = Array.from(new Set(products.map((p) => p.category)));
   const visible = products.filter((p) => filter === "all" || p.category === filter);
+  // Respect the CMS order and featured flag; no additional database fields.
+  const featured = products.find((p) => p.featured && !p.badges.some(isComingSoonBadge))
+    ?? products.find((p) => p.featured) ?? products[0];
+  const showFeatured = featured && visible.some((p) => p.id === featured.id);
+  const collection = visible.filter((p) => !showFeatured || p.id !== featured.id);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50">
+    <div className={styles.page}>
       <Navbar />
-      <header className="pt-32 md:pt-40 pb-12 md:pb-16 px-6 relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-violet/10 rounded-full blur-[150px] pointer-events-none" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <span className="section-label">{t.products.label}</span>
-          <h1 className="text-5xl md:text-7xl leading-[0.95] mb-6">{t.products.pageTitle}</h1>
-          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">{t.products.pageIntro}</p>
-          {categories.length > 1 && (
-            <div className="mt-10 flex flex-wrap gap-2">
-              {(["all", ...categories] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setFilter(c)}
-                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-xl border ${
-                    filter === c ? "text-white border-violet/60" : "text-zinc-300 border-white/10 hover:border-violet/30 hover:text-white"
-                  }`}
-                  style={
-                    filter === c
-                      ? {
-                          backgroundImage: "linear-gradient(135deg, rgba(139, 125, 240, 0.6) 0%, rgba(115, 103, 240, 0.4) 100%)",
-                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 15px rgba(139, 125, 240, 0.3)",
-                        }
-                      : { backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)" }
-                  }
-                >
-                  {c === "all" ? t.products.all : t.products.categories[c]}
+      <main className={styles.main}>
+        <header className={styles.hero}>
+          <div className={styles.eyebrow}><span className={styles.brandMark} aria-hidden />{copy.studio}</div>
+          <div className={styles.heroGrid}>
+            <h1>{copy.title}<br /><span>{copy.titleAccent}</span></h1>
+            <div className={styles.heroAside}>
+              <p>{copy.intro}</p>
+              <a href="#collection" className={styles.textLink}>{copy.collection}<ArrowDown size={16} aria-hidden /></a>
+            </div>
+          </div>
+        </header>
+        <section id="collection" className={styles.collection} data-featured={Boolean(showFeatured)} aria-label={copy.collection}>
+          <div className={styles.toolbar}>
+            <div className={styles.filters} role="group" aria-label={copy.filter}>
+              {(["all", ...(categories.length > 1 ? categories : [])] as const).map((category) => (
+                <button key={category} type="button" aria-pressed={filter === category} onClick={() => setFilter(category)}>
+                  {category === "all" ? t.products.all : t.products.categories[category]}
+                  <span>{category === "all" ? products.length : products.filter((p) => p.category === category).length}</span>
                 </button>
               ))}
             </div>
+            <p className={styles.collectionCount} role="status">{visible.length.toString().padStart(2, "0")} / {copy.count}</p>
+          </div>
+          {showFeatured && (
+            <article id={featured.slug} className={styles.featured} aria-labelledby={`title-${featured.slug}`}>
+              <div className={styles.featuredStory}>
+                <div className={styles.featuredKicker}><span aria-hidden>{(products.indexOf(featured) + 1).toString().padStart(2, "0")} /</span>{copy.selected}</div>
+                <ProductIdentity product={featured} />
+                <p className={styles.featuredTagline}>{pickLang(featured.tagline, lang)}</p>
+                <ProductDescription product={featured} />
+                <ProductAction product={featured} primary />
+                <div className={styles.featuredFoot}><span className={styles.brandMark} aria-hidden />{t.products.label}</div>
+              </div>
+              <ProductMedia product={featured} featured />
+            </article>
           )}
-        </div>
-      </header>
-
-      <main className="px-6 pb-24">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {visible.length === 0 && <p className="text-zinc-500">{t.products.empty}</p>}
-          {visible.map((product, i) => {
-            const image = sanitizeHttpUrl(product.image_url ?? "");
-            const logo = sanitizeHttpUrl(product.logo_url ?? "");
-            const url = sanitizeHttpUrl(product.url ?? "");
-            const flip = i % 2 === 1;
-            return (
-              <motion.div
-                key={product.id}
-                id={product.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
-                className="scroll-mt-28"
-              >
-                <GlassCard className="overflow-hidden">
-                  <div className={`grid lg:grid-cols-2 ${flip ? "lg:[&>*:first-child]:order-2" : ""}`}>
-                    <div className="aspect-[16/10] lg:aspect-auto lg:min-h-[360px] bg-zinc-900 relative">
-                      {image ? (
-                        <img src={image} alt={product.name} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-violet/20 to-zinc-900">
-                          {logo ? <img src={logo} alt={`${product.name} logo`} className="w-24 h-24 object-contain" /> : <span className="font-syne font-extrabold text-6xl text-violet/60">{product.name.charAt(0)}</span>}
-                        </div>
-                      )}
+          {collection.length > 0 && (
+            <div className={styles.stories}>
+              <div className={styles.sectionHeading}>
+                <h2>{copy.collection}</h2><p>{copy.collectionIntro}</p>
+              </div>
+              <div className={styles.productGrid}>
+                {collection.map((product, index) => (
+                  <article key={product.id} id={product.slug} className={`${styles.product} ${index === collection.length - 1 && collection.length % 2 !== 0 ? styles.wideProduct : ""}`} aria-labelledby={`title-${product.slug}`}>
+                    <ProductMedia product={product} />
+                    <div className={styles.productStory}>
+                      <div className={styles.productMeta}><span aria-hidden>{(products.indexOf(product) + 1).toString().padStart(2, "0")}</span><ProductStatus product={product} /></div>
+                      <h3 id={`title-${product.slug}`} className={styles.productName}><bdi className="logo-text">{product.name}</bdi></h3>
+                      <p className={styles.productTagline}>{pickLang(product.tagline, lang)}</p>
+                      <ProductDescription product={product} />
+                      <ProductAction product={product} />
                     </div>
-                    <div className="p-8 md:p-12 flex flex-col justify-center gap-5">
-                      <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wider font-bold">
-                        <span className="px-3 py-1 rounded-full bg-violet/20 text-violet-light">{t.products.categories[product.category]}</span>
-                        {product.badges.map((b) =>
-                          isComingSoonBadge(b) ? (
-                            <span key={b} className="px-3 py-1 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-300">{t.products.comingSoon}</span>
-                          ) : (
-                            <span key={b} className="px-3 py-1 rounded-full border border-white/10 text-zinc-400">{b}</span>
-                          ),
-                        )}
-                      </div>
-                      <h2 className="text-3xl md:text-4xl">{product.name}</h2>
-                      {pickLang(product.tagline, lang) && <p className="text-xl text-zinc-200 font-medium leading-snug">{pickLang(product.tagline, lang)}</p>}
-                      {pickLang(product.description, lang) && <p className="text-zinc-400 leading-relaxed">{pickLang(product.description, lang)}</p>}
-                      {url && (
-                        <div className="pt-2">
-                          <VioletButton href={url}>
-                            {t.products.visit}
-                            <ExternalLink size={16} />
-                          </VioletButton>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </GlassCard>
-              </motion.div>
-            );
-          })}
-        </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+          {visible.length === 0 && <p className={styles.empty}>{t.products.empty}</p>}
+        </section>
+        <aside className={styles.closing}>
+          <div><h2>{copy.nextTitle}</h2><p>{copy.nextBody}</p></div>
+          <Link href={`${localePath(lang, "/")}#contact`} className={styles.closingLink}>{copy.nextAction}<ArrowUpRight size={23} aria-hidden /></Link>
+        </aside>
       </main>
       <WhatsAppButton />
       <Footer />
     </div>
   );
+}
+
+function ProductStatus({ product }: { product: Product }) {
+  const { t, lang } = useLanguage();
+  const soon = product.badges.some(isComingSoonBadge);
+  const live = product.badges.some((badge) => badge.trim().toLowerCase() === "live");
+  return <div className={styles.status}><span>{t.products.categories[product.category]}</span>{soon ? <span>{t.products.comingSoon}</span> : live ? <span className={styles.live}><i aria-hidden />{productShowcase[lang].live}</span> : null}</div>;
+}
+
+function ProductIdentity({ product }: { product: Product }) {
+  const logo = sanitizeHttpUrl(product.logo_url);
+  return <div className={styles.identity}>{logo && <img src={logo} alt="" width={44} height={44} />}<h2 id={`title-${product.slug}`}><bdi className="logo-text">{product.name}</bdi></h2><ProductStatus product={product} /></div>;
+}
+
+function ProductDescription({ product }: { product: Product }) {
+  const { lang } = useLanguage();
+  const description = pickLang(product.description, lang);
+  if (!description) return null;
+  return <details className={styles.description}><summary>{productShowcase[lang].details}<Plus size={16} aria-hidden /></summary><p>{description}</p></details>;
+}
+
+function ProductAction({ product, primary = false }: { product: Product; primary?: boolean }) {
+  const { lang } = useLanguage();
+  const copy = productShowcase[lang];
+  const url = sanitizeHttpUrl(product.url);
+  if (!url) return null;
+  return <a href={url} target="_blank" rel="noopener noreferrer" className={primary ? styles.primaryLink : styles.productLink}>{product.badges.some(isComingSoonBadge) ? copy.preview : copy.open} <bdi>{product.name}</bdi><ArrowUpRight size={18} aria-hidden /></a>;
 }
