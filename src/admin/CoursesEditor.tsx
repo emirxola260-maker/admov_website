@@ -84,7 +84,7 @@ export function CoursesEditor({ lang }: { lang: Lang }) {
   };
 
   const set = <K extends keyof AppInput>(key: K, value: AppInput[K]) => setDraft((d) => (d ? { ...d, [key]: value } : d));
-  const setLocalized = (key: "tagline" | "description" | "curriculum_md", value: string) =>
+  const setLocalized = (key: "tagline" | "description" | "curriculum_md" | "duration" | "level" | "format" | "project", value: string) =>
     setDraft((d) => (d ? { ...d, [key]: { ...(d[key] ?? {}), [lang]: value } } : d));
   const setOutcomes = (value: string) =>
     setDraft((d) =>
@@ -135,8 +135,8 @@ export function CoursesEditor({ lang }: { lang: Lang }) {
             </div>
 
             <div className="grid md:grid-cols-3 gap-4">
-              <Field label="Duration" hint="Shown as written, e.g. ٦ أسابيع."><Input value={draft.duration ?? ""} onChange={(e) => set("duration", e.target.value)} /></Field>
-              <Field label="Level" hint="e.g. مبتدئ"><Input value={draft.level ?? ""} onChange={(e) => set("level", e.target.value)} /></Field>
+              <Field label={`Duration — ${LANG_NAME[lang]}`} hint="Shown as written, e.g. ٦ أسابيع."><Input value={draft.duration?.[lang] ?? ""} onChange={(e) => setLocalized("duration", e.target.value)} /></Field>
+              <Field label={`Level — ${LANG_NAME[lang]}`} hint="e.g. مبتدئ"><Input value={draft.level?.[lang] ?? ""} onChange={(e) => setLocalized("level", e.target.value)} /></Field>
               <Field label="Image URL" hint="Optional cover image."><Input value={draft.image_url ?? ""} onChange={(e) => set("image_url", e.target.value)} dir="ltr" /></Field>
             </div>
 

@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
-import type { AppItemAdmin, AppInput } from "./types";
+import { compactText, type AppItemAdmin, type AppInput } from "./types";
 
 function client() {
   if (!supabase) throw new Error("Supabase is not configured");
@@ -26,8 +26,21 @@ export async function saveApp(input: AppInput & { id?: string }): Promise<AppIte
     logo_url: rest.logo_url || null,
     image_url: rest.image_url || null,
     video_url: rest.video_url || null,
-    duration: rest.duration || null,
-    level: rest.level || null,
+    duration: compactText(rest.duration),
+    level: compactText(rest.level),
+    format: compactText(rest.format),
+    project: compactText(rest.project),
+    instructor: rest.instructor?.name?.trim()
+      ? {
+          name: rest.instructor.name.trim(),
+          photo_url: rest.instructor.photo_url?.trim() || null,
+          role: compactText(rest.instructor.role) ?? {},
+          bio: compactText(rest.instructor.bio) ?? {},
+        }
+      : null,
+    gallery: (rest.gallery ?? [])
+      .filter((item) => item?.url?.trim())
+      .map((item) => ({ url: item.url.trim(), caption: compactText(item.caption) ?? {} })),
     curriculum_md: rest.curriculum_md ?? {},
     price_cents: rest.fulfilment === "store_link" ? null : rest.price_cents,
   };

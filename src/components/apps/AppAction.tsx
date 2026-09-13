@@ -12,14 +12,25 @@ import type { AppItem } from "@/lib/apps/types";
  * Store listings link out — Apple and Google do not permit selling their apps
  * anywhere else — while the paid kinds open a Stripe Checkout session.
  */
-export function AppAction({ app, large = false }: { app: AppItem; large?: boolean }) {
+export function AppAction({
+  app,
+  large = false,
+  block = false,
+  className = "",
+}: {
+  app: AppItem;
+  large?: boolean;
+  /** Stretch to the container's width (enrolment panels, mobile bars). */
+  block?: boolean;
+  className?: string;
+}) {
   const { t, lang } = useLanguage();
   const a = t.apps;
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
   const size = large ? "px-8 py-4 text-base" : "px-6 py-3 text-sm";
-  const base = `inline-flex items-center justify-center gap-2 rounded-full font-syne font-bold transition-all hover:scale-[1.02] active:scale-[0.99] ${size}`;
+  const base = `inline-flex items-center justify-center gap-2 rounded-full font-syne font-bold transition-all hover:scale-[1.02] active:scale-[0.99] ${size} ${block ? "w-full" : ""} ${className}`;
   const solid = `${base} bg-violet text-zinc-950 hover:bg-violet-light`;
 
   if (app.fulfilment === "store_link") {
@@ -57,7 +68,7 @@ export function AppAction({ app, large = false }: { app: AppItem; large?: boolea
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col gap-2 ${block ? "w-full" : ""}`}>
       <button type="button" onClick={checkout} disabled={busy} className={`${solid} disabled:opacity-60`}>
         {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <ShoppingCart size={16} aria-hidden />}
         {app.fulfilment === "enrolment" ? t.courses.enrol : app.fulfilment === "subscription" ? a.actions.subscribe : a.actions.buy}

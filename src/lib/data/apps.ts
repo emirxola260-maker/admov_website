@@ -8,7 +8,7 @@ export const APPS_TAG = "apps";
 
 /** Columns the anon key is granted — never download keys or Stripe ids. */
 const PUBLIC_COLUMNS =
-  "id,slug,name,status,featured,sort_order,kind,platforms,fulfilment,price_cents,currency,billing,store_url,demo_url,logo_url,image_url,video_url,tagline,description,features,curriculum_md,duration,level,created_at,updated_at";
+  "id,slug,name,status,featured,sort_order,kind,platforms,fulfilment,price_cents,currency,billing,store_url,demo_url,logo_url,image_url,video_url,tagline,description,features,gallery,curriculum_md,duration,level,format,project,instructor,created_at,updated_at";
 
 async function fetchPublishedApps(): Promise<AppItem[]> {
   const supabase = createAnonServerClient();
@@ -26,10 +26,38 @@ async function fetchPublishedApps(): Promise<AppItem[]> {
   return (data ?? []) as unknown as AppItem[];
 }
 
-export const getPublishedApps = unstable_cache(fetchPublishedApps, ["apps-published"], {
+const getCachedPublishedApps = unstable_cache(fetchPublishedApps, ["apps-published"], {
   tags: [APPS_TAG],
   revalidate: 60,
 });
+
+/**
+ * Development only: a `.demo-store.json` file in the repo root (gitignored)
+ * stands in for the catalogue, so the store and academy layouts can be
+ * previewed before the tables exist. Production never reads it.
+ */
+async function demoCatalogue(): Promise<AppItem[] | null> {
+  if (process.env.NODE_ENV !== "development") return null;
+  try {
+    // `Cookie: admov-demo=empty` previews the empty store for one request.
+    const { cookies } = await import("next/headers");
+    if ((await cookies()).get("admov-demo")?.value === "empty") return [];
+  } catch {
+    // Outside a request (build-time or cached scope): fall through.
+  }
+  try {
+    const { readFile } = await import("node:fs/promises");
+    const { join } = await import("node:path");
+    const rows = JSON.parse(await readFile(join(process.cwd(), ".demo-store.json"), "utf8")) as AppItem[];
+    return rows.filter((row) => row.status === "published");
+  } catch {
+    return null;
+  }
+}
+
+export async function getPublishedApps(): Promise<AppItem[]> {
+  return (await demoCatalogue()) ?? getCachedPublishedApps();
+}
 
 /*
  * Courses share the apps table (and its whole checkout), so every read site

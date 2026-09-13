@@ -3,7 +3,7 @@ import type { Language } from "@/i18n/config";
 import { SUPPORTED_LANGS, DEFAULT_LANG } from "@/i18n/config";
 import { getCourseLangs, getPublishedCourse, getPublishedStoreApp } from "@/lib/data/apps";
 import { translations } from "@/i18n/translations";
-import { courseLangs } from "@/lib/apps/types";
+import { courseLangs, galleryOf } from "@/lib/apps/types";
 import { pickLang } from "@/lib/blog/utils";
 import { sanitizeHttpUrl } from "@/lib/security";
 import { SITE_URL } from "@/lib/blog/metadata";
@@ -20,7 +20,8 @@ export async function appMetadata(slug: string, lang: Language): Promise<Metadat
   const languages = Object.fromEntries(
     SUPPORTED_LANGS.map((l) => [l, `${SITE_URL}${localePath(l, "/apps")}/${slug}`]),
   );
-  const image = sanitizeHttpUrl(app.image_url ?? "");
+  // The cover is shaped for sharing; a first screenshot is the fallback.
+  const image = sanitizeHttpUrl(app.image_url || galleryOf(app)[0]?.url || "");
 
   return {
     title: app.name,
@@ -70,7 +71,7 @@ export async function courseMetadata(slug: string, lang: Language): Promise<Meta
   if (!langs.includes(lang)) return NOT_FOUND;
 
   const url = (l: Language) => `${SITE_URL}${localePath(l, "/courses")}/${slug}`;
-  const image = sanitizeHttpUrl(course.image_url ?? "");
+  const image = sanitizeHttpUrl(course.image_url || galleryOf(course)[0]?.url || "");
 
   return {
     title: course.name,

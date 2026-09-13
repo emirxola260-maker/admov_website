@@ -46,6 +46,23 @@ export function courseLangs(app: Pick<AppItem, "curriculum_md">): Language[] {
   return SUPPORTED_LANGS.filter((l) => Boolean(app.curriculum_md?.[l]?.trim()));
 }
 
+/**
+ * One picture in a listing's gallery — app screenshots, or for a course,
+ * examples of the finished project. The caption doubles as the alt text.
+ */
+export interface GalleryItem {
+  url: string;
+  caption?: LocalizedText;
+}
+
+/** Who teaches a course. The block stays hidden until a name is set. */
+export interface CourseInstructor {
+  name: string;
+  photo_url?: string | null;
+  role?: LocalizedText;
+  bio?: LocalizedText;
+}
+
 export interface AppItem {
   id: string;
   slug: string;
@@ -61,16 +78,24 @@ export interface AppItem {
   billing: Billing;
   store_url: string | null;
   demo_url: string | null;
+  /** The app icon on store pages; the brand mark on course pages. */
   logo_url: string | null;
   image_url: string | null;
   video_url: string | null;
   tagline: LocalizedText;
   description: LocalizedText;
   features: Partial<Record<"en" | "ar" | "tr", string[]>>;
-  /** Courses only. Markdown per language, rendered with PostArticle. */
+  /** Screenshots (apps) or finished-project examples (courses), in order. */
+  gallery: GalleryItem[];
+  /** Courses only. Markdown per language — `###` headings become numbered modules. */
   curriculum_md: LocalizedText | null;
-  duration: string | null;
-  level: string | null;
+  duration: LocalizedText | null;
+  level: LocalizedText | null;
+  /** Courses only. How it is taught, e.g. "hands-on, on your own project". */
+  format: LocalizedText | null;
+  /** Courses only. One sentence: what the student has built by the end. */
+  project: LocalizedText | null;
+  instructor: CourseInstructor | null;
   created_at: string;
   updated_at: string;
 }
@@ -107,10 +132,40 @@ export const EMPTY_APP: AppInput = {
   tagline: { en: "" },
   description: { en: "" },
   features: { en: [] },
+  gallery: [],
   curriculum_md: {},
-  duration: "",
-  level: "",
+  duration: {},
+  level: {},
+  format: {},
+  project: {},
+  instructor: null,
 };
+
+/**
+ * Which device a listing is previewed in. Phone-only apps get a phone frame;
+ * anything that also runs on a desktop or in a browser gets a window frame.
+ */
+export function previewDevice(platforms: Platform[]): "phone" | "desktop" {
+  const phone = platforms.some((p) => p === "ios" || p === "android");
+  const desktop = platforms.some((p) => p === "macos" || p === "windows" || p === "web");
+  return phone && !desktop ? "phone" : "desktop";
+}
+
+/** Gallery entries with a usable URL, falling back to the cover image. */
+export function galleryOf(app: Pick<AppItem, "gallery" | "image_url">): GalleryItem[] {
+  const items = (app.gallery ?? []).filter((g) => typeof g?.url === "string" && g.url.trim());
+  if (items.length) return items;
+  return app.image_url?.trim() ? [{ url: app.image_url.trim() }] : [];
+}
+
+/** Drops blank values so a cleared admin field saves as null, not {"ar": ""}. */
+export function compactText(value: LocalizedText | null | undefined): LocalizedText | null {
+  const out: LocalizedText = {};
+  for (const [lang, text] of Object.entries(value ?? {})) {
+    if (typeof text === "string" && text.trim()) out[lang as Language] = text.trim();
+  }
+  return Object.keys(out).length ? out : null;
+}
 
 /**
  * Price for display. Amounts are stored in the currency's minor unit, so a

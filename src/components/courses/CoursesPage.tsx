@@ -105,23 +105,25 @@ function CourseCard({ course, index, lang }: { course: AppItem; index: number; l
 
 /** Duration and level pills — rendered only for the facts the course has. */
 export function CourseFacts({ course }: { course: AppItem }) {
-  const { t } = useLanguage();
-  if (!course.duration && !course.level) return null;
+  const { t, lang } = useLanguage();
+  const duration = pickLang(course.duration, lang);
+  const level = pickLang(course.level, lang);
+  if (!duration && !level) return null;
   const pill = "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-zinc-300";
   return (
     <div className="flex flex-wrap gap-2">
-      {course.duration && (
+      {duration && (
         <span className={pill}>
           <Clock size={13} aria-hidden />
           <span className="sr-only">{t.courses.duration}: </span>
-          {course.duration}
+          {duration}
         </span>
       )}
-      {course.level && (
+      {level && (
         <span className={pill}>
           <Gauge size={13} aria-hidden />
           <span className="sr-only">{t.courses.level}: </span>
-          {course.level}
+          {level}
         </span>
       )}
     </div>

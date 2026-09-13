@@ -10,9 +10,11 @@ export const syne = Syne({
   display: "swap",
 });
 
+// 600/700 are real faces: without them the browser fakes bold for every
+// semibold label and card title set in DM Sans.
 export const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--next-font-dm",
   display: "swap",
 });

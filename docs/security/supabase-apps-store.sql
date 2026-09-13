@@ -52,11 +52,15 @@ create table if not exists public.apps (
   tagline jsonb not null default '{}'::jsonb,      -- {"en":..,"ar":..,"tr":..}
   description jsonb not null default '{}'::jsonb,
   features jsonb not null default '{}'::jsonb,     -- {"en":["..",".."], ...}
+  gallery jsonb not null default '[]'::jsonb,      -- [{"url":..,"caption":{"en":..}}] screenshots / project examples
 
-  -- courses only
-  curriculum_md jsonb,         -- {"ar": "## ...markdown..."} per language
-  duration text,               -- free text, e.g. "٦ أسابيع"
-  level text,
+  -- courses only (all per language, like the copy above)
+  curriculum_md jsonb,         -- {"ar": "## ...markdown..."}; ### headings become modules
+  duration jsonb,              -- {"ar": "٦ أسابيع"}
+  level jsonb,
+  format jsonb,                -- how it is taught
+  project jsonb,               -- what the student has built by the end
+  instructor jsonb,            -- {"name":..,"photo_url":..,"role":{..},"bio":{..}}
 
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -75,9 +79,29 @@ create index if not exists apps_status_sort_idx on public.apps (status, sort_ord
 -- Upgrade path for a table created from an earlier copy of this file. Every
 -- statement is a no-op on a fresh table. Postgres names inline column checks
 -- <table>_<column>_check, which is what the drops below rely on.
+alter table public.apps add column if not exists gallery jsonb not null default '[]'::jsonb;
 alter table public.apps add column if not exists curriculum_md jsonb;
-alter table public.apps add column if not exists duration text;
-alter table public.apps add column if not exists level text;
+alter table public.apps add column if not exists duration jsonb;
+alter table public.apps add column if not exists level jsonb;
+alter table public.apps add column if not exists format jsonb;
+alter table public.apps add column if not exists project jsonb;
+alter table public.apps add column if not exists instructor jsonb;
+-- An earlier copy stored duration/level as plain text; keep any value as Arabic.
+do $$
+declare col text;
+begin
+  foreach col in array array['duration', 'level'] loop
+    if exists (
+      select 1 from information_schema.columns
+      where table_schema = 'public' and table_name = 'apps' and column_name = col and data_type = 'text'
+    ) then
+      execute format(
+        'alter table public.apps alter column %I type jsonb using case when coalesce(%I, '''') = '''' then null else jsonb_build_object(''ar'', %I) end',
+        col, col, col
+      );
+    end if;
+  end loop;
+end $$;
 alter table public.apps drop constraint if exists apps_kind_check;
 alter table public.apps add constraint apps_kind_check
   check (kind in ('app','mini_app','template','saas','course'));
@@ -151,8 +175,8 @@ revoke all on public.apps from anon;
 grant select (
   id, slug, name, status, featured, sort_order, kind, platforms, fulfilment,
   price_cents, currency, billing, store_url, demo_url,
-  logo_url, image_url, video_url, tagline, description, features,
-  curriculum_md, duration, level,
+  logo_url, image_url, video_url, tagline, description, features, gallery,
+  curriculum_md, duration, level, format, project, instructor,
   created_at, updated_at
 ) on public.apps to anon;
 revoke all on public.app_orders from anon;
@@ -160,13 +184,16 @@ revoke all on public.app_orders from anon;
 -- ---------------------------------------------------------------- seed: courses
 -- Both courses start as unpriced drafts; set a price and publish from /admin.
 -- `on conflict do nothing` so re-running never overwrites edits made there.
+-- The copy is the owner's own curriculum text; level/format/project are
+-- phrases lifted from it. Duration and the instructor are left for /admin.
 insert into public.apps (slug, name, status, kind, platforms, fulfilment, price_cents, currency, billing,
-                         sort_order, featured, tagline, description, features, curriculum_md)
+                         sort_order, featured, tagline, description, features, curriculum_md,
+                         level, format, project)
 values (
   'ai-coding', 'البرمجة مع الذكاء الاصطناعي', 'draft', 'course', '{web}', 'enrolment', null, 'usd', 'one_time',
   10, true,
   jsonb_build_object('ar', 'تبني تطبيقات ومواقع وأنظمة أتمتة — من غير ما تكون مبرمج ومن غير أي خلفية تقنية.'),
-  jsonb_build_object('ar', 'عملي بالكامل. مننفّذ سوا ع مشروع حقيقي إنت بتختاره — مش أمثلة نظرية، بتطلع ومعك شي شغّال بتقدر تفرجيه.'),
+  jsonb_build_object('ar', 'المسار مبني بالترتيب: بنبلّش من الصفر وبننتهي وعندك تطبيق شغّال ومنشور ع الإنترنت.'),
   jsonb_build_object('ar', jsonb_build_array(
     'تبني تطبيق ويب كامل وتنشره ع الإنترنت باسمك.',
     'تبني أدوات داخلية تختصر شغلك اليومي.',
@@ -182,8 +209,6 @@ values (
 - شخص بدّه يدخل مجال بناء المنتجات الرقمية ويشتغل فيها.
 
 ## محاور المسار
-
-المسار مبني بالترتيب: بنبلّش من الصفر وبننتهي وعندك تطبيق شغّال ومنشور ع الإنترنت.
 
 ### 1. شو يعني تبرمج مع الذكاء الاصطناعي
 
@@ -240,16 +265,20 @@ Claude Code · Cursor · Next.js · Supabase · Vercel · Railway · n8n · Stri
 
 **طريقة الشرح:** عملي بالكامل. مننفّذ سوا ع مشروع حقيقي إنت بتختاره — مش أمثلة نظرية، بتطلع ومعك شي شغّال بتقدر تفرجيه.
 
-**شو بتاخد معك:** قوالب المشاريع الجاهزة، ملفات الإعدادات، ومكتبة البرومبتات البرمجية يلي بستخدمها بشغلي اليومي.$md$)
+**شو بتاخد معك:** قوالب المشاريع الجاهزة، ملفات الإعدادات، ومكتبة البرومبتات البرمجية يلي بستخدمها بشغلي اليومي.$md$),
+  jsonb_build_object('ar', 'من الصفر — بدون أي خلفية تقنية'),
+  jsonb_build_object('ar', 'عملي بالكامل — ع مشروع حقيقي إنت بتختاره'),
+  jsonb_build_object('ar', 'تطبيق ويب كامل، شغّال ومنشور ع الإنترنت باسمك.')
 ) on conflict (slug) do nothing;
 
 insert into public.apps (slug, name, status, kind, platforms, fulfilment, price_cents, currency, billing,
-                         sort_order, featured, tagline, description, features, curriculum_md)
+                         sort_order, featured, tagline, description, features, curriculum_md,
+                         level, format, project)
 values (
   'ai-content-creation', 'صناعة المحتوى بالذكاء الاصطناعي', 'draft', 'course', '{web}', 'enrolment', null, 'usd', 'one_time',
   20, true,
   jsonb_build_object('ar', 'صور وفيديوهات بجودة احترافية — من الصفر، بدون كاميرا ولا استوديو ولا خبرة سابقة.'),
-  jsonb_build_object('ar', 'عملي بالكامل. كل محور فيه تطبيق مباشر، والشغل بيكون ع مشروعك إنت مش ع أمثلة جاهزة — تطلع من كل جلسة ومعك شغل خلصان.'),
+  jsonb_build_object('ar', 'المسار مبني بالترتيب: كل محور بيبني على اللي قبله، وكل معلومة إلها تطبيق عملي مباشر ع مشروعك إنت.'),
   jsonb_build_object('ar', jsonb_build_array(
     'تولّد صور منتجات وإعلانات بجودة تجارية جاهزة للنشر.',
     'تعمل فيديو إعلاني كامل من الفكرة للتصدير النهائي.',
@@ -265,8 +294,6 @@ values (
 - شخص عم يجرّب الأدوات لحاله وبدّه طريق واضح بدل التخبّط.
 
 ## محاور المسار
-
-المسار مبني بالترتيب: كل محور بيبني على اللي قبله، وكل معلومة إلها تطبيق عملي مباشر ع مشروعك إنت.
 
 ### 1. أساسيات الذكاء الاصطناعي التوليدي
 
@@ -316,5 +343,8 @@ Midjourney · Flux · Nano Banana · ComfyUI · Seedance · Kling · Veo · Higg
 
 **طريقة الشرح:** عملي بالكامل. كل محور فيه تطبيق مباشر، والشغل بيكون ع مشروعك إنت مش ع أمثلة جاهزة — تطلع من كل جلسة ومعك شغل خلصان.
 
-**شو بتاخد معك:** مكتبة البرومبتات الجاهزة، قوالب المشاهد، وخط إنتاج مكتوب خطوة بخطوة تقدر تشتغل عليه لحالك بعد ما نخلص.$md$)
+**شو بتاخد معك:** مكتبة البرومبتات الجاهزة، قوالب المشاهد، وخط إنتاج مكتوب خطوة بخطوة تقدر تشتغل عليه لحالك بعد ما نخلص.$md$),
+  jsonb_build_object('ar', 'من الصفر — بدون خبرة سابقة'),
+  jsonb_build_object('ar', 'عملي بالكامل — ع مشروعك إنت'),
+  jsonb_build_object('ar', 'فيديو إعلاني كامل من الفكرة للتصدير النهائي، وصور منتجات جاهزة للنشر.')
 ) on conflict (slug) do nothing;
