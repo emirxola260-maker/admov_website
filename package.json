@@ -37,6 +37,7 @@
     "postcss": "^8.5.26",
     "tailwindcss": "^4.3.3",
     "typescript": "~5.8.2",
+    "vercel": "^59.17.0",
     "vitest": "^4.1.7"
   }
 }
