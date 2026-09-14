@@ -1,6 +1,8 @@
 import { createServiceClient } from "@/lib/supabase/admin";
-import { generateDownloadToken, downloadExpiry } from "@/lib/apps/fulfilment";
+import { generateDownloadToken, downloadExpiry, DOWNLOAD_MAX_USES } from "@/lib/apps/fulfilment";
 import { SITE_URL } from "@/lib/blog/metadata";
+import { getClientIp } from "@/lib/server/ip";
+import { rateLimit } from "@/lib/server/ratelimit";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,12 @@ export const dynamic = "force-dynamic";
  * still never keep a usable token in the database.
  */
 export async function GET(request: Request) {
+  const ip = getClientIp(request);
+  const limit = rateLimit(`checkout-session:${ip}`, { windowMs: 60_000, max: 60 });
+  if (!limit.allowed) {
+    return Response.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const sessionId = new URL(request.url).searchParams.get("session_id");
   if (!sessionId) return Response.json({ error: "Missing session" }, { status: 400 });
 
@@ -24,7 +32,7 @@ export async function GET(request: Request) {
 
   const { data: order } = await supabase
     .from("app_orders")
-    .select("id, status, license_key, email, app_id")
+    .select("id, status, license_key, email, app_id, download_expires_at, download_count")
     .eq("stripe_session_id", sessionId)
     .maybeSingle();
 
@@ -36,12 +44,21 @@ export async function GET(request: Request) {
 
   let downloadUrl: string | null = null;
   if (app?.fulfilment === "download") {
-    const { token, hash } = generateDownloadToken();
-    const { error } = await supabase
-      .from("app_orders")
-      .update({ download_token: hash, download_expires_at: downloadExpiry(), download_count: 0 } as never)
-      .eq("id", order.id);
-    if (!error) downloadUrl = `${SITE_URL}/api/download/${token}`;
+    const isExpired = order.download_expires_at ? new Date(order.download_expires_at).getTime() < Date.now() : false;
+    const isLimitReached = (order.download_count ?? 0) >= DOWNLOAD_MAX_USES;
+
+    if (!isExpired && !isLimitReached) {
+      const { token, hash } = generateDownloadToken();
+      const expiresAt = order.download_expires_at || downloadExpiry();
+      const { error } = await supabase
+        .from("app_orders")
+        .update({
+          download_token: hash,
+          download_expires_at: expiresAt,
+        } as never)
+        .eq("id", order.id);
+      if (!error) downloadUrl = `${SITE_URL}/api/download/${token}`;
+    }
   }
 
   return Response.json({

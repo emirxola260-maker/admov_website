@@ -2,7 +2,7 @@ import type Stripe from "stripe";
 import { createServiceClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe/server";
 import { downloadExpiry, generateDownloadToken, generateLicenseKey } from "@/lib/apps/fulfilment";
-import { sendTelegramMessage } from "@/lib/server/telegram";
+import { sendTelegramMessage, escapeHtml } from "@/lib/server/telegram";
 
 export const dynamic = "force-dynamic";
 
@@ -77,8 +77,13 @@ export async function POST(request: Request) {
     return Response.json({ error: "Could not record order" }, { status: 500 });
   }
 
+  const appLabel = escapeHtml(session.metadata?.app_slug ?? appId);
+  const safeEmail = escapeHtml(email);
+  const amountStr = `${((session.amount_total ?? 0) / 100).toFixed(2)} ${(session.currency ?? "usd").toUpperCase()}`;
+  const header = fulfilment === "enrolment" ? "🎓 <b>New enrolment</b> — contact the student" : "💰 <b>New sale</b>";
+
   await sendTelegramMessage(
-    `${fulfilment === "enrolment" ? "🎓 <b>New enrolment</b> — contact the student" : "💰 <b>New sale</b>"}\n${session.metadata?.app_slug ?? appId}\n${email}\n${((session.amount_total ?? 0) / 100).toFixed(2)} ${(session.currency ?? "usd").toUpperCase()}`,
+    `${header}\n${appLabel}\n${safeEmail}\n${amountStr}`,
   ).catch(() => {});
 
   return Response.json({ received: true });

@@ -18,3 +18,14 @@ export function sanitizeHttpUrl(url: string | null | undefined, fallback = ""): 
     return fallback;
   }
 }
+
+/**
+ * Serializes an object for safe embedding inside an inline HTML `<script>` tag
+ * (such as `type="application/ld+json"`).
+ * Replaces `<` with unicode escape `\u003c` so that malicious closing tags
+ * (e.g. `</script>`) cannot execute arbitrary scripts.
+ */
+export function safeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+

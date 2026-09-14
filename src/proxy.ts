@@ -27,10 +27,18 @@ export function proxy(request: NextRequest) {
   // One hostname for the site. www serves the same pages, so without this the
   // content would exist at two addresses and any link to www would build
   // authority for a hostname we don't rank.
-  const host = request.headers.get("host") ?? "";
-  if (host.startsWith("www.")) {
+  const host = (request.headers.get("host") ?? "").toLowerCase();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://admov.io";
+  let apexDomain = "admov.io";
+  try {
+    apexDomain = new URL(siteUrl).host;
+  } catch {
+    /* fallback to admov.io */
+  }
+
+  if (host === `www.${apexDomain}`) {
     const apex = request.nextUrl.clone();
-    apex.host = host.slice(4);
+    apex.host = apexDomain;
     return NextResponse.redirect(apex, 308);
   }
 

@@ -1,0 +1,56 @@
+.section { padding: 92px 24px 100px; background: #09090b; color: #f4f3f6; scroll-margin-top: 90px; }
+.container { max-width: 1200px; margin: auto; }
+.header { display: flex; align-items: end; justify-content: space-between; gap: 48px; margin-bottom: 52px; }
+.eyebrow { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #b5aafa; margin-bottom: 18px; }
+.eyebrow svg { width: 16px; height: 16px; }
+.header h2 { font-size: clamp(32px, 3.7vw, 49px); line-height: 1.3; letter-spacing: -.035em; text-wrap: balance; }
+.intro { max-width: 360px; color: #aaa6b2; font-size: 15px; line-height: 1.9; text-wrap: pretty; }
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); column-gap: 64px; align-items: start; }
+.row { grid-column: 1; border-top: 1px solid #302d36; }
+.row:last-of-type { border-bottom: 1px solid #302d36; }
+.row button { display: grid; grid-template-columns: 24px 1fr 18px; gap: 18px; align-items: center; width: 100%; min-height: 73px; padding: 17px 0; cursor: pointer; text-align: start; font-size: 17px; line-height: 1.6; color: #aaa6b1; transition: color .2s; }
+.row button:hover { color: #f4f3f6; }
+.row button[aria-expanded="true"] { color: #c7baff; }
+.row button > svg { color: #807889; }
+.row button[aria-expanded="true"] > svg { color: #c7baff; }
+.number { color: #706a7c; font: 11px monospace; font-variant-numeric: tabular-nums; }
+.row button[aria-expanded="true"] .number { color: #c7baff; }
+.panel { grid-column: 2; grid-row: 1 / span 8; min-width: 0; animation: reveal .25s ease-out; }
+.panel[hidden] { display: none; }
+.visual { aspect-ratio: 5 / 4; background: #151319; overflow: hidden; border-radius: 4px; }
+.media { width: 100%; height: 100%; object-fit: cover; }
+video.media { object-fit: contain; background: #101014; }
+.caption { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 13px 0; border-bottom: 1px solid #302d36; color: #948d9f; font-size: 10px; }
+.caption span:last-child { direction: ltr; font-family: monospace; }
+.details { padding-top: 22px; }
+.details > p { font-size: 15px; color: #b7b2c0; line-height: 1.9; max-width: 490px; }
+.details a { display: inline-flex; gap: 20px; align-items: center; margin-top: 18px; padding: 10px 0; color: #e1d9f7; font-size: 13px; border-bottom: 1px solid #786991; transition: color .2s; }
+.details a:hover { color: #b9a5ef; }
+.section button:focus-visible, .section a:focus-visible { outline: 2px solid #bcabef; outline-offset: 4px; }
+.workflow { position: relative; display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 36px; isolation: isolate; }
+.watermark { position: absolute; width: 80%; height: 90%; inset-inline-end: -18%; bottom: -15%; color: #524761; z-index: -1; opacity: .45; }
+.workflowLabel { font-size: 11px; color: #a79aaf; margin-bottom: 28px; }
+.workflow ol { display: grid; gap: 0; }
+.workflow li { display: grid; grid-template-columns: 34px 1fr; column-gap: 20px; align-items: center; position: relative; min-height: 74px; }
+.workflow li:not(:last-child)::after { content: ""; position: absolute; inset-inline-start: 16px; top: calc(50% + 18px); bottom: calc(-50% + 18px); width: 1px; background: #52465f; }
+.workflow li > span { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #60506f; border-radius: 50%; color: #c4b4d6; font: 11px monospace; }
+.workflow li > p { font-size: 18px; line-height: 1.6; color: #d9cfdf; }
+@keyframes reveal { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+@media (max-width: 1000px) { .explorer { column-gap: 32px; } .row button { font-size: 15px; gap: 12px; } .workflow { padding: 24px; } .workflow li > p { font-size: 15px; } }
+@media (max-width: 700px) {
+  .section { padding: 60px 20px 68px; }
+  .header { display: block; margin-bottom: 30px; }
+  .header h2 { font-size: 32px; }
+  .intro { margin-top: 18px; font-size: 14px; }
+  .explorer { display: block; }
+  .row button { min-height: 68px; font-size: 15px; }
+  .panel { padding-bottom: 28px; }
+  .visual { aspect-ratio: 4 / 3; }
+  .details { padding-top: 14px; }
+  .details > p { font-size: 14px; }
+  .workflow { padding: 22px; }
+  .workflowLabel { margin-bottom: 12px; }
+  .workflow li { min-height: 54px; column-gap: 12px; }
+  .workflow li > p { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .panel { animation: none; } .row button, .details a { transition: none; } }

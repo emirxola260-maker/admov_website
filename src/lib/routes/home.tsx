@@ -5,7 +5,7 @@ import { translations } from "@/i18n/translations";
 import { getAdminContent } from "@/lib/data/admin-content";
 import { getPublishedProducts } from "@/lib/data/products";
 import { getPublishedPosts } from "@/lib/data/posts";
-import { sanitizeHttpUrl } from "@/lib/security";
+import { sanitizeHttpUrl, safeJsonLd } from "@/lib/security";
 import { localePath, pathAlternates } from "@/lib/i18n/paths";
 import { SITE_URL } from "@/lib/blog/metadata";
 import { HomePage } from "@/components/HomePage";
@@ -49,7 +49,7 @@ export async function HomeRoute() {
 
   return (
     <>
-      <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
       <HomePage products={products} posts={posts} />
     </>
   );

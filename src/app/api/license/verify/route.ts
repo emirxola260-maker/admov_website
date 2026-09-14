@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/admin";
 import { rateLimit } from "@/lib/server/ratelimit";
+import { getClientIp } from "@/lib/server/ip";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
  * surface, even though the keys themselves are random.
  */
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const ip = getClientIp(request);
   const limit = rateLimit(`license:${ip}`, { windowMs: 60_000, max: 20 });
   if (!limit.allowed) {
     return Response.json(

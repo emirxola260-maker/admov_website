@@ -1,68 +1,74 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import { Clock, Gauge } from "lucide-react";
+import { useState } from "react";
+import { ArrowDown, ArrowUpRight, Clock, Gauge, Layers } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { languages } from "@/i18n/translations";
 import type { Language } from "@/i18n/config";
 import { localePath } from "@/lib/i18n/paths";
 import { pickLang } from "@/lib/blog/utils";
-import { sanitizeHttpUrl } from "@/lib/security";
 import type { AppItem } from "@/lib/apps/types";
+import { parseCurriculum } from "@/lib/courses/curriculum";
+import { academyCopy } from "@/i18n/academy";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import ShinyText from "@/components/ShinyText";
+import { AdmovMark } from "@/components/ui/Logo";
 import { AppPrice } from "@/components/apps/AppMeta";
-import { AppAction } from "@/components/apps/AppAction";
+import { CourseMedia } from "./CourseMedia";
+import styles from "./academy.module.css";
 
-/**
- * `courses` arrives already filtered to the page's language by the server.
- * `availableIn` is every language that has courses, so a visitor on a
- * language with none is pointed at the one that does.
- */
 export function CoursesPage({ courses, availableIn }: { courses: AppItem[]; availableIn: Language[] }) {
   const { t, lang } = useLanguage();
-  const c = t.courses;
+  const a = academyCopy[lang];
   const elsewhere = availableIn.filter((l) => l !== lang);
+  const [selected, setSelected] = useState<string | null>(null);
+  const visibleCourses = selected ? courses.filter(course => course.slug === selected) : courses;
+  const chooser = {
+    ar: { all: "كل المسارات", label: "ماذا تريد أن تصنع؟", coding: "تطبيق أو موقع", content: "صور وفيديوهات", result: "مسارات تناسب اختيارك" },
+    en: { all: "All courses", label: "What do you want to make?", coding: "An app or website", content: "Photos and videos", result: "Courses for your choice" },
+    tr: { all: "Tüm kurslar", label: "Ne üretmek istiyorsunuz?", coding: "Uygulama veya site", content: "Fotoğraf ve video", result: "Seçiminize uygun kurslar" },
+  }[lang];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50">
+    <div className={styles.page}>
       <Navbar />
-      <main className="pt-32 md:pt-40 pb-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <span className="section-label">{c.label}</span>
-          <h1 className="text-4xl md:text-6xl mb-6 max-w-3xl">
-            {c.heading}
-            <ShinyText text={c.headingHighlight} className="text-violet" color="#8B7DF0" shineColor="#ffffff" speed={3} />
-          </h1>
-          <p className="text-lg text-zinc-400 max-w-2xl mb-12">{c.subtext}</p>
+      <main className={styles.indexMain}>
+        <div className={styles.container}>
+          <header className={styles.academyHero}>
+            <div>
+              <p className={styles.academyName}><AdmovMark />{a.academy}</p>
+              <h1>{a.title}</h1>
+              <p className={styles.heroIntro}>{a.intro}</p>
+              {courses.length > 0 && <a href="#course-catalogue" className={styles.textLink}>{a.browse}<ArrowDown size={18} aria-hidden="true" /></a>}
+            </div>
+            <div className={styles.learningNote}>
+              <AdmovMark outline className={styles.noteMark} />
+              <h2>{a.approach}</h2>
+              <p>{a.approachText}</p>
+            </div>
+          </header>
 
-          {courses.length === 0 ? (
-            <div className="py-16 text-center">
-              <p className="text-zinc-400 mb-5">{elsewhere.length ? c.notInLang : c.empty}</p>
-              {elsewhere.length > 0 && (
-                <p className="text-sm text-zinc-500 flex items-center justify-center gap-3 flex-wrap">
-                  {c.availableIn}
-                  {elsewhere.map((l) => (
-                    <Link
-                      key={l}
-                      href={localePath(l, "/courses")}
-                      className="rounded-full border border-violet/40 px-4 py-2 text-violet hover:bg-violet/10 transition-colors"
-                    >
-                      {languages.find((m) => m.code === l)?.nativeName ?? l}
-                    </Link>
-                  ))}
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {courses.map((course, i) => (
-                <CourseCard key={course.id} course={course} index={i} lang={lang} />
-              ))}
-            </div>
-          )}
+          <section id="course-catalogue" className={styles.catalogue} aria-labelledby="catalogue-title">
+            {courses.length > 0 ? <>
+              <div className={styles.catalogueHeader}><h2 id="catalogue-title">{a.catalogue}</h2><p>{a.catalogueNote}</p></div>
+              <div className={styles.chooser} role="group" aria-label={chooser.label}>
+                <button type="button" aria-pressed={selected === null} onClick={() => setSelected(null)}>{chooser.all}</button>
+                {courses.map(course => <button key={course.id} type="button" aria-pressed={selected === course.slug} onClick={() => setSelected(course.slug)}>{course.slug === "ai-coding" ? chooser.coding : course.slug === "ai-content-creation" ? chooser.content : course.name}</button>)}
+              </div>
+              <p className="sr-only" role="status">{chooser.result}: {visibleCourses.length.toLocaleString(lang)}</p>
+              <div className={styles.courseList}>
+                {visibleCourses.map((course, index) => <CourseCard key={course.id} course={course} index={index} lang={lang} />)}
+              </div>
+            </> : <div className={styles.empty}>
+              <h2 id="catalogue-title">{elsewhere.length ? t.courses.notInLang : t.courses.empty}</h2>
+              {elsewhere.length > 0 && <div className={styles.languageLinks}>
+                <span>{t.courses.availableIn}</span>
+                {elsewhere.map(l => <Link key={l} href={localePath(l, "/courses")} className={styles.solidLink}>{languages.find(item => item.code === l)?.nativeName ?? l}<ArrowUpRight size={16} aria-hidden="true" /></Link>)}
+              </div>}
+            </div>}
+          </section>
+          <AcademyHelp />
         </div>
       </main>
       <Footer />
@@ -71,61 +77,39 @@ export function CoursesPage({ courses, availableIn }: { courses: AppItem[]; avai
 }
 
 function CourseCard({ course, index, lang }: { course: AppItem; index: number; lang: Language }) {
-  const image = sanitizeHttpUrl(course.image_url ?? "");
-  const tagline = pickLang(course.tagline, lang) ?? "";
+  const a = academyCopy[lang];
   const href = `${localePath(lang, "/courses")}/${course.slug}`;
-
+  const project = pickLang(course.project, lang);
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ delay: Math.min(index * 0.08, 0.3), duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
-      className="flex flex-col rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden hover:border-violet/40 transition-colors"
-    >
-      {image && (
-        <Link href={href} className="block aspect-[16/9] bg-zinc-900 overflow-hidden">
-          <img src={image} alt={course.name} loading="lazy" className="w-full h-full object-cover" />
-        </Link>
-      )}
-      <div className="flex flex-col gap-4 p-7 flex-1">
-        <Link href={href}>
-          <h2 className="text-2xl md:text-3xl text-zinc-50 hover:text-violet transition-colors">{course.name}</h2>
-        </Link>
-        {tagline && <p className="text-zinc-300 leading-relaxed">{tagline}</p>}
-        <CourseFacts course={course} />
-        <div className="mt-auto pt-4 flex items-center justify-between gap-3 flex-wrap border-t border-white/10">
-          <AppPrice app={course} />
-          <AppAction app={course} />
-        </div>
+    <article className={styles.courseRow}>
+      <Link href={href} className={styles.courseImageLink} aria-label={course.name}><CourseMedia course={course} lang={lang} priority={index === 0} /></Link>
+      <div className={styles.courseInfo}>
+        <CourseFacts course={course} compact />
+        <h3><Link href={href}>{course.name}</Link></h3>
+        <p className={styles.tagline}>{pickLang(course.tagline, lang)}</p>
+        {project && <div className={styles.projectBrief}><span>{a.project}</span><p>{project}</p></div>}
+        <div className={styles.courseFooter}><AppPrice app={course} /><Link href={href} className={styles.solidLink}>{a.details}<ArrowUpRight size={18} aria-hidden="true" /></Link></div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
-/** Duration and level pills — rendered only for the facts the course has. */
-export function CourseFacts({ course }: { course: AppItem }) {
+export function CourseFacts({ course, compact = false }: { course: AppItem; compact?: boolean }) {
   const { t, lang } = useLanguage();
   const duration = pickLang(course.duration, lang);
   const level = pickLang(course.level, lang);
-  if (!duration && !level) return null;
-  const pill = "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-zinc-300";
+  const { moduleCount } = parseCurriculum(course.curriculum_md?.[lang]);
   return (
-    <div className="flex flex-wrap gap-2">
-      {duration && (
-        <span className={pill}>
-          <Clock size={13} aria-hidden />
-          <span className="sr-only">{t.courses.duration}: </span>
-          {duration}
-        </span>
-      )}
-      {level && (
-        <span className={pill}>
-          <Gauge size={13} aria-hidden />
-          <span className="sr-only">{t.courses.level}: </span>
-          {level}
-        </span>
-      )}
+    <div className={styles.facts}>
+      {duration && <span><Clock size={14} aria-hidden="true" /><span className="sr-only">{t.courses.duration}: </span>{duration}</span>}
+      {!!moduleCount && <span><Layers size={14} aria-hidden="true" />{moduleCount.toLocaleString(lang)} {academyCopy[lang].modules}</span>}
+      {!compact && level && <span><Gauge size={14} aria-hidden="true" /><span className="sr-only">{t.courses.level}: </span>{level}</span>}
     </div>
   );
+}
+
+export function AcademyHelp() {
+  const { lang } = useLanguage();
+  const a = academyCopy[lang];
+  return <aside className={styles.help}><div><h2>{a.help}</h2><p>{a.helpText}</p></div><Link href={`${localePath(lang, "/")}#contact`} className={styles.textLink}>{a.contact}<ArrowUpRight size={18} aria-hidden="true" /></Link></aside>;
 }

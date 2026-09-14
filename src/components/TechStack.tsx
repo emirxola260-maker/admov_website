@@ -1,47 +1,39 @@
 "use client";
 
-import { motion } from "motion/react";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { SectionHeader } from "./ui/SectionHeader";
+import styles from "./tech-stack.module.css";
 
 const TOOLS = [
-  { name: "Claude", tag: "Anthropic" },
-  { name: "GPT", tag: "OpenAI" },
-  { name: "Gemini", tag: "Google" },
-  { name: "n8n", tag: "Automation" },
-  { name: "Make", tag: "Automation" },
-  { name: "Flutter", tag: "Mobile" },
-  { name: "Next.js", tag: "Web" },
-  { name: "Supabase", tag: "Backend" },
-  { name: "Shopify", tag: "E-commerce" },
-  { name: "Meta Ads", tag: "Ads" },
-  { name: "TikTok Ads", tag: "Ads" },
-  { name: "Google Ads", tag: "Ads" },
+  { name: "Claude", icon: "claude" },
+  { name: "GPT", icon: "openai" },
+  { name: "Gemini", icon: "gemini" },
+  { name: "n8n", icon: "n8n" },
+  { name: "Make", icon: "make" },
+  { name: "Flutter", icon: "flutter" },
+  { name: "Next.js", icon: "nextjs" },
+  { name: "Supabase", icon: "supabase" },
+  { name: "Shopify", icon: "shopify" },
+  { name: "Meta Ads", icon: "meta" },
+  { name: "TikTok Ads", icon: "tiktok" },
+  { name: "Google Ads", icon: "google-ads" },
 ];
 
+const headings = { ar: "أدوات نعمل بها", en: "Tools we work with", tr: "Kullandığımız araçlar" };
+
 export function TechStack() {
-  const { t } = useLanguage();
+  const { lang } = useLanguage();
   return (
-    <section className="py-16 md:py-24 bg-zinc-950">
-      <div className="max-w-7xl mx-auto px-6">
-        <SectionHeader label={t.techStack.label} heading={t.techStack.heading} highlight={t.techStack.headingHighlight} className="mb-12" />
-        <div className="flex flex-wrap justify-center gap-3">
-          {TOOLS.map((tool, i) => (
-            <motion.div
-              key={tool.name}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: Math.min(i * 0.04, 0.4), duration: 0.4 }}
-              className="flex items-center gap-3 px-5 py-3 rounded-full border border-white/10 backdrop-blur-xl hover:border-violet/40 transition-colors"
-              style={{ backgroundImage: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)" }}
-            >
-              <span className="w-2 h-2 rounded-full bg-violet" />
-              <span className="font-syne font-bold text-zinc-50">{tool.name}</span>
-              <span className="text-[10px] uppercase tracking-wider text-zinc-500">{tool.tag}</span>
-            </motion.div>
+    <section id="tools" className={styles.section} aria-labelledby="tools-title">
+      <div className={styles.container}>
+        <h2 id="tools-title" className={styles.heading}>{headings[lang]}</h2>
+        <ul className={styles.tools} role="list">
+          {TOOLS.map((tool) => (
+            <li key={tool.icon} className={styles.tool}>
+              <img src={`/logos/tools/${tool.icon}.svg`} width="36" height="36" alt="" loading="lazy" decoding="async" />
+              <span dir="ltr">{tool.name}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

@@ -5,12 +5,7 @@ import {
   isTelegramConfigured,
 } from "@/lib/server/telegram";
 import { rateLimit } from "@/lib/server/ratelimit";
-
-function getClientIp(request: Request): string {
-  const fwd = request.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return request.headers.get("x-real-ip") || "unknown";
-}
+import { getClientIp } from "@/lib/server/ip";
 
 export async function POST(request: Request) {
   const raw: unknown = await request.json().catch(() => null);

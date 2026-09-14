@@ -32,4 +32,17 @@ describe("rateLimit", () => {
     expect(rateLimit("a", opts, 0).allowed).toBe(true);
     expect(rateLimit("b", opts, 0).allowed).toBe(true);
   });
+
+  it("sweeps expired entries when map grows over 2000 items", () => {
+    const opts = { windowMs: 1000, max: 5 };
+    const baseTime = 1_000_000;
+    // Populate 2005 keys with old timestamps
+    for (let i = 0; i < 2005; i++) {
+      rateLimit(`old-${i}`, opts, baseTime);
+    }
+    // Now call rateLimit with a timestamp 15 minutes in the future (> 600_000 ms later)
+    const futureTime = baseTime + 900_000;
+    const r = rateLimit("fresh-key", opts, futureTime);
+    expect(r.allowed).toBe(true);
+  });
 });

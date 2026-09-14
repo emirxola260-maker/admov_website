@@ -21,6 +21,15 @@ export function rateLimit(
   const windowStart = now - opts.windowMs;
   const recent = (hits.get(key) || []).filter((t) => t > windowStart);
 
+  // Periodically sweep expired keys if the cache grows large under scan traffic
+  if (hits.size > 2000) {
+    for (const [k, timestamps] of hits.entries()) {
+      if (timestamps.length === 0 || timestamps[timestamps.length - 1] <= now - 600_000) {
+        hits.delete(k);
+      }
+    }
+  }
+
   if (recent.length >= opts.max) {
     hits.set(key, recent);
     const retryAfterMs = Math.max(0, recent[0] + opts.windowMs - now);

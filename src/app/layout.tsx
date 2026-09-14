@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { syne, dmSans, changa } from "@/lib/fonts";
 import { DEFAULT_LANG, dirFor, isLanguage, type Language } from "@/i18n/config";
 import { getAdminContent } from "@/lib/data/admin-content";
+import { safeJsonLd } from "@/lib/security";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -134,7 +135,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       style={{ ["--announce-h" as string]: showAnnouncement ? "2.5rem" : "0px" }}
     >
       <head>
-        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }} />
       </head>
       <body className={`bg-zinc-950 text-zinc-50 antialiased lang-${lang}`} suppressHydrationWarning>
         {showAnnouncement && announcement && (

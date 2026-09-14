@@ -217,11 +217,13 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
 
     const loadContent = async () => {
       // Try to load from Supabase first
+      let loadedFromSupabase = false;
       try {
         const { getAdminContentFromSupabase } = await import("@/lib/supabase/client");
         const data = await getAdminContentFromSupabase();
         if (isMounted && data) {
-          setContent((prev) => ({
+          loadedFromSupabase = true;
+          setContent({
             ...defaultContent,
             ...data,
             hero: { ...defaultContent.hero, ...(data.hero || {}) },
@@ -232,30 +234,39 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             seo: { ...defaultContent.seo, ...(data.seo || {}) },
             pricing: { ...defaultContent.pricing, ...(data.pricing || {}) },
             announcement: { ...defaultContent.announcement, ...(data.announcement || {}) },
-          }));
+          });
+          try {
+            localStorage.setItem("admov_admin_content", JSON.stringify(data));
+          } catch {
+            /* ignore quota errors */
+          }
         }
       } catch (error) {
         console.error("Error loading from Supabase:", error);
       }
 
-      // Always try localStorage as fallback or merge
-      try {
-        const saved = localStorage.getItem("admov_admin_content");
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          setContent((prev) => ({
-            ...defaultContent,
-            ...parsed,
-            hero: { ...defaultContent.hero, ...(parsed.hero || {}) },
-            services: { ...defaultContent.services, ...(parsed.services || {}) },
-            work: { ...defaultContent.work, ...(parsed.work || {}) },
-            testimonials: { ...defaultContent.testimonials, ...(parsed.testimonials || {}) },
-            contact: { ...defaultContent.contact, ...(parsed.contact || {}) },
-            seo: { ...defaultContent.seo, ...(parsed.seo || {}) },
-          }));
+      // Only fall back to localStorage if Supabase was unavailable or returned nothing
+      if (!loadedFromSupabase && isMounted) {
+        try {
+          const saved = localStorage.getItem("admov_admin_content");
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            setContent({
+              ...defaultContent,
+              ...parsed,
+              hero: { ...defaultContent.hero, ...(parsed.hero || {}) },
+              services: { ...defaultContent.services, ...(parsed.services || {}) },
+              work: { ...defaultContent.work, ...(parsed.work || {}) },
+              testimonials: { ...defaultContent.testimonials, ...(parsed.testimonials || {}) },
+              contact: { ...defaultContent.contact, ...(parsed.contact || {}) },
+              seo: { ...defaultContent.seo, ...(parsed.seo || {}) },
+              pricing: { ...defaultContent.pricing, ...(parsed.pricing || {}) },
+              announcement: { ...defaultContent.announcement, ...(parsed.announcement || {}) },
+            });
+          }
+        } catch (e) {
+          console.error("Error loading from localStorage:", e);
         }
-      } catch (e) {
-        console.error("Error loading from localStorage:", e);
       }
 
       if (isMounted) {

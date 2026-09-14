@@ -6,6 +6,7 @@ import { ArrowDown, ArrowUpRight, Plus } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { AdmovMark } from "@/components/ui/Logo";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { productShowcase } from "@/i18n/product-showcase";
 import type { Product, ProductCategory } from "@/lib/products/types";
@@ -33,7 +34,8 @@ export function ProductsPage({ products }: { products: Product[] }) {
       <Navbar />
       <main className={styles.main}>
         <header className={styles.hero}>
-          <div className={styles.eyebrow}><span className={styles.brandMark} aria-hidden />{copy.studio}</div>
+          <AdmovMark outline className={styles.heroMark} />
+          <div className={styles.eyebrow}><AdmovMark className={styles.brandMark} />{copy.studio}</div>
           <div className={styles.heroGrid}>
             <h1>{copy.title}<br /><span>{copy.titleAccent}</span></h1>
             <div className={styles.heroAside}>
@@ -57,12 +59,12 @@ export function ProductsPage({ products }: { products: Product[] }) {
           {showFeatured && (
             <article id={featured.slug} className={styles.featured} aria-labelledby={`title-${featured.slug}`}>
               <div className={styles.featuredStory}>
-                <div className={styles.featuredKicker}><span aria-hidden>{(products.indexOf(featured) + 1).toString().padStart(2, "0")} /</span>{copy.selected}</div>
+                <div className={styles.featuredKicker}><span className={styles.chapterNumber} aria-hidden><AdmovMark className={styles.chapterMark} />{(products.indexOf(featured) + 1).toString().padStart(2, "0")}</span>{copy.selected}</div>
                 <ProductIdentity product={featured} />
                 <p className={styles.featuredTagline}>{pickLang(featured.tagline, lang)}</p>
                 <ProductDescription product={featured} />
                 <ProductAction product={featured} primary />
-                <div className={styles.featuredFoot}><span className={styles.brandMark} aria-hidden />{t.products.label}</div>
+                <div className={styles.featuredFoot}><AdmovMark className={styles.brandMark} />{t.products.label}</div>
               </div>
               <ProductMedia product={featured} featured />
             </article>
@@ -70,14 +72,14 @@ export function ProductsPage({ products }: { products: Product[] }) {
           {collection.length > 0 && (
             <div className={styles.stories}>
               <div className={styles.sectionHeading}>
-                <h2>{copy.collection}</h2><p>{copy.collectionIntro}</p>
+                <h2><AdmovMark className={styles.sectionMark} />{copy.collection}</h2><p>{copy.collectionIntro}</p>
               </div>
               <div className={styles.productGrid}>
                 {collection.map((product, index) => (
                   <article key={product.id} id={product.slug} className={`${styles.product} ${index === collection.length - 1 && collection.length % 2 !== 0 ? styles.wideProduct : ""}`} aria-labelledby={`title-${product.slug}`}>
                     <ProductMedia product={product} />
                     <div className={styles.productStory}>
-                      <div className={styles.productMeta}><span aria-hidden>{(products.indexOf(product) + 1).toString().padStart(2, "0")}</span><ProductStatus product={product} /></div>
+                      <div className={styles.productMeta}><span className={styles.chapterNumber} aria-hidden><AdmovMark className={styles.chapterMark} />{(products.indexOf(product) + 1).toString().padStart(2, "0")}</span><ProductStatus product={product} /></div>
                       <h3 id={`title-${product.slug}`} className={styles.productName}><bdi className="logo-text">{product.name}</bdi></h3>
                       <p className={styles.productTagline}>{pickLang(product.tagline, lang)}</p>
                       <ProductDescription product={product} />
@@ -91,6 +93,7 @@ export function ProductsPage({ products }: { products: Product[] }) {
           {visible.length === 0 && <p className={styles.empty}>{t.products.empty}</p>}
         </section>
         <aside className={styles.closing}>
+          <AdmovMark outline className={styles.closingMark} />
           <div><h2>{copy.nextTitle}</h2><p>{copy.nextBody}</p></div>
           <Link href={`${localePath(lang, "/")}#contact`} className={styles.closingLink}>{copy.nextAction}<ArrowUpRight size={23} aria-hidden /></Link>
         </aside>

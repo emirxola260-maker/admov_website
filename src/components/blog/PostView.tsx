@@ -8,7 +8,7 @@ import type { Language } from "@/i18n/config";
 import type { Post, PostSummary } from "@/lib/blog/types";
 import { blogHref, formatPostDate, pickLang, readingMinutes } from "@/lib/blog/utils";
 import { SITE_URL } from "@/lib/blog/metadata";
-import { sanitizeHttpUrl } from "@/lib/security";
+import { sanitizeHttpUrl, safeJsonLd } from "@/lib/security";
 import { PostArticle } from "./PostArticle";
 import { PostCard } from "./PostCard";
 import { PostCta } from "./PostCta";
@@ -43,7 +43,7 @@ export async function PostView({ post, lang, more, isPreview = false }: { post: 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-50">
       {!isPreview && (
-        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       )}
       <Navbar />
       {!isPreview && <ReadingProgress targetId="post-article" lang={lang} />}

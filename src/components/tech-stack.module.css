@@ -1,0 +1,16 @@
+.section { background: #09090b; padding: 12px 24px 48px; scroll-margin-top: 110px; }
+.container { max-width: 1080px; margin-inline: auto; border-block: 1px solid #ffffff12; padding: 32px 0 38px; }
+.heading { margin: 0 0 32px; color: #a7a3b0; text-align: center; font-size: 14px; font-weight: 500; line-height: 1.6; }
+.tools { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 30px 24px; list-style: none; padding: 0; margin: 0; }
+.tool { display: flex; flex-direction: column; align-items: center; justify-content: start; gap: 12px; min-width: 0; }
+.tool img { display: block; width: 36px; height: 36px; object-fit: contain; }
+.tool span { color: #bdb9c5; font-family: Arial, sans-serif; font-size: 12px; line-height: 1.4; white-space: nowrap; }
+@media (max-width: 640px) {
+  .section { padding: 8px 20px 28px; }
+  .container { padding: 26px 0 30px; }
+  .heading { margin-bottom: 27px; font-size: 13px; }
+  .tools { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 27px 10px; }
+  .tool { gap: 10px; }
+  .tool img { width: 30px; height: 30px; }
+  .tool span { font-size: 10px; }
+}

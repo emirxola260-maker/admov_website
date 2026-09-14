@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { sanitizeHttpUrl } from "./security";
+import { sanitizeHttpUrl, safeJsonLd } from "./security";
 
 describe("sanitizeHttpUrl", () => {
   it("allows https and http URLs", () => {
@@ -23,5 +23,18 @@ describe("sanitizeHttpUrl", () => {
     expect(sanitizeHttpUrl("", "/placeholder.png")).toBe("/placeholder.png");
     expect(sanitizeHttpUrl(undefined, "/placeholder.png")).toBe("/placeholder.png");
     expect(sanitizeHttpUrl("not a url", "/placeholder.png")).toBe("/placeholder.png");
+  });
+});
+
+describe("safeJsonLd", () => {
+  it("escapes '<' as unicode escape to neutralize </script> injection", () => {
+    const payload = {
+      title: "Attack </script><script>alert('xss')</script>",
+      description: "normal text <bold>",
+    };
+    const result = safeJsonLd(payload);
+    expect(result).not.toContain("</script>");
+    expect(result).toContain("\\u003c/script>");
+    expect(JSON.parse(result)).toEqual(payload);
   });
 });

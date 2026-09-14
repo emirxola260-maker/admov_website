@@ -2,6 +2,8 @@ import { createServiceClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe/server";
 import { isPaid, storeBase, type AppItem } from "@/lib/apps/types";
 import { SITE_URL } from "@/lib/blog/metadata";
+import { rateLimit } from "@/lib/server/ratelimit";
+import { getClientIp } from "@/lib/server/ip";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +14,15 @@ export const dynamic = "force-dynamic";
  * from the database, so a tampered request cannot change what is charged.
  */
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const limit = rateLimit(`checkout:${ip}`, { windowMs: 60_000, max: 15 });
+  if (!limit.allowed) {
+    return Response.json(
+      { error: "Too many checkout requests. Please try again in a moment." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(limit.retryAfterMs / 1000)) } },
+    );
+  }
+
   const stripe = getStripe();
   if (!stripe) {
     return Response.json(
