@@ -16,6 +16,14 @@
 
 create extension if not exists pgcrypto;
 
+create or replace function public.set_updated_at()
+returns trigger language plpgsql as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
 -- ---------------------------------------------------------------- apps
 create table if not exists public.apps (
   id uuid primary key default gen_random_uuid(),
